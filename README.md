@@ -31,47 +31,48 @@ See the [Wiki] (https://github.com/SBGit-2019/Pyside-QCP/wiki) for some screensh
 
 ## Building and Installation
 ### Installation for Ubuntu 18.04 or Mint 19:
-(adapt the used paths to your own liking or needs)
 
-    * System packages:
-    * We build pyside2 from source, so no need for: pip install PySide2
-    - apt install python3
-    - sudo apt-get  install llvm-6.0 virtualenvwrapper python3 python3-dev cmake build-essential git clang-6.0 libclang-6.0-dev libxslt-dev mesa-common-dev libgl1-mesa-glx libglib2.0-0 wget git libxkbcommon-x11-0 
-    - sudo apt-get  install libnss3 libasound2 libpulse-dev
+Note: adapt the used paths to your own liking or needs
+* Installation of build tools:
+* System packages:
+* We build pyside2 from source, so no need for: pip install PySide2
+- apt install python3
+- sudo apt-get  install llvm-6.0 virtualenvwrapper python3 python3-dev cmake build-essential git clang-6.0 libclang-6.0-dev libxslt-dev mesa-common-dev libgl1-mesa-glx libglib2.0-0 wget git libxkbcommon-x11-0 
+- sudo apt-get  install libnss3 libasound2 libpulse-dev
      
-    * Install Cmake 3.13 and Qt 5.12.4:
-    * Download Qt from https://www.qt.io/
-    - cp DOWNLOAD_FOLDER/qt-opensource-linux-x64-5.12.4.run .
-    * Download CMake from https://cmake.org/download/ (adapt version number to your needs, minimum 3.13)
-    - cd /opt/extra
-    - wget https://github.com/Kitware/CMake/releases/download/v3.13.2/cmake-3.13.2-Linux-x86_64.tar.gz
-    - sudo tar xvf cmake-3.13.2-Linux-x86_64.tar.gz
-    - ./qt-opensource-linux-x64-5.12.4.run
+* Install Cmake 3.13 and Qt 5.12.4:
+* Download Qt from https://www.qt.io/
+- cp DOWNLOAD_FOLDER/qt-opensource-linux-x64-5.12.4.run .
+* Download CMake from https://cmake.org/download/ (adapt version number to your needs, minimum 3.13)
+- cd /opt/extra
+- wget https://github.com/Kitware/CMake/releases/download/v3.13.2/cmake-3.13.2-Linux-x86_64.tar.gz
+- sudo tar xvf cmake-3.13.2-Linux-x86_64.tar.gz
+- ./qt-opensource-linux-x64-5.12.4.run
 
-    * Set Paths (e.g. put in bashrc)
-    -  export LLVM_INSTALL_DIR=`llvm-config-6.0 --prefix`
-    -  export LD_LIBRARY_PATH=/opt/Qt5.12.4/5.12.4/gcc_64/lib
-    -  export PATH=/opt/Qt5.12.4/5.12.4/gcc_64/bin:$PATH
-    -  export Qt5_DIR=/opt/Qt5.12.4/5.12.4/gcc_64/lib/cmake/Qt5/
-    * To test type: 'qmake'
+* Set Paths (e.g. put in bashrc)
+-  export LLVM_INSTALL_DIR=`llvm-config-6.0 --prefix`
+-  export LD_LIBRARY_PATH=/opt/Qt5.12.4/5.12.4/gcc_64/lib
+-  export PATH=/opt/Qt5.12.4/5.12.4/gcc_64/bin:$PATH
+-  export Qt5_DIR=/opt/Qt5.12.4/5.12.4/gcc_64/lib/cmake/Qt5/
+* To test type: 'qmake'
 
-    * Pyside virtual environment
-    * To create virtual environment
-    -  source /etc/bash_completion.d/virtualenvwrapper
-    -  mkvirtualenv -p `which python3` pyside2build
-    
-    * To reactivate virtual environment
-    - source .virtualenvs/pyside2build/bin/activate
-    
-    * Downloading and building pyside2
-    - mkdir pyside
-    -  cd pyside/
-    -  git clone --recursive https://code.qt.io/pyside/pyside-setup
-    -  cd pyside-setup && git checkout 5.12.4
-    -  git submodule update --init
-    * Building it
-    -  python setup.py install --qmake=/opt/Qt5.12.4/5.12.4/gcc_64/bin/qmake 
-    * Testing building of shiboken2 type: 'shiboken2'
+* Pyside virtual environment
+* To create virtual environment
+-  source /etc/bash_completion.d/virtualenvwrapper
+-  mkvirtualenv -p `which python3` pyside2build
+
+* To reactivate virtual environment
+- source .virtualenvs/pyside2build/bin/activate
+
+* Downloading and building pyside2
+- mkdir pyside
+-  cd pyside/
+-  git clone --recursive https://code.qt.io/pyside/pyside-setup
+-  cd pyside-setup && git checkout 5.12.4
+-  git submodule update --init
+* Building it
+-  python setup.py install --qmake=/opt/Qt5.12.4/5.12.4/gcc_64/bin/qmake 
+* Testing building of shiboken2 type: 'shiboken2'
 
 
 ### Installation for Windows 10:
@@ -123,7 +124,7 @@ All build should be with the 'Release' version.**
 
 ## License
 
-This project is licensed under the GPL v3 License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the GPL v3 License - see the [LICENSE](https://github.com/SBGit-2019/Pyside-QCP/blob/master/LICENSE) file for details.
 Note that commercial licenses are available for [QCustomPlot](https://www.qcustomplot.com/) if you want to use the library
 not in an GPL V3 environment.
 
