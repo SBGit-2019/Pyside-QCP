@@ -1,0 +1,748 @@
+<?xml version="1.0"?>
+
+<!--
+/***************************************************************************
+**                                                                        **
+**  QCustomPlot Pyside2 bindings are Python bindings for QCustomPlot/Qt   **
+**                                                                        **
+**                                                                        **
+**  This program is free software: you can redistribute it and/or modify  **
+**  it under the terms of the GNU General Public License as published by  **
+**  the Free Software Foundation, either version 3 of the License, or     **
+**  (at your option) any later version.                                   **
+**                                                                        **
+**  This program is distributed in the hope that it will be useful,       **
+**  but WITHOUT ANY WARRANTY; without even the implied warranty of        **
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         **
+**  GNU General Public License for more details.                          **
+**                                                                        **
+**  You should have received a copy of the GNU General Public License     **
+**  along with this program.  If not, see http://www.gnu.org/licenses/.   **
+**                                                                        **
+****************************************************************************
+**  Website/Contact: https://github.com/SBGit-2019/Pyside-QCP             **
+****************************************************************************/
+-->
+
+<typesystem package="QCustomPlot_PySide">
+    <primitive-type name="bool"/>
+    <primitive-type name="std::string"/>
+    <load-typesystem name="typesystem_core.xml" generate="no"/>
+    <load-typesystem name="typesystem_widgets.xml" generate="no"/>
+    <load-typesystem name="typesystem_gui.xml" generate="no"/>
+
+    <rejection class="*" function-name="selectTest" />
+    <rejection class="*" function-name="selectEvent" />
+    <rejection class="*" function-name="deselectEvent" />
+
+    <template name="plottable_template">
+        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlot_PySideTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
+        %RETURN_TYPE r = cppSelf2->%FUNCTION_NAME();
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+    </template>
+    <template name="create_getter">
+        %RETURN_TYPE r = %CPPSELF -&gt; %FUNCTION_NAME;
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+    </template>
+
+
+
+    <value-type name="QCPRange"> 
+    </value-type> 
+    <value-type name="QCPVector2D">
+    </value-type>
+
+    <object-type name="QCPDataContainer" generate='no'>
+    </object-type>
+
+    <rejection class="QCPLayerable"  field-name="*"/>
+    <object-type name="QCPLayerable" >
+    </object-type>
+
+    <rejection class="QCPLayoutElement" field-name="*" />
+    <rejection class="QCPLayoutElement"  function-name="selectTest"/>
+    <object-type name="QCPLayoutElement" >
+        <enum-type name="UpdatePhase" />
+        <enum-type name="SizeConstraintRect" />
+    </object-type>
+
+    <rejection class="QCPLayout" field-name="*" />
+    <object-type name="QCPLayout" >
+    </object-type>
+
+    <rejection class="QCPAxisRect" field-name="*" />
+   <!-- <rejection class="QCPAxisRect" function-name="elements"/> -->
+    <object-type name="QCPAxisRect" >
+    </object-type>
+
+    <rejection class="QCPAxis" field-name="*" />
+    <rejection class="QCPAxis" function-name="selectTest" />
+    <object-type name="QCPAxis"> 
+        <enum-type name="AxisType" flags="AxisTypes"/>
+        <enum-type name="ScaleType" />
+        <enum-type name="SelectablePart" flags="SelectableParts" />
+        <enum-type name="LabelSide" />
+
+        <add-function signature="setTicker(QCPAxisTicker*)" return-type="void" access="public" static="no" >
+          <!--  <modify-argument index="1">
+            <define-ownership class="target" owner="c++" />
+            </modify-argument>-->
+        <inject-code class="target" position="beginning">
+          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;abc&quot; , 1, 12 ); -->
+         %CPPSELF -&gt; ticker() = QSharedPointer &lt; QCPAxisTicker &gt; (%1); 
+         <!-- qDebug(&quot;%s=%d %d &quot; , &quot;axc&quot; , 1, 12 );-->
+        </inject-code> 
+        </add-function>
+        <add-function signature="removeTicker(void)" return-type="void" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         %CPPSELF -&gt; ticker().clear();
+        </inject-code> 
+        </add-function>
+        <add-function signature="ticker()" return-type="QCPAxisTicker*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ade&quot; , 1, 12 ); -->
+         %RETURN_TYPE r = cppSelf->ticker().data();
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+        <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc&quot; , 1, 12 );-->
+
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPBars" field-name="*"/>
+    <object-type name="QCPBars">
+        <enum-type name="WidthType" />
+    </object-type> 
+
+    <rejection class="QCPBarsGroup" field-name="*"/>
+    <object-type name="QCPBarsGroup">
+        <enum-type name="SpacingType" />
+    </object-type> 
+
+
+   <!-- <rejection class="QCPBarsData" function-name="*"/>-->
+    <object-type name="QCPBarsData"> </object-type> 
+
+    <rejection class="QCPPainter" field-name="mAntialiasingStack"/>
+    <rejection class="QCPPainter" field-name="*"/>
+    <object-type name="QCPPainter">
+        <enum-type name="PainterMode" flags="PainterModes"/>
+    </object-type> 
+
+    <rejection class="QCPGrid" field-name="*"/>
+    <object-type name="QCPGrid"> </object-type> 
+
+  <!--  <rejection class="QCPAxisPainterPrivate" function-name="*"/> -->
+    <rejection class="QCPAxisPainterPrivate" field-name="*"/>
+    <object-type name="QCPAxisPainterPrivate"> </object-type> 
+
+  <!--  <rejection class="QCPSelectionDecorator" function-name="*"/> -->
+    <rejection class="QCPSelectionDecorator" field-name="*"/>
+    <object-type name="QCPSelectionDecorator">
+    </object-type> 
+
+    <rejection class="QCPSelectionDecoratorBracket" field-name="*"/>
+    <object-type name="QCPSelectionDecoratorBracket">
+        <enum-type name="BracketStyle" />
+    </object-type> 
+
+    <rejection class="QCPAxisTickerDateTime" field-name="*"/>
+    <object-type name="QCPAxisTickerDateTime"> 
+      <!--        <enum-type name="DateStrategy" /> LEADS TO AUTOGEN ERROR  -->
+    </object-type> 
+
+    <rejection class="QCPAxisTickerTime" field-name="*"/>
+    <object-type name="QCPAxisTickerTime"> 
+        <enum-type name="TimeUnit" />
+    </object-type> 
+
+    <rejection class="QCPAxisTickerFixed" field-name="*"/>
+    <object-type name="QCPAxisTickerFixed"> 
+        <enum-type name="ScaleStrategy" />
+    </object-type> 
+
+    <rejection class="QCPAxisTickerPi" field-name="*"/>
+    <object-type name="QCPAxisTickerPi"> 
+        <enum-type name="FractionStyle" />
+    </object-type> 
+
+    <rejection class="QCPAxisTickerLog" field-name="*"/>
+    <object-type name="QCPAxisTickerLog"> 
+    </object-type> 
+
+    <rejection class="QCPAxisTickerText" field-name="*"/>
+    <object-type name="QCPAxisTickerText"> 
+    </object-type> 
+
+    <rejection class="QCPAxisTicker" field-name="*"/>
+    <object-type name="QCPAxisTicker"> 
+        <enum-type name="TickStepStrategy" />
+		<!--
+          <modify-function signature="getMantissa(double,double*)const"  access="public"  >
+            <modify-argument index="2">
+           <remove-argument/>
+            </modify-argument>
+          </modify-function>
+-->
+    </object-type> 
+
+    <object-type name="QCPLineEnding"> 
+        <enum-type name="EndingStyle" />
+    </object-type> 
+
+
+    <value-type name="QCPDataRange"> 
+    </value-type> 
+    <value-type name="QCPDataSelection"> 
+    </value-type>
+    <interface-type name="QCPPlottableInterface1D"> 
+    </interface-type> 
+
+    <rejection class="QCPAbstractPlottable"  field-name="*"/>
+    <object-type name="QCPAbstractPlottable"  >
+    </object-type>
+    <rejection class="QCPAbstractPlottable1D"  field-name="*"/>
+    <object-type name="QCPAbstractPlottable1D" generate='no'>
+      <!--
+        <add-function signature="mhget2(int)" return-type="double" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+        %RETURN_TYPE r = cppSelf->dataMainValue(cppArg0);
+        qDebug(&quot;%s=%f %d &quot; , &quot;zmh&quot; , r, cppArg0 );
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+        </inject-code> 
+        </add-function>
+        -->
+    </object-type>
+   
+    <namespace-type name="QCP"> 
+        <enum-type name="ResolutionUnit" />
+        <enum-type name="ExportPen" />
+        <enum-type name="SignDomain" />
+        <enum-type name="MarginSide" flags="MarginSides"/>
+        <enum-type name="AntialiasedElement" flags="AntialiasedElements"/>
+        <enum-type name="PlottingHint" flags="PlottingHints"/>
+        <enum-type name="Interaction" flags="Interactions"/>
+        <enum-type name="SelectionRectMode" />
+        <enum-type name="SelectionType" />
+    </namespace-type> 
+
+    <rejection class="QCustomPlot" field-name="mViewport" />
+    <rejection class="QCustomPlot" field-name="mBufferDevicePixelRatio" />
+    <rejection class="QCustomPlot" field-name="mPlotLayout" />
+    <rejection class="QCustomPlot" field-name="mAutoAddPlottableToLegend" />
+    <rejection class="QCustomPlot" field-name="mPlottables" />
+    <rejection class="QCustomPlot" field-name="mGraphs" />
+    <rejection class="QCustomPlot" field-name="mItems" />
+    <rejection class="QCustomPlot" field-name="mLayers" />
+    <rejection class="QCustomPlot" field-name="mAntialiasedElements" />
+    <rejection class="QCustomPlot" field-name="mNotAntialiasedElements" />
+    <rejection class="QCustomPlot" field-name="mInteractions" />
+    <rejection class="QCustomPlot" field-name="mSelectionTolerance" />
+    <rejection class="QCustomPlot" field-name="mNoAntialiasingOnDrag" />
+    <rejection class="QCustomPlot" field-name="mBackgroundBrush" />
+    <rejection class="QCustomPlot" field-name="mScaledBackgroundPixmap" />
+    <rejection class="QCustomPlot" field-name="mBackgroundScaledMode" />
+    <rejection class="QCustomPlot" field-name="mCurrentLayer" />
+    <rejection class="QCustomPlot" field-name="mPlottingHints" />
+    <rejection class="QCustomPlot" field-name="mMultiSelectModifier" />
+    <rejection class="QCustomPlot" field-name="mSelectionRectMode" />
+    <rejection class="QCustomPlot" field-name="mSelectionRect" />
+    <rejection class="QCustomPlot" field-name="mPaintBuffers" />
+    <rejection class="QCustomPlot" field-name="mMousePressPos" />
+    <rejection class="QCustomPlot" field-name="mMouseHasMoved" />
+    <rejection class="QCustomPlot" field-name="mMouseEventLayerable" />
+    <rejection class="QCustomPlot" field-name="mMouseSignalLayerable" />
+    <rejection class="QCustomPlot" field-name="mMouseEventLayerableDetails" />
+    <rejection class="QCustomPlot" field-name="mMouseSignalLayerableDetails" />
+    <rejection class="QCustomPlot" field-name="mReplotting" />
+    <rejection class="QCustomPlot" field-name="mReplotQueued" />
+    <rejection class="QCustomPlot" field-name="mOpenGlMultisamples" />
+    <rejection class="QCustomPlot" field-name="mOpenGlAntialiasedElementsBackup" />
+    <rejection class="QCustomPlot" field-name="mOpenGlCacheLabelsBackup" />
+    <rejection class="QCustomPlot" field-name="mGlContext" />
+    <rejection class="QCustomPlot" field-name="mGlSurface" />
+    <rejection class="QCustomPlot" field-name="mGlPaintDevice" />
+    <object-type name="QCustomPlot"> 
+        <enum-type name="LayerInsertMode" />
+        <enum-type name="RefreshPriority" />
+        <modify-function signature="layerableAt(const QPointF&amp;,bool,QVariant*)const" >
+          <modify-argument index="3"> <remove-argument/> </modify-argument>
+        </modify-function>
+    </object-type> 
+
+    <rejection class="QCPGraphData" field-name="*"/>
+    <object-type name="QCPGraphData"> </object-type> 
+
+    <rejection class="QCPGraph" field-name="*"/>
+    <object-type name="QCPGraph">
+        <enum-type name="LineStyle" />
+        <add-function signature="dataMainValue(int)" return-type="double" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlot_PySideTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
+        %RETURN_TYPE r = cppSelf2->dataMainValue(cppArg0);
+        <!-- qDebug(&quot;%s=%f %d &quot; , &quot;amh&quot; , r, cppArg0 ); -->
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+        </inject-code> 
+        </add-function>
+
+        <add-function signature="dataCount()" return-type="int" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="plottable_template" />
+        <!--
+        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlot_PySideTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
+        %RETURN_TYPE r = cppSelf2->%FUNCTION_NAME();
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+        -->
+        </inject-code> 
+        </add-function>
+    </object-type> 
+
+    <rejection class="QCPScatterStyle" field-name="*"/>
+    <object-type name="QCPScatterStyle">
+        <enum-type name="ScatterProperty" flags="ScatterProperties"/>
+        <enum-type name="ScatterShape" />
+    </object-type> 
+
+    <rejection class="QCPLayer"  field-name="*"/>
+    <object-type name="QCPLayer" >
+        <enum-type name="LayerMode" />
+    </object-type>
+
+    <rejection class="QCPAbstractItem"  field-name="*"/>
+    <object-type name="QCPAbstractItem" >
+    </object-type>
+
+    <rejection class="QCPItemTracer"  field-name="*"/>
+    <object-type name="QCPItemTracer" >
+        <enum-type name="TracerStyle" />
+        <add-function signature="position()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPItemAnchor"  field-name="*"/>
+    <object-type name="QCPItemAnchor" >
+    </object-type>
+
+    <rejection class="QCPItemPosition"  field-name="*"/>
+    <object-type name="QCPItemPosition" >
+        <enum-type name="PositionType" />
+    </object-type>
+
+    <rejection class="QCPItemText"  field-name="*"/>
+    <object-type name="QCPItemText" >
+        <enum-type name="AnchorIndex" />
+        <add-function signature="position1()" return-type="QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;xbc&quot; , 1, 12 ); -->
+        %RETURN_TYPE r = %CPPSELF -&gt; position;
+         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+         <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ybc&quot; , 1, 12 ); -->
+        </inject-code> 
+        </add-function>
+        <add-function signature="position()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="topLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="topRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPAbstractPaintBuffer"  field-name="*"/>
+    <object-type name="QCPAbstractPaintBuffer" >
+    </object-type>
+    <rejection class="QCPPaintBufferPixmap"  field-name="*"/>
+    <object-type name="QCPPaintBufferPixmap" >
+    </object-type>
+    <!--
+    <rejection class="QCPPaintBufferGlPbuffer"  field-name="*"/>
+    <object-type name="QCPPaintBufferGlPbuffer" >
+    </object-type>
+    <rejection class="QCPPaintBufferGlFbo"  field-name="*"/>
+    <object-type name="QCPPaintBufferGlFbo" >
+    </object-type>
+    -->
+
+    <rejection class="QCPSelectionRect"  field-name="*"/>
+    <object-type name="QCPSelectionRect" >
+    </object-type>
+
+    <rejection class="QCPMarginGroup"  field-name="*"/>
+    <object-type name="QCPMarginGroup" >
+    </object-type>
+
+    <rejection class="QCPLayoutGrid"  field-name="*"/>
+    <object-type name="QCPLayoutGrid" >
+        <enum-type name="FillOrder" />
+    </object-type>
+
+    <rejection class="QCPLayoutInset"  field-name="*"/>
+    <object-type name="QCPLayoutInset" >
+        <enum-type name="InsetPlacement" />
+    </object-type>
+
+
+    <rejection class="QCPColorGradient"  field-name="*"/>
+    <rejection class="QCPColorGradient"  function-name="colorize"/> 
+    <object-type name="QCPColorGradient" >
+        <enum-type name="ColorInterpolation" />
+        <enum-type name="GradientPreset" />
+    </object-type>
+
+    <rejection class="QCPAbstractLegendItem"  field-name="*"/>
+    <object-type name="QCPAbstractLegendItem" >
+    </object-type>
+
+    <rejection class="QCPLegend"  field-name="*"/>
+    <object-type name="QCPLegend" >
+        <enum-type name="SelectablePart" flags="SelectableParts"/>
+    </object-type>
+
+    <rejection class="QCPTextElement"  field-name="*"/>
+    <object-type name="QCPTextElement" >
+    </object-type>
+
+    <rejection class="QCPColorScaleAxisRectPrivate"  field-name="*"/>
+    <object-type name="QCPColorScaleAxisRectPrivate" >
+    </object-type>
+
+    <!--
+    <rejection class="QCPColorScale2"  field-name="*"/>
+    <object-type name="QCPColorScale2" >
+    </object-type>
+    -->
+
+    <rejection class="QCPColorScale"  field-name="*"/>
+    <object-type name="QCPColorScale" >
+    </object-type>
+    
+    <rejection class="QCPCurveData"  field-name="*"/>
+    <object-type name="QCPCurveData" >
+    </object-type>
+
+    <rejection class="QCPCurve"  field-name="*"/>
+    <object-type name="QCPCurve" >
+        <enum-type name="LineStyle" />
+    </object-type>
+
+    <rejection class="QCPStatisticalBoxData"  field-name="*"/>
+    <object-type name="QCPStatisticalBoxData" >
+    </object-type>
+
+    <rejection class="QCPStatisticalBox"  field-name="*"/>
+    <object-type name="QCPStatisticalBox" >
+    </object-type>
+
+
+    <rejection class="QCPColorMap"  field-name="*"/>
+    <object-type name="QCPColorMap" >
+    </object-type>
+
+    <rejection class="QCPColorMapData"  field-name="*"/>
+    <!--    <rejection class="QCPColorMapData"  function-name="cellToCoord"/> -->
+    <!--<rejection class="QCPColorMapData"  function-name="coordToCell"/>-->
+    <object-type name="QCPColorMapData" >
+          <modify-function signature="cellToCoord(int,int,double*,double*)const" access="public"  >
+            <modify-argument index="3"> 
+              <remove-argument/>
+              <replace-default-expression with="0"/>
+            </modify-argument>
+            <modify-argument index="4"> 
+              <remove-argument/>
+              <replace-default-expression with="0"/>
+            </modify-argument>
+            <modify-argument index="return">
+                <replace-type modified-type="PyObject*"/>
+            </modify-argument>
+            <inject-code class="target" position="end">
+              double a=0;
+              double b=0;
+              %CPPSELF.%FUNCTION_NAME (%1,%2,&amp;a,&amp;b);
+              <!--
+             %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+             -->
+             %PYARG_0 = PyTuple_New(2);
+             PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[double](a));
+             PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[double](b));
+            </inject-code>
+          </modify-function>
+
+          <modify-function signature="coordToCell(double,double,int*,int*)const" access="public"  >
+            <modify-argument index="3"> 
+              <remove-argument/>
+              <replace-default-expression with="0"/>
+            </modify-argument>
+            <modify-argument index="4"> 
+              <remove-argument/>
+              <replace-default-expression with="0"/>
+            </modify-argument>
+            <modify-argument index="return">
+                <replace-type modified-type="PyObject*"/>
+            </modify-argument>
+            <inject-code class="target" position="end">
+              int a=0;
+              int b=0;
+              %CPPSELF.%FUNCTION_NAME (%1,%2,&amp;a,&amp;b);
+              <!--
+             %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+             -->
+             %PYARG_0 = PyTuple_New(2);
+             PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[int](a));
+             PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[int](b));
+            </inject-code>
+          </modify-function>
+    </object-type>
+
+   <object-type name="QCPFinancialDataContainer" />
+
+    <rejection class="QCPFinancial"  field-name="*"/>
+    <object-type name="QCPFinancial" >
+        <enum-type name="WidthType" />
+        <enum-type name="ChartStyle" />
+        <add-function signature="setData(QCPFinancialDataContainer*)" return-type="void" access="public" static="no" >
+           <modify-argument index="1">
+            <define-ownership class="target" owner="c++" />
+            </modify-argument>
+        <inject-code class="target" position="beginning">
+<!--         %CPPSELF -&gt; mDataContainer = QSharedPointer &lt; QCPFinancialDataContainer &gt; (%1); -->
+         %CPPSELF -&gt; setData( QSharedPointer &lt; QCPFinancialDataContainer &gt; (%1)); 
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPFinancialData"  field-name="*"/>
+    <object-type name="QCPFinancialData" >
+    </object-type>
+
+    <rejection class="QCPErrorBars"  field-name="*"/>
+    <object-type name="QCPErrorBars" >
+        <enum-type name="ErrorType" />
+    </object-type>
+
+    <rejection class="QCPErrorBarsData"  field-name="*"/>
+    <object-type name="QCPErrorBarsData" >
+    </object-type>
+
+    <rejection class="QCPItemLine"  field-name="*"/>
+    <object-type name="QCPItemLine" >
+        <add-function signature="end()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+      <!--  %RETURN_TYPE r = %CPPSELF -&gt; %FUNCTION_NAME;
+         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);-->
+        </inject-code> 
+        </add-function>
+        <add-function signature="start()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPItemStraightLine"  field-name="*"/>
+    <object-type name="QCPItemStraightLine" >
+    </object-type>
+
+    <rejection class="QCPItemCurve"  field-name="*"/>
+    <object-type name="QCPItemCurve" >
+        <add-function signature="start()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="startDir()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="end()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="endDir()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPItemRect"  field-name="*"/>
+    <object-type name="QCPItemRect" >
+        <enum-type name="AnchorIndex" />
+        <add-function signature="topLeft()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomRight()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="topRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPItemEllipse"  field-name="*"/>
+    <object-type name="QCPItemEllipse" >
+        <enum-type name="AnchorIndex" />
+        <add-function signature="topLeft()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomRight()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="topLeftRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="topRightRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomRightRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="bottomLeftRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="center()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+    <rejection class="QCPItemPixmap"  field-name="*"/>
+    <object-type name="QCPItemPixmap" >
+        <enum-type name="AnchorIndex" />
+		<!--
+          <modify-function signature="getFinalRect(bool*,bool*)const" access="public"  >
+            <modify-argument index="1"> <remove-argument/> </modify-argument>
+            <modify-argument index="2"> <remove-argument/> </modify-argument>
+          </modify-function>
+		  -->
+    </object-type>
+
+    <rejection class="QCPItemBracket"  field-name="*"/>
+    <object-type name="QCPItemBracket" >
+        <enum-type name="BracketStyle" />
+        <enum-type name="AnchorIndex" />
+        <add-function signature="left()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="right()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+        <add-function signature="center()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+         <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+    </object-type>
+
+</typesystem>
