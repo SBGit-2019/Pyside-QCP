@@ -141,3 +141,4 @@ not in an GPL V3 environment.
 * Emanuel Eichhammer author of [QCustomPlot](https://www.qcustomplot.com/)
 * [Qt] (https://www.qt.io/)
 
+
