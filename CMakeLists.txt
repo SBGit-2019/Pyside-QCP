@@ -28,96 +28,109 @@ if(POLICY CMP0068)
   cmake_policy(SET CMP0068 NEW)
 endif()
 
+# set(MANYLINUX_PYTHON_VERSION "3.8")
+# cmake -D MANYLINUX_PYTHON_VERSION=3.8 ..
+message("MANYLINUX_PYTHON_VERSION " ${MANYLINUX_PYTHON_VERSION})
+
 
 project(QCustomPlot-PySide2)
 
 set(CMAKE_AUTOMOC ON)
 
 # Find required Qt packages.
-find_package(Qt5 5.12 REQUIRED COMPONENTS Core Gui Widgets PrintSupport)
+find_package(Qt5 5.15.2 PATHS cmake REQUIRED COMPONENTS Core Gui Widgets PrintSupport)
 
 set(CMAKE_CXX_STANDARD 11)
-set(qcp_library "libqcustomplot")
-set(bindings_library "QCustomPlot_PySide")
-set(wrapped_header ${CMAKE_SOURCE_DIR}/bindings.h)
-set(typesystem_file ${CMAKE_SOURCE_DIR}/bindings.xml)
+#set(qcp_library "libqcustomplot")
+# Name of typesystem in bindings.xml
+set(bindings_library_src "QCustomPlot")
+set(bindings_library "QCustomPlot")
+set(wrapped_header ${CMAKE_SOURCE_DIR}/src/bindings.h)
+set(typesystem_file ${CMAKE_SOURCE_DIR}/src/bindings.xml)
 set(generated_sources
   #  ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable1d_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcustomplot_pyside_module_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemline_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcolorscale_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcolorscaleaxisrectprivate_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcolormapdata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxis_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpgraph_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcustomplot_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractitem_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpfinancial_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpfinancialdatacontainer_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpfinancialdata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxistickerdatetime_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxistickerlog_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxistickerpi_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxistickerfixed_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxistickertime_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpselectiondecoratorbracket_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpbarsgroup_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitembracket_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitempixmap_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemellipse_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemrect_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemcurve_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemstraightline_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcperrorbarsdata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcperrorbars_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcolormap_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpstatisticalboxdata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpstatisticalbox_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcurve_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcurvedata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcptextelement_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpcolorgradient_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplegend_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractlegenditem_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpselectionrect_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplayout_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplayoutinset_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplayoutgrid_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpmargingroup_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractpaintbuffer_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcppaintbufferpixmap_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplayer_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemtext_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemanchor_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemposition_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpitemtracer_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpscatterstyle_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpgraphdata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcp_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpdatarange_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpdataselection_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpplottableinterface1d_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpvector2d_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxispainterprivate_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxisticker_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxistickertext_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpbarsdata_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpbars_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpgrid_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplineending_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcppainter_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpselectiondecorator_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpaxisrect_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplayerable_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcplayoutelement_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcprange_wrapper.cpp
+  # Name of bindins_module_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcustomplot_module_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemline_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolorscale_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolorscaleaxisrectprivate_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolormapdata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxis_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpgraph_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcustomplot_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpabstractplottable_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpabstractitem_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpfinancial_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpfinancialdatacontainer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpfinancialdata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxistickerdatetime_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxistickerlog_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxistickerpi_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxistickerfixed_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxistickertime_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpselectiondecoratorbracket_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpbarsgroup_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitembracket_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitempixmap_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemellipse_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemrect_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemcurve_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemstraightline_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbarsdata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbars_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolormap_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpstatisticalboxdata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpstatisticalbox_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcurve_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcurvedata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcptextelement_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolorgradient_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplegend_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpabstractlegenditem_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpselectionrect_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayout_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayoutinset_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayoutgrid_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpmargingroup_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpabstractpaintbuffer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppaintbufferpixmap_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemtext_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemanchor_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemposition_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemtracer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpscatterstyle_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpgraphdata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcp_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpdatarange_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpdataselection_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpplottableinterface1d_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpvector2d_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxispainterprivate_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxisticker_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxistickertext_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpbarsdata_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpbars_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpgrid_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplineending_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppainter_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpselectiondecorator_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpaxisrect_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayerable_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayoutelement_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcprange_wrapper.cpp
 
    )
 
 # ================================== Shiboken detection ======================================
 # Use provided python interpreter if given.								   
-find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+#find_package(Python3 3.8 REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(Python3 ${MANYLINUX_PYTHON_VERSION} EXACT REQUIRED COMPONENTS Interpreter Development.Module)
+#find_package(Python3 3.8 EXACT REQUIRED COMPONENTS Interpreter Development.Module)
+#find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+#set(QMAKE_CXXFLAGS "-fno-sized-deallocation")
+message("INC " ${Python3_INCLUDE_DIRS})
+message("LIB " ${Python3_LIBRARIES})
 
 if(NOT python_interpreter)
     find_program(python_interpreter "python")
@@ -143,7 +156,7 @@ macro(pyside2_config option output_var)
     endif()
 
     execute_process(
-      COMMAND ${python_interpreter} "${CMAKE_SOURCE_DIR}/../utils/pyside2_config.py"
+      COMMAND ${python_interpreter} "${CMAKE_SOURCE_DIR}/util/pyside2_config.py"
               ${option}
       OUTPUT_VARIABLE ${output_var}
       OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -207,10 +220,10 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # =============================== CMake target - qcp_library ===============================
 # Define the sample shared library for which we will create bindings.
-set(${qcp_library}_sources qcustomplot.cpp)
-add_library(${qcp_library} SHARED ${${qcp_library}_sources})
-target_link_libraries(${qcp_library} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::PrintSupport)
-set_property(TARGET ${qcp_library} PROPERTY PREFIX "")
+#set(${qcp_library}_sources qcustomplot.cpp)
+#add_library(${qcp_library} SHARED ${${qcp_library}_sources})
+#target_link_libraries(${qcp_library} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::PrintSupport)
+#set_property(TARGET ${qcp_library} PROPERTY PREFIX "")
 
 get_target_property(qtcore_lib_includes Qt5::Core INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(qtcore_lib_includes2 Qt5::Widgets INTERFACE_INCLUDE_DIRECTORIES)
@@ -222,8 +235,8 @@ set(lib_includes "-I${lib_includes}")
 
 # Needed mostly on Windows to export symbols, and create a .lib file, otherwise the binding
 # library can't link to the sample library.
-target_compile_definitions(${qcp_library} PRIVATE QCUSTOMPLOT_COMPILE_LIBRARY)
-target_compile_definitions(${qcp_library} INTERFACE QCUSTOMPLOT_USE_LIBRARY)
+#target_compile_definitions(${qcp_library} PRIVATE QCUSTOMPLOT_COMPILE_LIBRARY)
+#target_compile_definitions(${qcp_library} INTERFACE QCUSTOMPLOT_USE_LIBRARY)
 
 # ====================== Shiboken target for generating binding C++ files  ====================
 # Set up the options to pass to shiboken.
@@ -243,7 +256,7 @@ set(generated_sources_dependencies ${wrapped_header} ${typesystem_file})
 # Add custom target to run shiboken to generate the binding cpp files.
 add_custom_command(OUTPUT ${generated_sources}
                     COMMAND ${shiboken_path}
-                    ${shiboken_options} ${wrapped_header} ${typesystem_file}
+                    ${shiboken_options} ${wrapped_header} ${typesystem_file}  # --output-directory=${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/
                     DEPENDS ${generated_sources_dependencies}
                     IMPLICIT_DEPENDS CXX ${wrapped_header}
                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -251,9 +264,8 @@ add_custom_command(OUTPUT ${generated_sources}
 
 # =============================== CMake target - bindings_library =============================
 # Set the cpp files which will be used for the bindings library.
-set(${bindings_library}_sources ${generated_sources})
-
-add_library(${bindings_library} MODULE ${${bindings_library}_sources})
+set(${bindings_library}_sources src/qcustomplot.cpp ${generated_sources})
+add_library(${bindings_library} SHARED ${${bindings_library}_sources})
 
 # Apply relevant include and link flags.
 target_include_directories(${bindings_library} PRIVATE ${python_include_dir})
@@ -265,14 +277,19 @@ target_include_directories(${bindings_library} PRIVATE ${PYSIDE2_DIR}/include/Qt
 target_include_directories(${bindings_library} PRIVATE ${shiboken_include_dir})
 target_include_directories(${bindings_library} PRIVATE ${CMAKE_SOURCE_DIR})
 
-target_link_libraries(${bindings_library} PRIVATE ${shiboken_shared_libraries})
-target_link_libraries(${bindings_library} PRIVATE ${qcp_library})
-target_link_libraries(${bindings_library} PRIVATE ${pyside2_link})
+# Needed mostly on Windows to export symbols, and create a .lib file, otherwise the binding
+# library can't link to the sample library.
+target_compile_definitions(${bindings_library} PRIVATE QCUSTOMPLOT_COMPILE_LIBRARY)
+target_compile_definitions(${bindings_library} INTERFACE QCUSTOMPLOT_USE_LIBRARY)
+
+target_link_libraries(${bindings_library} ${shiboken_shared_libraries})
+#target_link_libraries(${bindings_library} PRIVATE ${qcp_library})
+target_link_libraries(${bindings_library} ${pyside2_link})
+target_link_libraries(${bindings_library} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::PrintSupport)
 
 # Adjust the name of generated module.
 set_property(TARGET ${bindings_library} PROPERTY PREFIX "")
-set_property(TARGET ${bindings_library} PROPERTY OUTPUT_NAME
-             "${bindings_library}${PYTHON_EXTENSION_SUFFIX}")
+set_property(TARGET ${bindings_library} PROPERTY OUTPUT_NAME "${bindings_library}${PYTHON_EXTENSION_SUFFIX}")
 	
 if(WIN32)
     set_property(TARGET ${bindings_library} PROPERTY SUFFIX ".pyd")
@@ -344,7 +361,7 @@ endif()
 # =============================================================================================
 # Install the library and the bindings module into the source folder near the main.py file, so
 # that the Python interpeter successfully imports the used module.
-install(TARGETS ${bindings_library} ${qcp_library}
+install(TARGETS ${bindings_library}
         LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         )
