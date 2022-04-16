@@ -31,7 +31,7 @@ from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVB
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
-from QCustomPlot_PySide import *
+from qcustomplot import *
 
 lastFpsKey = 0.0
 frameCount = 0
