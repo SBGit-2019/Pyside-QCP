@@ -24,7 +24,7 @@
 ****************************************************************************/
 -->
 
-<typesystem package="QCustomPlot_PySide">
+<typesystem package="QCustomPlot">
     <primitive-type name="bool"/>
     <primitive-type name="std::string"/>
     <load-typesystem name="typesystem_core.xml" generate="no"/>
@@ -36,7 +36,7 @@
     <rejection class="*" function-name="deselectEvent" />
 
     <template name="plottable_template">
-        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlot_PySideTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
+        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlotTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
         %RETURN_TYPE r = cppSelf2->%FUNCTION_NAME();
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
     </template>
@@ -278,7 +278,7 @@
         <enum-type name="LineStyle" />
         <add-function signature="dataMainValue(int)" return-type="double" access="public" static="no" >
         <inject-code class="target" position="beginning">
-        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlot_PySideTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
+        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlotTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
         %RETURN_TYPE r = cppSelf2->dataMainValue(cppArg0);
         <!-- qDebug(&quot;%s=%f %d &quot; , &quot;amh&quot; , r, cppArg0 ); -->
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);

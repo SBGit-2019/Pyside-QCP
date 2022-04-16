@@ -1,0 +1,10 @@
+[global]
+zip_safe=False
+
+[bdist_wheel]
+#universal = 1
+py_limited_api = cpXX
+
+[metadata]
+license_file = LICENSE
+
