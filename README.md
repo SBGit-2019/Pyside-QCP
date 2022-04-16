@@ -1,6 +1,6 @@
 # Pyside2 bindings for QCustomplot
 
-This project creates Python (v3.x) bindings for the popular OpenSource [QCustomPlot](https://www.qcustomplot.com/) Qt (v5.x) plotting library.
+This project creates Python (v3.6-3.10) bindings for the popular OpenSource [QCustomPlot](https://www.qcustomplot.com/) (v2.01) Qt (v5.15.2) plotting library.
 
 ## Getting Started
 
@@ -39,14 +39,14 @@ See the [Wiki] (https://github.com/SBGit-2019/Pyside-QCP/wiki) for some screensh
 ## Building and Installation
 
 ### Linux
-Building on Linux is done with a Dockerimage with a _manylinux2_ (manylinux_2_17_x86_64) distribuion. 
+Building on Linux is done with a Dockerimage with a _manylinux2_ (manylinux_2_17_x86_64) distribution. 
 The Dockerfile to create such an image is provided in the _Dockerfile_ or can be installed from 
 Docker Hub as *lyxhub/manylinux2014_x86_64_qt*
 Using
 ```
-docker run -v /io:/io manylinux2014_x86_64_qt
+docker run -v /io:/io lyxhub/manylinux2014_x86_64_qt
 ```
-will create all Linux wheels in the directory _wheelhouse_.
+This command will automatically create all Linux wheels in the directory _wheelhouse_.
 
 ### Installation for Windows 10:
 (adapt the used paths to your own liking or needs)
@@ -98,12 +98,12 @@ All build should be with the 'Release' version.**
 ## License
 
 This project is licensed under the GPL v3 License - see the [LICENSE](https://github.com/SBGit-2019/Pyside-QCP/blob/master/LICENSE) file for details.
-You can also use this project in commercial projects if you have a commercial license for the used libraries
+Additionally, you can also use this project in commercial projects if you have a commercial license for the used libraries
 * Qt 5.x
 * QCustomPlot 2.x
-The use of this python wheel is allowed when the above license requirements are fullfilled.
+The use of this python wheel is also allowed when the above license requirements are fullfilled.
 
-Note that commercial licenses are available for [QCustomPlot](https://www.qcustomplot.com/).
+Note that commercial licenses are available for [QCustomPlot] at https://www.qcustomplot.com/.
 
 ## Acknowledgments
 
