@@ -1,12 +1,19 @@
-#from .QCustomPlot import QCP
-#from .QCustomPlot import QCustomPlot
-from .QCustomPlot import *
+import sys
+import os
 
-#__all__ = ['QCustomPlot']
-#__all__ = list("Qt" + body for body in
-#    "Core;Gui;Widgets;PrintSupport;Sql;Network;Test;Concurrent;X11Extras;Xml;XmlPatterns;Help;Multimedia;MultimediaWidgets;OpenGL;OpenGLFunctions;Positioning;Location;Qml;Quick;QuickControls2;QuickWidgets;RemoteObjects;Scxml;Script;ScriptTools;Sensors;SerialPort;TextToSpeech;Charts;Svg;DataVisualization;UiTools;WebChannel;WebEngineCore;WebEngine;WebEngineWidgets;WebSockets;3DCore;3DRender;3DInput;3DLogic;3DAnimation;3DExtras"
-#    .split(";"))
 __version__ = "0.15.2.1"
 __version_info__ = (0, 15, 2.1, "", "")
+
+# Add Pyside2 and shiboken2 to the search path
+if sys.platform == 'win32':
+    our_package_dir = os.path.abspath(os.path.dirname(__file__))
+    dll_dir1 = os.path.normpath(os.path.join(our_package_dir, "../PySide2"))
+    dll_dir2 = os.path.normpath(os.path.join(our_package_dir, "../shiboken2"))
+    os.add_dll_directory(dll_dir1)
+    os.add_dll_directory(dll_dir2)
+
+# Only import after path is set
+from .QCustomPlot import *
+
 
 

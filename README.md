@@ -38,6 +38,12 @@ See the [Wiki] (https://github.com/SBGit-2019/Pyside-QCP/wiki) for some screensh
 
 ## Building and Installation
 
+### General
+Installation of
+- Qt 5.15.5 (e.g.MSVC 2017 Kit for Windows)
+- libclang (version >= v8) libclang-release_80-based-windows-vs2017_64.7z (this is a higher version than on the pyside2 webpage) and including them into the environment variables
+- CMake (>= 3.13) 
+
 ### Linux
 Building on Linux is done with a Dockerimage with a _manylinux2_ (manylinux_2_17_x86_64) distribution. 
 The Dockerfile to create such an image is provided in the _Dockerfile_ or can be installed from 
@@ -55,44 +61,32 @@ This command will automatically create all Linux wheels in the directory _wheelh
 All build should be with the 'Release' version.**
 
 * Installation of build tools:
-- MSVC 2019 Build Tools (Release) [from Viual Studio 2019 Installer)
+- MSVC 2019 Build Tools (Release) (from Viual Studio 2019 Installer)
   (Features: Windows Runtime, Core features, MSVC 142 VS 2019 C++ x64 build tools, Windows 10 SDK, C++ CMake tools, Build tools, Clang 142, C++ core features, VS SDK build core)
-- Qt 5.12.5 (MSVC 2017 Kit from qt-unified-windows-x86-3.1.1-online.exe)
-- libclang (version >= v8) libclang-release_80-based-windows-vs2017_64.7z [this is a higher version than on the pyside2 webpage)
 - OpenSSL: openssl-1.0.2j-fips-x86_64.zip
-- CMake  (>= 3.13) 
-- Python 3.7 (>= 3.8 is currently not supported by pyside2 build setup but will most likely work later)
+- Python >= 3.6 
 
 * Environment settings
 - set LLVM_INSTALL_DIR=c:\libclang
-- segt PATH=C:\Program Files\CMake\bin;e:\libclang\bin;E:\python\Python37;%PATH%
+- set PATH=C:\Program Files\CMake\bin;e:\libclang\bin;E:\python\Python37;%PATH%
+* Set QT path (adapt folder name)
+- set Qt5_DIR=E:\Qt\5.15.5\msvc2017_64\lib\cmake\Qt5
 
 * Create virtual environment
-- python -m pip install virtualenv    
-- python -m virtualenv testenv 
-- pip install sphinx
-* Some useful modules
-- pip install  numpy PyOpenGL
-
-* Building the pyside2 libraries:
-- git clone --recursive https://code.qt.io/pyside/pyside-setup
-- cd pyside-setup && git checkout 5.12
-- python setup.py build --qmake=E:\Qt\5.12.0\msvc2015_64\bin\qmake.exe --openssl=C:\Dev\qtdev\OpenSSL-Win64\bin  --build-tests --ignore-git
-- python setup.py install --qmake=E:\Qt\5.12.0\msvc2015_64\bin\qmake.exe  --openssl=C:\Dev\qtdev\OpenSSL-Win64\bin --build-tests --ignore-git
-* Top Test pyside2: python examples/widgets/widgets/tetrix.py
+- python -m venv testenv 
 
 * Build QCustomplot bindings
-- Start visual studio X64 build shell (2019):
-* Activate virtual environment
 - CALL testenv\Scripts\activate.bat 
-* Set QT path (adapt folder name)
-- set Qt5_DIR=E:\Qt\5.12.5\msvc2017_64\lib\cmake\Qt5
 
-* Build using cmake and nmake:
-- cd BUILD
-- cmake -H.. -B. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release
-- nmake
-- nmake install
+* Add build packages
+- pip install cmake-build-extension wheel
+
+* Build using python pip:
+- python setup.py bdist_wheel
+
+# We should use this, but there seems to be an issue still
+# - pip wheel .  --no-deps -w wheelhouse/ 
+
 
 
 ## License

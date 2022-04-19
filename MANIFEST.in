@@ -1,6 +1,14 @@
-include CMakeLists.txt
+include LICENSE
+include README.md 
+include qcustomplot/LICENSE.COMMERCIAL
+include qcustomplot/LICENSE.GPT3
+
+
+
+#graft qcustomplot/examples
+#include CMakeLists.txt
 #recursive-include src *
-include *.dylib
-include *.dll
-include *.so
-include *.gif
+#include *.dylib
+#include *.dll
+#include *.so
+#include *.gif

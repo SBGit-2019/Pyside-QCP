@@ -72,7 +72,7 @@ class CMakeBuild(build_ext):
 
             if platform.system() == "Darwin":
                 lib_ext = ".dylib"
-                lib_name = "libmagent"
+                lib_name = "libqcustomplot"
                 thread_num = check_output(["sysctl", "-n", "hw.ncpu"], encoding="utf-8")
                 subprocess.check_call(
                     ["make", "-C", make_location, "-j", str(thread_num).rstrip()], cwd=extdir
@@ -103,7 +103,7 @@ class CMakeBuild(build_ext):
                 #   ["ldd", targetso], shell=False)
             elif platform.system() == "Windows":
                 lib_ext = ".dll"
-                lib_name = "magent"
+                lib_name = "qcustomplot"
                 thread_num = 1
                 # cmake --build . --target ALL_BUILD --config Release
                 subprocess.check_call(
@@ -127,14 +127,17 @@ setuptools.setup(
     name="qcustomplot",
     version="0.15.2",
     author="SBC",
-    author_email="sbc@sbc.org",
+    author_email="58021350+SBGit-2019@users.noreply.github.com",
     description="QCustomplot for Pyside2",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Farama-Foundation/MAgent",
+    url="https://github.com/SBGit-2019",
     keywords=["QCP", "QCustomPlot"],
     #packages=setuptools.find_packages(),
-    packages=['qcustomplot'],
+    packages=['qcustomplot', 'qcustomplot/qcp_examples'],
+    package_data = {'qcustomplot': ['LICENSE*'], 'qcustomplot/qcp_examples':['*.py','*.ui', '*.jpg', '*.png']},
+    
+    
     #packages=[],
     ext_modules=[
         CMakeExtension("qcustomplot.libqcustomplot", ".", [])
