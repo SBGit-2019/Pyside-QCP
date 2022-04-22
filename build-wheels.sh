@@ -101,8 +101,9 @@ for PYBIN in /opt/python/*/bin; do
      ls -l wheelhouse
      echo "-------------------------------------------------------------------------------------"
 done
-chmod a+rx ${QCPDIR}/wheelhouse/
+chmod a+rwx ${QCPDIR}/wheelhouse/
 
 rm -rf ${VENV}/
+rm -rf ${QCPDIR}/qcustomplot.egg-info
 
 echo "Ready."
