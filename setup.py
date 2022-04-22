@@ -91,10 +91,8 @@ class CMakeBuild(build_ext):
                 )
                 rpath="$ORIGIN/../PySide2:$ORIGIN/../PySide2/Qt/lib:$ORIGIN/../shiboken2"
                 targetso = extdir+"/QCustomPlot.so"
-                print("Targetso",targetso)
                 #subprocess.check_call(
                 #   ["ls", "-l", targetso], shell=False)
-                print("Modify RPATH for ",targetso)
                 subprocess.check_call(
                    ["patchelf", "--remove-rpath", targetso], shell=False)
                 subprocess.check_call(
@@ -105,7 +103,7 @@ class CMakeBuild(build_ext):
                 #subprocess.check_call(
                 #   ["ldd", targetso], shell=False)
             elif platform.system() == "Windows":
-                lib_ext = ".dll"
+                lib_ext = ".pyd"
                 lib_name = "qcustomplot"
                 thread_num = 1
                 # cmake --build . --target ALL_BUILD --config Release
@@ -121,10 +119,10 @@ print("CMAKE","-D MANYLINUX_PYTHON_VERSION={}".format(os.environ["MANYLINUX_PYTH
 #sys.exit()
 setuptools.setup(
     name="qcustomplot",
-    version="0.15.2",
+    version="2.0.1",
     author="SBC",
     author_email="58021350+SBGit-2019@users.noreply.github.com",
-    description="QCustomplot for Pyside2",
+    description="QCustomplot 2.0.1 for Pyside2 5.15.2",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SBGit-2019",
@@ -151,8 +149,9 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "License :: OSI Approved :: GPT3 License",
+        "License :: OSI Approved :: Commercial",
+        "Operating System :: Linux | Windows",
     ],
     include_package_data=True,
     cmdclass = {
