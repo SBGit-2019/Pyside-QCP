@@ -28,6 +28,8 @@ jobs:
         pwd
         ls -l
         ls -l /
+        ls -l /opt
+        ls -l /io
         
     - uses: actions/upload-artifact@v3
       with:
@@ -36,4 +38,5 @@ jobs:
 
 
 
+    
     
