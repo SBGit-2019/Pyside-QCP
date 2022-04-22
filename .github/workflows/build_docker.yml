@@ -19,7 +19,7 @@ jobs:
       image: lyxhub/manylinux2014_x86_64_qt
       #options: -v ${{ github.workspace }}:/io    
       volumes: 
-        - ${{ github.workspace }}:/io    
+        - ${{ github.workspace }}/..:/io    
     
     steps:
     - uses: actions/checkout@v3
