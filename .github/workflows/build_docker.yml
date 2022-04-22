@@ -22,6 +22,8 @@ jobs:
         - ${{ github.workspace }}:/io    
     
     steps:
+    - uses: actions/checkout@v3
+    
     - name: Bla
       run: |
         hostname
@@ -30,6 +32,16 @@ jobs:
         ls -l /
         ls -l /opt
         ls -l /io
+        ls -l /__w
+        ls -l /__w/Pyside-QCP
+        
+    - name: Make wheels
+      run: |
+        cd /io
+        git clone https://github.com/SBGit-2019/Pyside-QCP.git
+        #/io/Pyside-QCP/build-wheels.sh  
+        ls -l /io/
+        ls -l /io/Pyside-QCP
         
     - uses: actions/upload-artifact@v3
       with:
