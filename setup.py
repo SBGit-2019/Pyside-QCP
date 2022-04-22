@@ -7,14 +7,19 @@ import sys
 import platform
 import pathlib
 import subprocess
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser  # ver. < 3.0
 
-###
-# Build process:
-# cmake .
-# make -j threads
-# move libmagent -> build/
-###
 
+# Write config
+config = ConfigParser()
+config.read('setup.cfg')
+cpver = os.environ["MANYLINUX_PYTHON_VERSION"].replace(".","")
+config.set('bdist_wheel', 'py_limited_api', "cp{}".format(cpver))
+with open('setup.cfg', 'w') as configfile:
+    config.write(configfile)
 
 
 with open("README.md", "r") as fh:
@@ -47,9 +52,7 @@ class CMakeBuild(build_ext):
                 "-DMANYLINUX_PYTHON_VERSION={}".format(os.environ["MANYLINUX_PYTHON_VERSION"]),
                 "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir),
                 "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), extdir),
-                "-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}".format(
-                    cfg.upper(), self.build_temp
-                ),
+                "-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}".format(cfg.upper(), self.build_temp),
             ]
 
             make_location = os.path.abspath(self.build_temp)
@@ -106,17 +109,10 @@ class CMakeBuild(build_ext):
                 lib_name = "qcustomplot"
                 thread_num = 1
                 # cmake --build . --target ALL_BUILD --config Release
+                os.environ["PATH"] += os.pathsep + os.environ['VIRTUAL_ENV']+"/Lib/site-packages/shiboken2"
                 subprocess.check_call(
-                    ["cmake",
-                    "--build",".","--target","ALL_BUILD","--config",cfg], cwd=make_location
+                    ["cmake", "--build", ".", "--target", "ALL_BUILD", "--config",cfg], cwd=make_location
                 , shell=True)
-            # build_res_dir = extdir + "/magent/build/"
-            # if not os.path.exists(build_res_dir):
-            #     os.makedirs(build_res_dir)
-            # lib_name = extdir + "/libmagent" + lib_ext
-            # subprocess.check_call(
-            #     ["mv", lib_name, build_res_dir]
-            # )
 
 
 print("PACKAGES found (will be hardcoded to qcustomplot)=",setuptools.find_packages())

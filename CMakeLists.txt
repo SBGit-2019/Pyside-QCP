@@ -40,6 +40,9 @@ set(CMAKE_AUTOMOC ON)
 # Find required Qt packages.
 find_package(Qt5 5.15.2 PATHS cmake REQUIRED COMPONENTS Core Gui Widgets PrintSupport)
 
+set(CMAKE_VS_PLATFORM_TOOLSET_VERSION 16)
+#set(CMAKE_GENERATOR_TOOLSET=v142)
+
 set(CMAKE_CXX_STANDARD 11)
 #set(qcp_library "libqcustomplot")
 # Name of typesystem in bindings.xml
@@ -129,8 +132,8 @@ find_package(Python3 ${MANYLINUX_PYTHON_VERSION} EXACT REQUIRED COMPONENTS Inter
 #find_package(Python3 3.8 EXACT REQUIRED COMPONENTS Interpreter Development.Module)
 #find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 #set(QMAKE_CXXFLAGS "-fno-sized-deallocation")
-message("INC " ${Python3_INCLUDE_DIRS})
-message("LIB " ${Python3_LIBRARIES})
+message("Python3_INCLUDE_DIRS " ${Python3_INCLUDE_DIRS})
+message("Python3_LIBRARIES " ${Python3_LIBRARIES})
 
 if(NOT python_interpreter)
     find_program(python_interpreter "python")
@@ -321,7 +324,7 @@ if(WIN32)
     # Circumvent some "#pragma comment(lib)"s in "include/pyconfig.h" which might force to link
     # against a wrong python shared library.
 
-    set(python_versions_list 3 32 33 34 35 36 37 38)
+    set(python_versions_list 3 32 33 34 35 36 37 38 39 310)
     set(python_additional_link_flags "")
     foreach(ver ${python_versions_list})
         set(python_additional_link_flags
@@ -333,23 +336,31 @@ if(WIN32)
     set_target_properties(${bindings_library}
                            PROPERTIES LINK_FLAGS "${python_additional_link_flags}")
 
-    # Add custom target to hard-link shiboken shared libraries into the build folder, so that
-    # the user doesn't have to set the PATH manually to point to the PySide2 package.
-    foreach(library_path ${shiboken_shared_libraries})
-        string(REGEX REPLACE ".lib$" ".dll" library_path ${library_path})
-        get_filename_component(base_name ${library_path} NAME)
-        file(TO_NATIVE_PATH ${library_path} source_path)
-        file(TO_NATIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${base_name}" dest_path)
-        add_custom_command(OUTPUT "${base_name}"
-                            COMMAND mklink /H "${dest_path}" "${source_path}"
-                            DEPENDS ${library_path}
-                            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                            COMMENT "Creating hardlink to shiboken shared library ${base_name}")
-
-        # Fake target that depends on the previous one, but has special ALL keyword, which means
-        # it will always be executed.
-        add_custom_target("fake_${base_name}" ALL DEPENDS ${base_name})
-    endforeach()
+#    # Add custom target to hard-link shiboken shared libraries into the build folder, so that
+#    # the user doesn't have to set the PATH manually to point to the PySide2 package.
+#	message("CMake to check shiboken links")
+#    foreach(library_path ${shiboken_shared_libraries})
+#       string(REGEX REPLACE ".lib$" ".dll" library_path ${library_path})
+#        get_filename_component(base_name ${library_path} NAME)
+#        get_filename_component(base_dir ${library_path} DIRECTORY)
+#		message("library_path=" ${library_path})
+#		message("base_name=" ${base_name})
+#		message("base_dir=" ${base_dir})
+#        file(TO_NATIVE_PATH ${library_path} source_path)
+#        file(TO_NATIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${base_name}" dest_path)
+#		message("source_path=" ${source_path})
+#		message("dest_path=" ${dest_path})
+#        #  mklink /H E:\io\Pyside-QCP\build\temp.win-amd64-cpython-38\Release\shiboken2.abi3.dll E:\venv\py38\Lib\site-packages\shiboken2\shiboken2.abi3.dll
+#        add_custom_command(OUTPUT "${base_name}"
+#                            COMMAND echo mklink /H "${dest_path}" "${source_path}"
+#                            DEPENDS ${library_path}
+#                            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#                            COMMENT "Creating hardlink to shiboken shared library ${base_name}")
+#
+#        # Fake target that depends on the previous one, but has special ALL keyword, which means
+#        # it will always be executed.
+#        add_custom_target("fake_${base_name}" ALL DEPENDS ${base_name})
+#    endforeach()
     # =========================================================================================
     # !!! End of dubious section.
     # =========================================================================================
