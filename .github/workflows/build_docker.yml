@@ -38,10 +38,11 @@ jobs:
     - name: Make wheels
       run: |
         cd /io
-        git clone https://github.com/SBGit-2019/Pyside-QCP.git
-        #/io/Pyside-QCP/build-wheels.sh  
+        #git clone https://github.com/SBGit-2019/Pyside-QCP.git
+        /io/Pyside-QCP/build-wheels.sh  
         ls -l /io/
         ls -l /io/Pyside-QCP
+        ls -l /io/Pyside-QCP/wheelhouse/
         
     - uses: actions/upload-artifact@v3
       with:
