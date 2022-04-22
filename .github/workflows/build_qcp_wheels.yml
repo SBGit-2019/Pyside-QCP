@@ -24,6 +24,8 @@ jobs:
     strategy:
       matrix:
         python-version: [ '3.6', '3.7', '3.8', '3.9', '3.10' ]
+        #fail-fast: true
+        #max-parallel: 1
         
     steps:
     - name: Patch Build
@@ -88,6 +90,12 @@ jobs:
         pip list
         dir ..
         
+    - name: Check file existence
+      id: check_files
+      uses: andstor/file-existence-action@v1
+      with:
+        files: "package.json, LICENSE, README.md"
+          
     - name: Install Qt
       uses: jurplel/install-qt-action@v2    
       with: 
