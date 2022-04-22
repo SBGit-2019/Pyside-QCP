@@ -1,0 +1,39 @@
+name: Docker Manylinux QCP Wheels
+
+on:
+  #push:
+  #  branches: [ main ]
+  #pull_request:
+  #  branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the build manually'     
+        required: false
+        default: false  
+
+jobs:
+  install_stuff:
+    runs-on: ubuntu-latest
+    container: 
+      image: lyxhub/manylinux2014_x86_64_qt
+      #options: -v ${{ github.workspace }}:/io    
+      volumes: 
+        - ${{ github.workspace }}:/io    
+    
+    steps:
+    - name: Bla
+      run: |
+        hostname
+        pwd
+        ls -l
+        ls -l /
+        
+    - uses: actions/upload-artifact@v3
+      with:
+        name: wheelhouse
+        path: ${{github.workspace}}/wheelhouse/*     
+
+
+
+    
