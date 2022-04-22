@@ -62,9 +62,6 @@ for PYBIN in /opt/python/*/bin; do
      [[ ${PYBIN} =~ cp38-cp38/bin$ ]] &&  PYCP="38"
      [[ ${PYBIN} =~ cp37-cp37m/bin$ ]] &&  PYCP="37"
      [[ ${PYBIN} =~ cp36-cp36m/bin$ ]] &&  PYCP="36"
-     cp -f setup.base setup.cfg
-     sed -i s/cpXX/cp${PYCP}/ setup.cfg
-     cat setup.cfg
 
 
      PYSIDELIB=${VENV}/lib/python${PYVER}/site-packages/PySide2/Qt/lib/
@@ -98,12 +95,15 @@ for PYBIN in /opt/python/*/bin; do
        rm -f ${QCPDIR}/wheelhouse/$targetwheel
      fi
      mv ${QCPDIR}/wheelhouse/$wheel ${QCPDIR}/wheelhouse/$targetwheel
+     chmod a+r ${QCPDIR}/wheelhouse/$targetwheel
 
      deactivate
      ls -l wheelhouse
      echo "-------------------------------------------------------------------------------------"
 done
+chmod a+rwx ${QCPDIR}/wheelhouse/
 
 rm -rf ${VENV}/
+rm -rf ${QCPDIR}/qcustomplot.egg-info
 
 echo "Ready."
