@@ -95,11 +95,13 @@ for PYBIN in /opt/python/*/bin; do
        rm -f ${QCPDIR}/wheelhouse/$targetwheel
      fi
      mv ${QCPDIR}/wheelhouse/$wheel ${QCPDIR}/wheelhouse/$targetwheel
+     chmod a+r ${QCPDIR}/wheelhouse/$targetwheel
 
      deactivate
      ls -l wheelhouse
      echo "-------------------------------------------------------------------------------------"
 done
+chmod a+rx ${QCPDIR}/wheelhouse/
 
 rm -rf ${VENV}/
 
