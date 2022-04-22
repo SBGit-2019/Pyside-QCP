@@ -16,14 +16,16 @@ export PLAT="manylinux2014_x86_64"
 # Project directory from GIT
 QCPDIR=/io/Pyside-QCP
 VENV=/tmp/venv/pyside2
+CACHE=/tmp/pycache
 
 echo "VENV="${VENV}
 echo "QCPDIR="${QCPDIR}
-
+echo "CACHE="${CACHE}
 
 cd ${QCPDIR}
 echo "Deleting wheelhouse ..."
 rm -rf ${QCPDIR}/wheelhouse
+mkdir ${CACHE}
 
 
 ORG_LD_LIBRARY_PATH=${LD_LIBRARY_PATH}
@@ -79,9 +81,9 @@ for PYBIN in /opt/python/*/bin; do
      python3 -m venv ${VENV}/
      source ${VENV}//bin/activate
      #which python
-     pip install --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2 pyside2 shiboken2_generator
-     pip install cmake-build-extension  wheel
-     pip install setuptools -U
+     pip install --cache-dir ${CACHE} --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2 pyside2 shiboken2_generator
+     pip install --cache-dir ${CACHE} cmake-build-extension  wheel
+     pip install --cache-dir ${CACHE} setuptools -U
      echo cmake -D MANYLINUX_PYTHON_VERSION=${PYVER} ..
      export  MANYLINUX_PYTHON_VERSION="${PYVER}"
      #python3 setup.py bdist_wheel

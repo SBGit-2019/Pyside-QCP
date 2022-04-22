@@ -26,8 +26,14 @@ jobs:
     
     - name: Bla
       run: |
+        echo "host"
         hostname
+        echo "whoami"
+        whoami
+        echo "pwd"
         pwd
+        echo "home"
+        ls -l /home
         echo "PWD"
         ls -l
         echo "/"
