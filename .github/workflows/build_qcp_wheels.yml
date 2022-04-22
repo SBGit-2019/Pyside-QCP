@@ -13,7 +13,7 @@ on:
         default: false  
         
 env:
-    MANYLINUX_PYTHON_VERSION: '3.8'
+    #MANYLINUX_PYTHON_VERSION: '3.8'
     LLVM_INSTALL_DIR: '${{github.workspace}}/../libclang'
     VCINSTALLDIR: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/"
      
@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.8"]
+        python-version: [ '3.7', '3.8', '3.9', '3.10' ]
         
     steps:
     - name: Patch Build
@@ -43,13 +43,15 @@ jobs:
         echo "Mystuff is: $env:mystuff"
         echo "mystuff=$env:mystuff" >> $env:GITHUB_ENV
         dir ${{env.mystuff}}
-        #$env:TMP="${{env.mystuff}}/tmp"
-        #$env:TEMP="${{env.mystuff}}/tmp"
+        $env:MANYLINUX_PYTHON_VERSION=${{ matrix.python-version }}
+        echo "MANYLINUX_PYTHON_VERSION is: $env:MANYLINUX_PYTHON_VERSION"
+        echo "MANYLINUX_PYTHON_VERSION=$env:MANYLINUX_PYTHON_VERSION" >> $env:GITHUB_ENV
       
     - name: Check env values
       working-directory: ${{github.workspace}}
       run: |
         echo "workspace is ${{github.workspace}}"
+        echo "mystuff=$env:mystuff"
         echo "MANYLINUX_PYTHON_VERSION=$env:MANYLINUX_PYTHON_VERSION"
         echo "llvm=$env:LLVM_INSTALL_DIR"
         echo "Exe policy"
@@ -76,7 +78,6 @@ jobs:
     - name: Prepare venv
       working-directory: ${{github.workspace}}
       run: |
-        echo "Make venv"
         python -m venv ${{github.workspace}}/../venv/pt1
         ${{github.workspace}}/../venv/pt1/Scripts/activate.ps1
         python --version
