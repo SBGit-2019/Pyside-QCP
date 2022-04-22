@@ -45,7 +45,7 @@ jobs:
         echo "Mystuff is: $env:mystuff"
         echo "mystuff=$env:mystuff" >> $env:GITHUB_ENV
         dir ${{env.mystuff}}
-        $env:MANYLINUX_PYTHON_VERSION=${{ matrix.python-version }}
+        $env:MANYLINUX_PYTHON_VERSION="${{ matrix.python-version }}"
         echo "MANYLINUX_PYTHON_VERSION is: $env:MANYLINUX_PYTHON_VERSION"
         echo "MANYLINUX_PYTHON_VERSION=$env:MANYLINUX_PYTHON_VERSION" >> $env:GITHUB_ENV
       
