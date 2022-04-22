@@ -30,7 +30,9 @@ jobs:
       working-directory: c:/
       run: |
         choco install  --no-progress wget
-        wget -q --no-check-certificate http://gitty.sbcomputing.de/enterprise_2019.7z
+        if (-not(Test-Path enterprise_2019.7z)) {wget -q --no-check-certificate http://gitty.sbcomputing.de/enterprise_2019.7z}
+        #wget -q --no-check-certificate http://gitty.sbcomputing.de/enterprise_2019.7z
+        if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2019_org") {rm -r -fo "C:\Program Files (x86)\Microsoft Visual Studio\2019_org"}
         ren "C:\Program Files (x86)\Microsoft Visual Studio\2019" "C:\Program Files (x86)\Microsoft Visual Studio\2019_org"
         dir "C:\Program Files (x86)\Microsoft Visual Studio" 
         & "c:/Program Files/7-Zip/7z.exe" "-y" "-Pbuild2019" "x" "enterprise_2019.7z" "-oC:/Program Files (x86)/Microsoft Visual Studio/"
@@ -64,8 +66,8 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         choco install  --no-progress wget
-        wget -q https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_100-based-windows-vs2019_64.7z
-        & "C:\Program Files\7-Zip\7z" x libclang-release_100-based-windows-vs2019_64.7z "-o${{github.workspace}}/.."
+        if (-not(Test-Path libclang-release_100-based-windows-vs2019_64.7z)) {wget -q https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_100-based-windows-vs2019_64.7z}
+        & "C:\Program Files\7-Zip\7z" -y x libclang-release_100-based-windows-vs2019_64.7z "-o${{github.workspace}}/.."
 
     - uses: actions/checkout@v3
 
