@@ -28,18 +28,26 @@ jobs:
       run: |
         hostname
         pwd
+        echo "PWD"
         ls -l
+        echo "/"
         ls -l /
+        echo "/opt"
         ls -l /opt
+        echo "/io"
         ls -l /io
+        echo "/__w"
         ls -l /__w
+        echo "/__w/Pyside-QCP"
         ls -l /__w/Pyside-QCP
+        echo "WS=" ${{ github.workspace }}
+        ls -l ${{ github.workspace }}
         
     - name: Make wheels
       run: |
         cd /io
         #git clone https://github.com/SBGit-2019/Pyside-QCP.git
-        /io/Pyside-QCP/build-wheels.sh  
+        ${{ github.workspace }}/Pyside-QCP/build-wheels.sh  
         ls -l /io/
         ls -l /io/Pyside-QCP
         ls -l /io/Pyside-QCP/wheelhouse/
