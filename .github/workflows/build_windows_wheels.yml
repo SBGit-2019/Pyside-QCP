@@ -18,7 +18,7 @@ env:
     VCINSTALLDIR: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/"
      
 jobs:
-  install_stuff:
+  create_windows_wheels:
     runs-on: windows-2019
 
     strategy:
