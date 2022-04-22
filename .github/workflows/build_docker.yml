@@ -41,13 +41,13 @@ jobs:
         echo "/__w/Pyside-QCP"
         ls -l /__w/Pyside-QCP
         echo "WS=" ${{ github.workspace }}
-        ls -l ${{ github.workspace }}
+        
         
     - name: Make wheels
+      working-directory: ${{github.workspace}}
       run: |
-        cd /io
-        #git clone https://github.com/SBGit-2019/Pyside-QCP.git
-        ${{ github.workspace }}/Pyside-QCP/build-wheels.sh  
+        pwd
+        ./build-wheels.sh  
         ls -l /io/
         ls -l /io/Pyside-QCP
         ls -l /io/Pyside-QCP/wheelhouse/
