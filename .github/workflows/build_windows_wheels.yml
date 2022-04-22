@@ -1,4 +1,4 @@
-name: Build QCP Wheels
+name:  MSBuild Windows Wheels
 
 on:
   #push:
@@ -33,7 +33,6 @@ jobs:
       run: |
         choco install  --no-progress wget
         if (-not(Test-Path enterprise_2019.7z)) {wget -q --no-check-certificate http://gitty.sbcomputing.de/enterprise_2019.7z}
-        #wget -q --no-check-certificate http://gitty.sbcomputing.de/enterprise_2019.7z
         if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2019_org") {rm -r -fo "C:\Program Files (x86)\Microsoft Visual Studio\2019_org"}
         ren "C:\Program Files (x86)\Microsoft Visual Studio\2019" "C:\Program Files (x86)\Microsoft Visual Studio\2019_org"
         dir "C:\Program Files (x86)\Microsoft Visual Studio" 
@@ -96,10 +95,18 @@ jobs:
       with:
         files: "package.json, LICENSE, README.md"
           
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1  # not v2!
+      with:
+        path: ../Qt
+        key: ${{ runner.os }}-QtCache
+    
     - name: Install Qt
       uses: jurplel/install-qt-action@v2    
       with: 
         version: 5.15.2
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}        
         
     - name: Check environment
       working-directory: ${{github.workspace}}
@@ -120,7 +127,7 @@ jobs:
     
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse
+        name: wheelhouse_windows
         path: ${{github.workspace}}/wheelhouse/*        
       
 

@@ -1,4 +1,4 @@
-name: Docker Manylinux QCP Wheels
+name: Docker Manylinux Wheels
 
 on:
   #push:
@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Bla
+    - name: Check environment
       run: |
         echo "host"
         hostname
@@ -54,13 +54,10 @@ jobs:
       run: |
         pwd
         ./build-wheels.sh  
-        ls -l /io/
-        ls -l /io/Pyside-QCP
-        ls -l /io/Pyside-QCP/wheelhouse/
         
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse
+        name: wheelhouse_linux
         path: ${{github.workspace}}/wheelhouse/*     
 
 
