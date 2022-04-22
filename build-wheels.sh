@@ -17,6 +17,7 @@ export PLAT="manylinux2014_x86_64"
 QCPDIR=/io/Pyside-QCP
 VENV=/tmp/venv/pyside2
 CACHE=/tmp/pycache
+VERSION=2.0.1
 
 echo "VENV="${VENV}
 echo "QCPDIR="${QCPDIR}
@@ -91,8 +92,8 @@ for PYBIN in /opt/python/*/bin; do
      pip wheel ${QCPDIR}  --no-deps -w wheelhouse/ 
 
 
-     wheel="qcustomplot-0.15.2-cp${PYCP}-abi3-linux_x86_64.whl"
-     targetwheel="qcustomplot-0.15.2-cp${PYCP}-abi3-${PLAT}.whl"
+     wheel="qcustomplot-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
+     targetwheel="qcustomplot-${VERSION}-cp${PYCP}-abi3-${PLAT}.whl"
      if [ -f "${QCPDIR}/wheelhouse/$targetwheel" ]; then
        rm -f ${QCPDIR}/wheelhouse/$targetwheel
      fi
