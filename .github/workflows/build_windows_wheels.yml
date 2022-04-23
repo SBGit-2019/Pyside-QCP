@@ -7,7 +7,7 @@ on:
   #  branches: [ main ]
   #release:
   #  types: [published, created, edited]
-  
+   
   workflow_dispatch:
     inputs:
       debug_enabled:
