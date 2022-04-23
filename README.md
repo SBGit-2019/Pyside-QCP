@@ -8,10 +8,10 @@ The project can be found on [Github](https://github.com/SBGit-2019/Pyside-QCP/).
 ## Installation
 
 You can install the library and run the examples with the following commands. Preferably you should do this in a python [*virtual environment*](https://docs.python.org/3/tutorial/venv.html).
-```
-pip install qcustomplot
-qcustomplot_examples
-```
+
+    pip install qcustomplot
+    qcustomplot_examples
+
 
 
 ## Examples
@@ -24,57 +24,54 @@ These can be used as basis for own development or for seeing the features of the
 
 
 ### Simple example code
-```
-import shiboken2 as Shiboken
-from PySide2 import QtGui
-import sys
-import math
-from random import uniform,randint
-from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow
-from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
-from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
-from PySide2.QtUiTools import QUiLoader
-from qcustomplot import *
 
+    import shiboken2 as Shiboken
+    from PySide2 import QtGui
+    import sys
+    import math
+    from random import uniform,randint
+    from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow
+    from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
+    from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
+    from PySide2.QtUiTools import QUiLoader
+    from qcustomplot import *
 
-def demo(app):
-    # Create plot
-    customPlot = QCustomPlot()
-    customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Quadratic Demo')
+    def demo(app):
+      # Create plot
+      customPlot = QCustomPlot()
+      customPlot.resize(800, 600)
+      customPlot.setWindowTitle('Quadratic Demo')
 
-    # generate some data:
-    x = [0.0] * 101 # initialize with entries 0..100
-    y = [0.0] * 101 
-    for i in range(0, 101):
-      x[i] = i/50.0 - 1 # x goes from -1 to 1
-      y[i] = x[i]*x[i]  # let's plot a quadratic function
+      # generate some data:
+      x = [0.0] * 101 # initialize with entries 0..100
+      y = [0.0] * 101 
+      for i in range(0, 101):
+        x[i] = i/50.0 - 1 # x goes from -1 to 1
+        y[i] = x[i]*x[i]  # let's plot a quadratic function
     
-    # create graph and assign data to it:
-    customPlot.addGraph()
-    customPlot.graph(0).setData(x, y)
-    # give the axes some labels:
-    customPlot.xAxis.setLabel("x")
-    customPlot.yAxis.setLabel("y")
-    # set axes ranges, so we see all data:
-    customPlot.xAxis.setRange(-1, 1)
-    customPlot.yAxis.setRange(0, 1)
+      # create graph and assign data to it:
+      customPlot.addGraph()
+      customPlot.graph(0).setData(x, y)
+      # give the axes some labels:
+      customPlot.xAxis.setLabel("x")
+      customPlot.yAxis.setLabel("y")
+      # set axes ranges, so we see all data:
+      customPlot.xAxis.setRange(-1, 1)
+      customPlot.yAxis.setRange(0, 1)
 
-	# show the plot
-    customPlot.show()
-    # run the main Qt loop
-    res = app.exec_()
-    customPlot = None
-    return res
+    	# show the plot
+      customPlot.show()
+      # run the main Qt loop
+      res = app.exec_()
+      customPlot = None
+      return res
    
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-    res = demo(app)
-    sys.exit(res)
-```
-
+    if __name__ == '__main__':
+      # Create the Qt Application
+      app = QApplication(sys.argv)
+      res = demo(app)
+      sys.exit(res)
 
 
 ## Screenshots
