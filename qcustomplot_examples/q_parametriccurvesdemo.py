@@ -33,51 +33,72 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
+
+def demo(app):
+    # generate the curve data points:
+    pointCount = 500
+
+    dataSpiral1X = [0.0] * pointCount
+    dataSpiral1Y = [0.0] * pointCount
+    dataSpiral2X = [0.0] * pointCount
+    dataSpiral2Y = [0.0] * pointCount
+    dataDeltoidX = [0.0] * pointCount
+    dataDeltoidY = [0.0] * pointCount
+    for i in range(0, pointCount):
+      phi = float(i)/float(pointCount-1)*8.0*math.pi
+      theta = float(i)/float(pointCount-1)*2.0*math.pi;
+      dataSpiral1X[i] = math.sqrt(phi)*math.cos(phi)
+      dataSpiral1Y[i] = math.sqrt(phi)*math.sin(phi)
+      dataSpiral2X[i] = -dataSpiral1X[i]
+      dataSpiral2Y[i] = -dataSpiral1Y[i]
+      dataDeltoidX[i] = 2.0*math.cos(2.0*theta)+math.cos(1.0*theta)+2.0*math.sin(theta)
+      dataDeltoidY[i] = 2.0*math.sin(2.0*theta)-math.sin(1.0*theta)
 
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Statistical Demo')
+    customPlot.setWindowTitle('Parametric Curves Demo')
 
-    statistical = QCPStatisticalBox(customPlot.xAxis, customPlot.yAxis)
-    boxBrush = QBrush(QColor(60, 60, 255, 100))
-    boxBrush.setStyle(Qt.Dense6Pattern) # make it look oldschool
-    statistical.setBrush(boxBrush)
- 
-    # specify data:
-    statistical.addData(1, 1.1, 1.9, 2.25, 2.7, 4.2)
-    vec1 = [ 0.7 , 0.34 , 0.45 , 6.2 , 5.8] # provide some outliers as QVector
-    statistical.addData(2, 0.8, 1.6, 2.2, 3.2, 4.9, vec1)
-    statistical.addData(3, 0.2, 0.7, 1.1, 1.6, 2.9)
+    # pass the data to the curves; we know t (i in loop above) is ascending, so set alreadySorted=true (saves an extra internal sort):
+    fermatSpiral1 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
+    fermatSpiral1.setData(dataSpiral1X,dataSpiral1Y)
 
-    # prepare manual x axis labels:
-    customPlot.xAxis.setSubTicks(False)
-    customPlot.xAxis.setTickLength(0, 4)
-    customPlot.xAxis.setTickLabelRotation(20)
-    textTicker = QCPAxisTickerText()
-    textTicker.addTick(1, "Sample 1")
-    textTicker.addTick(2, "Sample 2")
-    textTicker.addTick(3, "Control Group")
-    customPlot.xAxis.setTicker(textTicker)
+    fermatSpiral2 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
+    fermatSpiral2.setData(dataSpiral2X,dataSpiral2Y)
 
-    # prepare axes:
-    customPlot.yAxis.setLabel("O₂ Absorption [mg]")
+    deltoidRadial = QCPCurve(customPlot.xAxis, customPlot.yAxis)
+    deltoidRadial.setData(dataDeltoidX,dataDeltoidY)
+
+    # color the curves:
+    fermatSpiral1.setPen(QPen(Qt.blue))
+    fermatSpiral1.setBrush(QBrush(QColor(0, 0, 255, 20)))
+    fermatSpiral2.setPen(QPen(QColor(255, 120, 0)))
+    fermatSpiral2.setBrush(QBrush(QColor(255, 120, 0, 30)))
+
+    radialGrad = QRadialGradient(QPointF(310, 180), 200)
+    radialGrad.setColorAt(0, QColor(170, 20, 240, 100))
+    radialGrad.setColorAt(0.5, QColor(20, 10, 255, 40))
+    radialGrad.setColorAt(1,QColor(120, 20, 240, 10))
+    deltoidRadial.setPen(QPen(QColor(170, 20, 240)))
+    deltoidRadial.setBrush(QBrush(radialGrad))
+
+    # set some basic customPlot config:
+    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
+    customPlot.axisRect().setupFullAxesBox()
     customPlot.rescaleAxes()
-    customPlot.xAxis.scaleRange(1.7, customPlot.xAxis.range().center())
-    customPlot.yAxis.setRange(0, 7)
-    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
-
 
     customPlot.show()
-
-
-
+    
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
 
 

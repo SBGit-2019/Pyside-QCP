@@ -33,10 +33,8 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
 
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Color Map Demo')
@@ -89,13 +87,15 @@ if __name__ == '__main__':
     customPlot.rescaleAxes()
 
     customPlot.show()
-
-
-
-    # Create and show the form
-    # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
 
 

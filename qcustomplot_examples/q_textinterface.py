@@ -100,8 +100,8 @@ class Window(QWidget):
         svgInterface = SvgTextObject(self)
         self.textEdit.document().documentLayout().registerHandler(Window.SvgTextFormat, svgInterface)
         bla = self.textEdit.document().documentLayout().handlerForObject(Window.SvgTextFormat)
-        print("Register handler ", svgInterface)
-        print("Register handler search ", bla)
+        #print("Register handler ", svgInterface)
+        #print("Register handler search ", bla)
         self.bla = svgInterface
 
     def setupGui(self):
@@ -126,11 +126,20 @@ class Window(QWidget):
         self.setLayout(mainLayout)
 
 
-if __name__ == '__main__':
-
-    import sys
-
-    app = QApplication(sys.argv)
+def demo(app):
     window = Window()
     window.show()
-    sys.exit(app.exec_())
+    # Create and show the form
+    # Run the main Qt loop
+    res = app.exec_()
+    window = None
+    return res    
+    
+    
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)
+    
+    

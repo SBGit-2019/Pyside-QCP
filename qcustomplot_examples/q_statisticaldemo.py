@@ -33,31 +33,38 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
-
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Quadratic Demo')
+    customPlot.setWindowTitle('Statistical Demo')
 
-    # generate some data:
-    x = [0.0] * 101 # initialize with entries 0..100
-    y = [0.0] * 101 
-    for i in range(0, 101):
-      x[i] = i/50.0 - 1 # x goes from -1 to 1
-      y[i] = x[i]*x[i]  # let's plot a quadratic function
-    
-    # create graph and assign data to it:
-    customPlot.addGraph()
-    customPlot.graph(0).setData(x, y)
-    # give the axes some labels:
-    customPlot.xAxis.setLabel("x")
-    customPlot.yAxis.setLabel("y")
-    # set axes ranges, so we see all data:
-    customPlot.xAxis.setRange(-1, 1)
-    customPlot.yAxis.setRange(0, 1)
+    statistical = QCPStatisticalBox(customPlot.xAxis, customPlot.yAxis)
+    boxBrush = QBrush(QColor(60, 60, 255, 100))
+    boxBrush.setStyle(Qt.Dense6Pattern) # make it look oldschool
+    statistical.setBrush(boxBrush)
+ 
+    # specify data:
+    statistical.addData(1, 1.1, 1.9, 2.25, 2.7, 4.2)
+    vec1 = [ 0.7 , 0.34 , 0.45 , 6.2 , 5.8] # provide some outliers as QVector
+    statistical.addData(2, 0.8, 1.6, 2.2, 3.2, 4.9, vec1)
+    statistical.addData(3, 0.2, 0.7, 1.1, 1.6, 2.9)
+
+    # prepare manual x axis labels:
+    customPlot.xAxis.setSubTicks(False)
+    customPlot.xAxis.setTickLength(0, 4)
+    customPlot.xAxis.setTickLabelRotation(20)
+    textTicker = QCPAxisTickerText()
+    textTicker.addTick(1, "Sample 1")
+    textTicker.addTick(2, "Sample 2")
+    textTicker.addTick(3, "Control Group")
+    customPlot.xAxis.setTicker(textTicker)
+
+    # prepare axes:
+    customPlot.yAxis.setLabel("O₂ Absorption [mg]")
+    customPlot.rescaleAxes()
+    customPlot.xAxis.scaleRange(1.7, customPlot.xAxis.range().center())
+    customPlot.yAxis.setRange(0, 7)
+    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
 
 
     customPlot.show()
@@ -67,7 +74,14 @@ if __name__ == '__main__':
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
-
-
+    
+    
 

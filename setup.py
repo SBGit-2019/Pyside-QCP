@@ -125,12 +125,19 @@ setuptools.setup(
     description="QCustomplot 2.0.1 for Pyside2 5.15.2",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/SBGit-2019",
+    url="https://github.com/SBGit-2019/Pyside-QCP",
     keywords=["QCP", "QCustomPlot"],
     #packages=setuptools.find_packages(),
-    packages=['qcustomplot', 'qcustomplot/qcp_examples'],
-    package_data = {'qcustomplot': ['LICENSE*'], 'qcustomplot/qcp_examples':['*.py','*.ui', '*.jpg', '*.png']},
-    
+    packages=['qcustomplot', 'qcustomplot_examples'],
+    package_data = {'qcustomplot_examples':['*.py','*.ui', '*.jpg', '*.png']},
+    entry_points={
+    'console_scripts': [
+        'qcustomplot_examples = qcustomplot_examples.all_demos:main',
+    ],
+    'gui_scripts': [
+        'qcustomplot_examples_gui = qcustomplot_examples.all_demos:main',
+    ],
+},
     
     #packages=[],
     ext_modules=[

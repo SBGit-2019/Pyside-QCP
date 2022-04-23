@@ -34,10 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     # prepare data:
     x1 = [0.0] * 20
     y1 = [0.0] * 20
@@ -172,14 +169,17 @@ if __name__ == '__main__':
     customPlot.yAxis.setRange(0, 2)
 
     customPlot.show()
-
-
-
-    # Create and show the form
-    # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
+
 
 
 

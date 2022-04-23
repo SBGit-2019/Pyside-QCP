@@ -40,6 +40,8 @@ def bracketDataSlot():
   global frameCount
   global lastFpsKey
   global customPlot
+  global itemDemoPhaseTracer
+
   secs = QCPAxisTickerDateTime.dateTimeToKey(QDateTime.currentDateTime())
   
   # update data to make phase move:
@@ -72,10 +74,9 @@ def bracketDataSlot():
 
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
+    global customPlot
+    global itemDemoPhaseTracer
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Item Demo')
@@ -200,13 +201,20 @@ if __name__ == '__main__':
     dataTimer.timeout.connect(bracketDataSlot)
     dataTimer.start(0)
 
-customPlot.show()
+    customPlot.show()
 
     # Create and show the form
     # Run the main Qt loop
-res = app.exec_()
-customPlot = None
-sys.exit(res)
+    res = app.exec_()
+    customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)
 
 
 

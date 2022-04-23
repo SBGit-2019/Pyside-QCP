@@ -75,7 +75,8 @@ class AxisTag(QObject):
       self.mLabel.position().setParentAnchor(self.mArrow.start())
 
     def __del__(self):
-      self.delete()
+      pass
+      #self.delete()
 
     def updatePosition(self, value):
       # since both the arrow and the text label are chained to the dummy tracer (via anchor
@@ -140,7 +141,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        ui_file = QFile("axis-tags.ui")
+        our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+        ui_file = QFile(our_package_dir+"axis-tags.ui")
         ui_file.open(QFile.ReadOnly)
         loader = MyQUiLoader(self)
         loader.registerCustomWidget(QCustomPlot)
@@ -198,20 +200,26 @@ class MainWindow(QMainWindow):
       
       self.mPlot.replot();
        
-#   def __del__(self):
-#     print("DEL Main ")
-
-if __name__ == '__main__':
-
-    import sys
-
-    QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-    app = QApplication(sys.argv)
+    def __del__(self):
+      del self.dataTimer
+      #äself.mTag1.delete()
+      #self.mTag2.delete()
+      self.ui.mPlot = None
+ 
+def demo(app):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
     mainWin.show()
     res = app.exec_()
-    mainWin.mTag1.delete()
-    mainWin.mTag2.delete()
-    mainWin.ui.mPlot = None
+    mainWin = None
+    return res
+    
+    
+if __name__ == '__main__':
+    # Create the Qt Application
+    QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
+    
+     

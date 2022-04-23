@@ -73,10 +73,12 @@ def realtimeDataSlot(): # called by timer
 
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
+    global lastPointKey
+    global time
+    global customPlot
+    global lastFpsKey
+    global frameCount
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Real Time Data Demo')
@@ -105,12 +107,19 @@ if __name__ == '__main__':
     customPlot.show()
 
 
-
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
+    del dataTimer
+    
     customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
-
-
+    
 

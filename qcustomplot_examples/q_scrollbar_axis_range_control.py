@@ -53,7 +53,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        ui_file = QFile("scrollwindow.ui")
+        our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+        ui_file = QFile(our_package_dir+"scrollwindow.ui")
         ui_file.open(QFile.ReadOnly)
         loader = MyQUiLoader(self)
         loader.registerCustomWidget(QCustomPlot)
@@ -119,15 +120,21 @@ class MainWindow(QMainWindow):
       self.ui.plot.axisRect().setupFullAxesBox(True)
       self.ui.plot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
 
-if __name__ == '__main__':
 
-    import sys
-
-    QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-    app = QApplication(sys.argv)
+def demo(app):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
     mainWin.show()
     res = app.exec_()
     mainWin.ui.plot = None
+    return res
+    
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
+    
+    
+     

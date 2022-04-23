@@ -34,39 +34,41 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Simple Item Demo')
+    customPlot.setWindowTitle('Quadratic Demo')
 
-    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
+    # generate some data:
+    x = [0.0] * 101 # initialize with entries 0..100
+    y = [0.0] * 101 
+    for i in range(0, 101):
+      x[i] = i/50.0 - 1 # x goes from -1 to 1
+      y[i] = x[i]*x[i]  # let's plot a quadratic function
     
-    # add the text label at the top:
-    textLabel = QCPItemText(customPlot)
-    textLabel.setPositionAlignment(Qt.AlignTop|Qt.AlignHCenter)
-    textLabel.position().setType(QCPItemPosition.ptAxisRectRatio) 
-    textLabel.position().setCoords(0.5, 0) # place position at center/top of axis rect 
-    textLabel.setText("Text Item Demo")
-    textLabel.setFont(QFont(QtGui.QFont().family(), 16)) # make font a bit larger
-    textLabel.setPen(QPen(Qt.black)) # show black border around text
-    
-    # add the arrow:
-    arrow = QCPItemLine(customPlot)
-    arrow.start().setParentAnchor(textLabel.bottom()) 
-    arrow.end().setCoords(4, 1.6) # point to (4, 1.6) in x-y-plot coordinates 
-    spike = QCPLineEnding(QCPLineEnding.esSpikeArrow)
-    arrow.setHead(spike)
+    # create graph and assign data to it:
+    customPlot.addGraph()
+    customPlot.graph(0).setData(x, y)
+    # give the axes some labels:
+    customPlot.xAxis.setLabel("x")
+    customPlot.yAxis.setLabel("y")
+    # set axes ranges, so we see all data:
+    customPlot.xAxis.setRange(-1, 1)
+    customPlot.yAxis.setRange(0, 1)
+
 
     customPlot.show()
-
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
-    sys.exit(res)
+    return res
+   
 
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)
 
 

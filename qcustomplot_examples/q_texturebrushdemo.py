@@ -23,7 +23,7 @@
 '''
 
 import shiboken2 as Shiboken
-from PySide2 import QtGui,QtCore
+from PySide2 import QtGui
 import sys
 import math
 from random import uniform,randint
@@ -34,50 +34,52 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Simple Demo')
+    customPlot.setWindowTitle('Texture Brush Demo')
 
-  
-    # add two new graphs and set their look:
+    our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+
+    # add two graphs with a textured fill:
     customPlot.addGraph()
-    customPlot.graph(0).setPen(QPen(Qt.blue)) # line color blue for first graph
-    customPlot.graph(0).setBrush(QBrush(QColor(0, 0, 255, 20))) # first graph will be filled with translucent blue
-    customPlot.addGraph()
-    customPlot.graph(1).setPen(QPen(Qt.red)) # line color red for second graph
-    # generate some points of data (y0 for first, y1 for second graph):
-    x = [0.0] * 251 
-    y0 = [0.0] * 251 
-    y1 = [0.0] * 251 
-    for i in range(0,251):
-      x[i] = i
-      y0[i] = math.exp(-i/150.0)*math.cos(i/10.0) # exponentially decaying cosine
-      y1[i] = math.exp(-i/150.0)              # exponential envelope
+    redDotPen = QPen()
+    redDotPen.setStyle(Qt.DotLine)
+    redDotPen.setColor(QColor(170, 100, 100, 180))
+    redDotPen.setWidthF(2)
+    customPlot.graph(0).setPen(redDotPen)
+    customPlot.graph(0).setBrush(QBrush(QPixmap(our_package_dir+"/balboa.jpg"))) # fill with texture of specified image
     
-    # configure right and top axis to show ticks but no labels:
-    # (see QCPAxisRect::setupFullAxesBox for a quicker method to do this)
-    customPlot.xAxis2.setVisible(True)
-    customPlot.xAxis2.setTickLabels(False)
-    customPlot.yAxis2.setVisible(True)
-    customPlot.yAxis2.setTickLabels(False)
-    # make left and bottom axes always transfer their ranges to right and top axes:
-    customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)    
-    customPlot.yAxis.rangeChanged.connect(customPlot.yAxis2.setRange)
+    customPlot.addGraph()
+    customPlot.graph(1).setPen(QPen(Qt.red))
+    
+    # activate channel fill for graph 0 towards graph 1:
+    customPlot.graph(0).setChannelFillGraph(customPlot.graph(1))
+    
+    # generate data:
+    x = [0.0]*250
+    y0 = [0.0]*250
+    y1 = [0.0]*250
+    for i in range(0, 250):
+      # just playing with numbers, not much to learn here
+      x[i] = 3*i/250.0
+      y0[i] = 1+math.exp(-x[i]*x[i]*0.8)*(x[i]*x[i]+x[i])
+      y1[i] = 1-math.exp(-x[i]*x[i]*0.4)*(x[i]*x[i])*0.1
+    
     # pass data points to graphs:
     customPlot.graph(0).setData(x, y0)
     customPlot.graph(1).setData(x, y1)
-    # let the ranges scale themselves so graph 0 fits perfectly in the visible area:
-    customPlot.graph(0).rescaleAxes()
-    # same thing for graph 1, but only enlarge ranges (in case graph 1 is smaller than graph 0):
-    customPlot.graph(1).rescaleAxes(True)
-    # Note: we could have also just called customPlot.rescaleAxes() instead
-    # Allow user to drag axis ranges with mouse, zoom with mouse wheel and select graphs by clicking:
-    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
-
+    # activate top and right axes, which are invisible by default:
+    customPlot.xAxis2.setVisible(True)
+    customPlot.yAxis2.setVisible(True)
+    # make tick labels invisible on top and right axis:
+    customPlot.xAxis2.setTickLabels(False)
+    customPlot.yAxis2.setTickLabels(False)
+    # set ranges:
+    customPlot.xAxis.setRange(0, 2.5)
+    customPlot.yAxis.setRange(0.9, 1.6)
+    # assign top/right axes same properties as bottom/left:
+    customPlot.axisRect().setupFullAxesBox()
 
 
     customPlot.show()
@@ -86,7 +88,13 @@ if __name__ == '__main__':
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
-
-
+    
 

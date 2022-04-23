@@ -23,7 +23,7 @@
 '''
 
 import shiboken2 as Shiboken
-from PySide2 import QtGui
+from PySide2 import QtGui,QtCore
 import sys
 import math
 from random import uniform,randint
@@ -32,49 +32,49 @@ from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
-import shiboken2 as Shiboken
 
-
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Line Style Demo')
+    customPlot.setWindowTitle('Simple Demo')
 
-    customPlot.legend.setVisible(True)
-    customPlot.legend.setFont(QFont("Helvetica", 9))
-    pen = QPen()
-    lineNames = ["lsNone", "lsLine", "lsStepLeft", "lsStepRight", "lsStepCenter", "lsImpulse"]
-    # add graphs with different line styles:
-    for i in range(QCPGraph.lsNone, QCPGraph.lsImpulse + 1):
-      customPlot.addGraph()
-      pen.setColor(QColor(math.sin(i*1+1.2)*80+80, math.sin(i*0.3+0)*80+80, math.sin(i*0.3+1.5)*80+80))
-      customPlot.graph().setPen(pen)
-      customPlot.graph().setName(lineNames[i-QCPGraph.lsNone])
-      customPlot.graph().setLineStyle(QCPGraph.LineStyle(i))
-      customPlot.graph().setScatterStyle(QCPScatterStyle(QCPScatterStyle.ssCircle, 5))
-      # generate data:
-      x = [0.0] * 15
-      y = [0.0] * 15
-      for j in range(0, 15):
-        x[j] = j/15.0 * 5*3.14 + 0.01
-        y[j] = 7*math.sin(x[j])/x[j] - (i-QCPGraph.lsNone)*5 + (QCPGraph.lsImpulse)*5 + 2
+  
+    # add two new graphs and set their look:
+    customPlot.addGraph()
+    customPlot.graph(0).setPen(QPen(Qt.blue)) # line color blue for first graph
+    customPlot.graph(0).setBrush(QBrush(QColor(0, 0, 255, 20))) # first graph will be filled with translucent blue
+    customPlot.addGraph()
+    customPlot.graph(1).setPen(QPen(Qt.red)) # line color red for second graph
+    # generate some points of data (y0 for first, y1 for second graph):
+    x = [0.0] * 251 
+    y0 = [0.0] * 251 
+    y1 = [0.0] * 251 
+    for i in range(0,251):
+      x[i] = i
+      y0[i] = math.exp(-i/150.0)*math.cos(i/10.0) # exponentially decaying cosine
+      y1[i] = math.exp(-i/150.0)              # exponential envelope
+    
+    # configure right and top axis to show ticks but no labels:
+    # (see QCPAxisRect::setupFullAxesBox for a quicker method to do this)
+    customPlot.xAxis2.setVisible(True)
+    customPlot.xAxis2.setTickLabels(False)
+    customPlot.yAxis2.setVisible(True)
+    customPlot.yAxis2.setTickLabels(False)
+    # make left and bottom axes always transfer their ranges to right and top axes:
+    customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)    
+    customPlot.yAxis.rangeChanged.connect(customPlot.yAxis2.setRange)
+    # pass data points to graphs:
+    customPlot.graph(0).setData(x, y0)
+    customPlot.graph(1).setData(x, y1)
+    # let the ranges scale themselves so graph 0 fits perfectly in the visible area:
+    customPlot.graph(0).rescaleAxes()
+    # same thing for graph 1, but only enlarge ranges (in case graph 1 is smaller than graph 0):
+    customPlot.graph(1).rescaleAxes(True)
+    # Note: we could have also just called customPlot.rescaleAxes() instead
+    # Allow user to drag axis ranges with mouse, zoom with mouse wheel and select graphs by clicking:
+    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
 
-      customPlot.graph().setData(x, y)
-      customPlot.graph().rescaleAxes(True)
 
-    # zoom out a bit:
-    customPlot.yAxis.scaleRange(1.1, customPlot.yAxis.range().center())
-    customPlot.xAxis.scaleRange(1.1, customPlot.xAxis.range().center())
-    # set blank axis lines:
-    customPlot.xAxis.setTicks(False)
-    customPlot.yAxis.setTicks(True)
-    customPlot.xAxis.setTickLabels(False)
-    customPlot.yAxis.setTickLabels(True)
-    # make top right axes clones of bottom left axes:
-    customPlot.axisRect().setupFullAxesBox()
 
     customPlot.show()
 
@@ -82,7 +82,15 @@ if __name__ == '__main__':
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
-
-
-
+    
+    
+    
+ 

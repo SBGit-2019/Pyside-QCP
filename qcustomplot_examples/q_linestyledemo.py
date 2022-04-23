@@ -32,72 +32,65 @@ from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
+import shiboken2 as Shiboken
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Scatter Pixmap Demo')
+    customPlot.setWindowTitle('Line Style Demo')
 
-    customPlot.axisRect().setBackground(QPixmap("./solarpanels.jpg"))
-    customPlot.addGraph()
-    customPlot.graph().setLineStyle(QCPGraph.lsLine)
-
-    pen = QPen()
-    pen.setColor(QColor(255, 200, 20, 200))
-    pen.setStyle(Qt.DashLine)
-    pen.setWidthF(2.5)
-    customPlot.graph().setPen(pen)
-    customPlot.graph().setBrush(QBrush(QColor(255,200,20,70)))
-    customPlot.graph().setScatterStyle(QCPScatterStyle(QPixmap("./sun.png")))
-    # set graph name, will show up in legend next to icon:
-    customPlot.graph().setName("Data from Photovoltaic\nenergy barometer 2011")
-    # set data:
-    year =  [ 2005 , 2006 , 2007 , 2008  , 2009  , 2010 , 2011 ]
-    value = [ 2.17 , 3.42 , 4.94 , 10.38 , 15.86 , 29.33 , 52.1 ]
-    customPlot.graph().setData(year, value)
-
-
-    font = QFont("sans", 12, QFont.Bold)
-    text = QCPTextElement(customPlot, "Regenerative Energies", font)
-    # set title of plot:    
-    customPlot.plotLayout().insertRow(0)
-    customPlot.plotLayout().addElement(0, 0, text)
-    # axis configurations:
-    customPlot.xAxis.setLabel("Year")
-    customPlot.yAxis.setLabel("Installed Gigawatts of\nphotovoltaic in the European Union")
-    customPlot.xAxis2.setVisible(True)
-    customPlot.yAxis2.setVisible(True)
-    customPlot.xAxis2.setTickLabels(False)
-    customPlot.yAxis2.setTickLabels(False)
-    customPlot.xAxis2.setTicks(False)
-    customPlot.yAxis2.setTicks(False)
-    customPlot.xAxis2.setSubTicks(False)
-    customPlot.yAxis2.setSubTicks(False)
-    customPlot.xAxis.setRange(2004.5, 2011.5)
-    customPlot.yAxis.setRange(0, 52)
-    # setup legend:
-    font2 = QFont(QtGui.QFont().family(), 7)
-    customPlot.legend.setFont(font2)
-    customPlot.legend.setIconSize(50, 20)
     customPlot.legend.setVisible(True)
-    customPlot.axisRect().insetLayout().setInsetAlignment(0, Qt.AlignLeft | Qt.AlignTop)
+    customPlot.legend.setFont(QFont("Helvetica", 9))
+    pen = QPen()
+    lineNames = ["lsNone", "lsLine", "lsStepLeft", "lsStepRight", "lsStepCenter", "lsImpulse"]
+    # add graphs with different line styles:
+    for i in range(QCPGraph.lsNone, QCPGraph.lsImpulse + 1):
+      customPlot.addGraph()
+      pen.setColor(QColor(math.sin(i*1+1.2)*80+80, math.sin(i*0.3+0)*80+80, math.sin(i*0.3+1.5)*80+80))
+      customPlot.graph().setPen(pen)
+      customPlot.graph().setName(lineNames[i-QCPGraph.lsNone])
+      customPlot.graph().setLineStyle(QCPGraph.LineStyle(i))
+      customPlot.graph().setScatterStyle(QCPScatterStyle(QCPScatterStyle.ssCircle, 5))
+      # generate data:
+      x = [0.0] * 15
+      y = [0.0] * 15
+      for j in range(0, 15):
+        x[j] = j/15.0 * 5*3.14 + 0.01
+        y[j] = 7*math.sin(x[j])/x[j] - (i-QCPGraph.lsNone)*5 + (QCPGraph.lsImpulse)*5 + 2
 
+      customPlot.graph().setData(x, y)
+      customPlot.graph().rescaleAxes(True)
 
-    customPlot.rescaleAxes()
+    # zoom out a bit:
+    customPlot.yAxis.scaleRange(1.1, customPlot.yAxis.range().center())
+    customPlot.xAxis.scaleRange(1.1, customPlot.xAxis.range().center())
+    # set blank axis lines:
+    customPlot.xAxis.setTicks(False)
+    customPlot.yAxis.setTicks(True)
+    customPlot.xAxis.setTickLabels(False)
+    customPlot.yAxis.setTickLabels(True)
+    # make top right axes clones of bottom left axes:
+    customPlot.axisRect().setupFullAxesBox()
 
     customPlot.show()
-
-
+    
 
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)
+    
+    
+    
 
 
 

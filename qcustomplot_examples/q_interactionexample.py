@@ -89,7 +89,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        ui_file = QFile("mainwindow.ui")
+        our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+        ui_file = QFile(our_package_dir+"mainwindow.ui")
         ui_file.open(QFile.ReadOnly)
 
         loader = MyQUiLoader(self)

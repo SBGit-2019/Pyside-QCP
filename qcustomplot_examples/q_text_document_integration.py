@@ -27,7 +27,7 @@ from PySide2 import QtGui
 import sys
 import math
 from random import uniform,randint
-from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow,qApp,QFileDialog
+from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow,QFileDialog
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime,QSizeF,QMarginsF
 from PySide2.QtUiTools import QUiLoader
@@ -100,7 +100,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
-        ui_file = QFile("text-document-integration.ui")
+        our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+        ui_file = QFile(our_package_dir+"text-document-integration.ui")
         ui_file.open(QFile.ReadOnly)
         loader = MyQUiLoader(self)
         loader.registerCustomWidget(QCustomPlot)
@@ -115,7 +116,7 @@ class MainWindow(QMainWindow):
         plotObjectHandler = QCPDocumentObject(self)
         self.ui.textEdit.document().documentLayout().registerHandler(MainWindow.QCPTextFormat, plotObjectHandler)
         bla = self.textEdit.document().documentLayout().handlerForObject(MainWindow.QCPTextFormat)
-        print("Register handler ", bla)
+        #print("Register handler ", bla)
 
         self.actionInsert_Plot.triggered.connect(self.on_actionInsert_Plot_triggered)
         self.actionSave_Document.triggered.connect(self.on_actionSave_Document_triggered)
@@ -202,15 +203,21 @@ class MainWindow(QMainWindow):
       # Allow user to drag axis ranges with mouse, zoom with mouse wheel and select graphs by clicking:
       ui.plot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
 
-if __name__ == '__main__':
-
-    import sys
-
-    QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-    app = QApplication(sys.argv)
+def demo(app):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
     mainWin.show()
+   
+
+    # Create and show the form
+    # Run the main Qt loop
     res = app.exec_()
     mainWin.ui.plot = None
-    sys.exit(res)
+    return res
+   
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)    

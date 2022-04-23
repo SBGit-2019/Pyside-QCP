@@ -34,70 +34,75 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
-    # generate the curve data points:
-    pointCount = 500
-
-    dataSpiral1X = [0.0] * pointCount
-    dataSpiral1Y = [0.0] * pointCount
-    dataSpiral2X = [0.0] * pointCount
-    dataSpiral2Y = [0.0] * pointCount
-    dataDeltoidX = [0.0] * pointCount
-    dataDeltoidY = [0.0] * pointCount
-    for i in range(0, pointCount):
-      phi = float(i)/float(pointCount-1)*8.0*math.pi
-      theta = float(i)/float(pointCount-1)*2.0*math.pi;
-      dataSpiral1X[i] = math.sqrt(phi)*math.cos(phi)
-      dataSpiral1Y[i] = math.sqrt(phi)*math.sin(phi)
-      dataSpiral2X[i] = -dataSpiral1X[i]
-      dataSpiral2Y[i] = -dataSpiral1Y[i]
-      dataDeltoidX[i] = 2.0*math.cos(2.0*theta)+math.cos(1.0*theta)+2.0*math.sin(theta)
-      dataDeltoidY[i] = 2.0*math.sin(2.0*theta)-math.sin(1.0*theta)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Parametric Curves Demo')
+    customPlot.setWindowTitle('Scatter Pixmap Demo')
 
-    # pass the data to the curves; we know t (i in loop above) is ascending, so set alreadySorted=true (saves an extra internal sort):
-    fermatSpiral1 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
-    fermatSpiral1.setData(dataSpiral1X,dataSpiral1Y)
+    our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
 
-    fermatSpiral2 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
-    fermatSpiral2.setData(dataSpiral2X,dataSpiral2Y)
+    customPlot.axisRect().setBackground(QPixmap(our_package_dir+"solarpanels.jpg"))
+    customPlot.addGraph()
+    customPlot.graph().setLineStyle(QCPGraph.lsLine)
 
-    deltoidRadial = QCPCurve(customPlot.xAxis, customPlot.yAxis)
-    deltoidRadial.setData(dataDeltoidX,dataDeltoidY)
+    pen = QPen()
+    pen.setColor(QColor(255, 200, 20, 200))
+    pen.setStyle(Qt.DashLine)
+    pen.setWidthF(2.5)
+    customPlot.graph().setPen(pen)
+    customPlot.graph().setBrush(QBrush(QColor(255,200,20,70)))
+    customPlot.graph().setScatterStyle(QCPScatterStyle(QPixmap(our_package_dir+"sun.png")))
+    # set graph name, will show up in legend next to icon:
+    customPlot.graph().setName("Data from Photovoltaic\nenergy barometer 2011")
+    # set data:
+    year =  [ 2005 , 2006 , 2007 , 2008  , 2009  , 2010 , 2011 ]
+    value = [ 2.17 , 3.42 , 4.94 , 10.38 , 15.86 , 29.33 , 52.1 ]
+    customPlot.graph().setData(year, value)
 
-    # color the curves:
-    fermatSpiral1.setPen(QPen(Qt.blue))
-    fermatSpiral1.setBrush(QBrush(QColor(0, 0, 255, 20)))
-    fermatSpiral2.setPen(QPen(QColor(255, 120, 0)))
-    fermatSpiral2.setBrush(QBrush(QColor(255, 120, 0, 30)))
 
-    radialGrad = QRadialGradient(QPointF(310, 180), 200)
-    radialGrad.setColorAt(0, QColor(170, 20, 240, 100))
-    radialGrad.setColorAt(0.5, QColor(20, 10, 255, 40))
-    radialGrad.setColorAt(1,QColor(120, 20, 240, 10))
-    deltoidRadial.setPen(QPen(QColor(170, 20, 240)))
-    deltoidRadial.setBrush(QBrush(radialGrad))
+    font = QFont("sans", 12, QFont.Bold)
+    text = QCPTextElement(customPlot, "Regenerative Energies", font)
+    # set title of plot:    
+    customPlot.plotLayout().insertRow(0)
+    customPlot.plotLayout().addElement(0, 0, text)
+    # axis configurations:
+    customPlot.xAxis.setLabel("Year")
+    customPlot.yAxis.setLabel("Installed Gigawatts of\nphotovoltaic in the European Union")
+    customPlot.xAxis2.setVisible(True)
+    customPlot.yAxis2.setVisible(True)
+    customPlot.xAxis2.setTickLabels(False)
+    customPlot.yAxis2.setTickLabels(False)
+    customPlot.xAxis2.setTicks(False)
+    customPlot.yAxis2.setTicks(False)
+    customPlot.xAxis2.setSubTicks(False)
+    customPlot.yAxis2.setSubTicks(False)
+    customPlot.xAxis.setRange(2004.5, 2011.5)
+    customPlot.yAxis.setRange(0, 52)
+    # setup legend:
+    font2 = QFont(QtGui.QFont().family(), 7)
+    customPlot.legend.setFont(font2)
+    customPlot.legend.setIconSize(50, 20)
+    customPlot.legend.setVisible(True)
+    customPlot.axisRect().insetLayout().setInsetAlignment(0, Qt.AlignLeft | Qt.AlignTop)
 
-    # set some basic customPlot config:
-    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
-    customPlot.axisRect().setupFullAxesBox()
+
     customPlot.rescaleAxes()
 
     customPlot.show()
-
-
 
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
-    sys.exit(res)
+    return res
+   
 
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)
+    
+    
 
 

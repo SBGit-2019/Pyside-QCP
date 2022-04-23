@@ -34,13 +34,12 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Multi Axis Demo')
+
+    our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
 
 
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
@@ -59,7 +58,7 @@ if __name__ == '__main__':
     # will contain left maxwell-like function
     customPlot.addGraph(customPlot.yAxis, customPlot.xAxis)
     customPlot.graph(0).setPen(QPen(QColor(255, 100, 0)))
-    customPlot.graph(0).setBrush(QBrush(QPixmap("./balboa.jpg"))) # fill with texture of specified image
+    customPlot.graph(0).setBrush(QBrush(QPixmap(our_package_dir+"/balboa.jpg"))) # fill with texture of specified image
     customPlot.graph(0).setLineStyle(QCPGraph.lsLine)
     customPlot.graph(0).setScatterStyle(QCPScatterStyle(QCPScatterStyle.ssDisc, 5))
     customPlot.graph(0).setName("Left maxwell function")
@@ -68,7 +67,7 @@ if __name__ == '__main__':
     # will contain bottom maxwell-like function with error bars
     customPlot.addGraph()
     customPlot.graph(1).setPen(QPen(Qt.red))
-    customPlot.graph(1).setBrush(QBrush(QPixmap("./balboa.jpg"))) # same fill as we used for graph 0
+    customPlot.graph(1).setBrush(QBrush(QPixmap(our_package_dir+"/balboa.jpg"))) # same fill as we used for graph 0
     customPlot.graph(1).setLineStyle(QCPGraph.lsStepCenter)
     # TODO scatterStyle = QCPScatterStyle(QCPScatterStyle.ssCircle,Qt.red,Qt.white,7.0)
     # BUg in shiboken function generator. jumps in wrong constructor
@@ -179,7 +178,14 @@ if __name__ == '__main__':
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
-    sys.exit(res)
+    return res
+   
 
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)
+    
 
 

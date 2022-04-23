@@ -34,55 +34,28 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot import *
 
 
-if __name__ == '__main__':
-    # Create the Qt Application
-    app = QApplication(sys.argv)
-
+def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Texture Brush Demo')
+    customPlot.setWindowTitle('Simple Item Demo')
 
-
-    # add two graphs with a textured fill:
-    customPlot.addGraph()
-    redDotPen = QPen()
-    redDotPen.setStyle(Qt.DotLine)
-    redDotPen.setColor(QColor(170, 100, 100, 180))
-    redDotPen.setWidthF(2)
-    customPlot.graph(0).setPen(redDotPen)
-    customPlot.graph(0).setBrush(QBrush(QPixmap("./balboa.jpg"))) # fill with texture of specified image
+    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
     
-    customPlot.addGraph()
-    customPlot.graph(1).setPen(QPen(Qt.red))
+    # add the text label at the top:
+    textLabel = QCPItemText(customPlot)
+    textLabel.setPositionAlignment(Qt.AlignTop|Qt.AlignHCenter)
+    textLabel.position().setType(QCPItemPosition.ptAxisRectRatio) 
+    textLabel.position().setCoords(0.5, 0) # place position at center/top of axis rect 
+    textLabel.setText("Text Item Demo")
+    textLabel.setFont(QFont(QtGui.QFont().family(), 16)) # make font a bit larger
+    textLabel.setPen(QPen(Qt.black)) # show black border around text
     
-    # activate channel fill for graph 0 towards graph 1:
-    customPlot.graph(0).setChannelFillGraph(customPlot.graph(1))
-    
-    # generate data:
-    x = [0.0]*250
-    y0 = [0.0]*250
-    y1 = [0.0]*250
-    for i in range(0, 250):
-      # just playing with numbers, not much to learn here
-      x[i] = 3*i/250.0
-      y0[i] = 1+math.exp(-x[i]*x[i]*0.8)*(x[i]*x[i]+x[i])
-      y1[i] = 1-math.exp(-x[i]*x[i]*0.4)*(x[i]*x[i])*0.1
-    
-    # pass data points to graphs:
-    customPlot.graph(0).setData(x, y0)
-    customPlot.graph(1).setData(x, y1)
-    # activate top and right axes, which are invisible by default:
-    customPlot.xAxis2.setVisible(True)
-    customPlot.yAxis2.setVisible(True)
-    # make tick labels invisible on top and right axis:
-    customPlot.xAxis2.setTickLabels(False)
-    customPlot.yAxis2.setTickLabels(False)
-    # set ranges:
-    customPlot.xAxis.setRange(0, 2.5)
-    customPlot.yAxis.setRange(0.9, 1.6)
-    # assign top/right axes same properties as bottom/left:
-    customPlot.axisRect().setupFullAxesBox()
-
+    # add the arrow:
+    arrow = QCPItemLine(customPlot)
+    arrow.start().setParentAnchor(textLabel.bottom()) 
+    arrow.end().setCoords(4, 1.6) # point to (4, 1.6) in x-y-plot coordinates 
+    spike = QCPLineEnding(QCPLineEnding.esSpikeArrow)
+    arrow.setHead(spike)
 
     customPlot.show()
 
@@ -90,7 +63,14 @@ if __name__ == '__main__':
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
-    sys.exit(res)
+    return res
+   
 
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
+    sys.exit(res)
+    
 
 
