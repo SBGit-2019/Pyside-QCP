@@ -90,18 +90,21 @@ for PYBIN in /opt/python/*/bin; do
      #python3 setup.py bdist_wheel
      #pip wheel ${QCPDIR}/ --no-clean --no-deps -w wheelhouse_${PYVER}/ 
      pip wheel ${QCPDIR}  --no-deps -w wheelhouse/ 
+     echo "Result dir after build wheel:"
      ls -l ${QCPDIR}/wheelhouse
 
 
      #      qcustomplot_pyside2-2.0.1-cp38-abi3-linux_x86_64.whl
      #      qcustomplot_pyside2-2.0.1-cp310-abi3-linux_x86_64.whl
-     wheel=      "qcustomplot_pyside2-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
+     wheel="qcustomplot_pyside2-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
      targetwheel="qcustomplot_pyside2-${VERSION}-cp${PYCP}-abi3-${PLAT}.whl"
      if [ -f "${QCPDIR}/wheelhouse/$targetwheel" ]; then
        rm -f ${QCPDIR}/wheelhouse/$targetwheel
      fi
      mv ${QCPDIR}/wheelhouse/$wheel ${QCPDIR}/wheelhouse/$targetwheel
      chmod a+r ${QCPDIR}/wheelhouse/$targetwheel
+     echo "Result dir after move:"
+     ls -l ${QCPDIR}/wheelhouse
 
      deactivate
      ls -l wheelhouse
