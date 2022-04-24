@@ -35,7 +35,7 @@ from PySide2.QtSvg import QSvgRenderer
 from PySide2.QtGui import QTextObjectInterface,QTextFormat,QTextCharFormat,QPyTextObject
 from PySide2.QtCore import QSizeF,QByteArray
 from PySide2.QtWidgets import  QMessageBox,QLabel,QLineEdit,QPushButton,QHBoxLayout,QVBoxLayout,QTextEdit
-from qcustomplot import *
+from qcustomplot_pyside2 import *
 
 
 class SvgTextObject(QPyTextObject):

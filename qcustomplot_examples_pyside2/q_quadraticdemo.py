@@ -31,87 +31,36 @@ from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVB
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
-from qcustomplot import *
-
-time = QTime.currentTime()
-lastPointKey = 0
-customPlot = None
-lastFpsKey = 0.0
-frameCount = 0
-
-def realtimeDataSlot(): # called by timer
-    # calculate two new data points:
-    global lastPointKey
-    global time
-    global customPlot
-    global lastFpsKey
-    global frameCount
-    key = time.elapsed()/1000.0 # time elapsed since start of demo, in seconds
-
-    if key-lastPointKey > 0.002: # at most add point every 2 ms
-      # add data to lines:
-      customPlot.graph(0).addData(key, math.sin(key)+uniform(0,1)*1.0*math.sin(key/0.3843))
-      customPlot.graph(1).addData(key, math.cos(key)+uniform(0,1)*0.5*math.sin(key/0.4364))
-      # rescale value (vertical) axis to fit the current data:
-      lastPointKey = key;
-
-    # make key axis range scroll with the data (at a constant range size of 8):
-    customPlot.xAxis.setRange(key, 8, Qt.AlignRight)
-    customPlot.replot();
-
-    # calculate frames per second:
-    frameCount += 1
-
-    if key-lastFpsKey > 2:  # average fps over 2 seconds
-      fps = float(frameCount)/(float)(key-lastFpsKey)
-      sz = customPlot.graph(0).dataCount()+customPlot.graph(1).dataCount()
-      fps_str = '{:3.2f}'.format(fps)
-      customPlot.setWindowTitle('Real Time Data Demo FPS: '+fps_str+" Data:"+str(sz))
-      lastFpsKey = key
-      frameCount = 0
-
-
+from qcustomplot_pyside2 import *
 
 
 def demo(app):
-    global lastPointKey
-    global time
-    global customPlot
-    global lastFpsKey
-    global frameCount
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Real Time Data Demo')
+    customPlot.setWindowTitle('Quadratic Demo')
 
-    customPlot.addGraph() # blue line
-    customPlot.graph(0).setPen(QPen(QColor(40, 110, 255)))
-    customPlot.addGraph() # red line
-    customPlot.graph(1).setPen(QPen(QColor(255, 110, 40)))
-
-    timeTicker = QCPAxisTickerTime()
-    timeTicker.setTimeFormat("%h:%m:%s")
-    customPlot.xAxis.setTicker(timeTicker)
-    customPlot.axisRect().setupFullAxesBox()
-    customPlot.yAxis.setRange(-1.2, 1.2)
-
-    # make left and bottom axes transfer their ranges to right and top axes:
-    customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)
-    customPlot.yAxis.rangeChanged.connect(customPlot.yAxis2.setRange)
-
-    # setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
-    dataTimer = QTimer()
-    dataTimer.timeout.connect(realtimeDataSlot)
-    dataTimer.start(0)
+    # generate some data:
+    x = [0.0] * 101 # initialize with entries 0..100
+    y = [0.0] * 101 
+    for i in range(0, 101):
+      x[i] = i/50.0 - 1 # x goes from -1 to 1
+      y[i] = x[i]*x[i]  # let's plot a quadratic function
+    
+    # create graph and assign data to it:
+    customPlot.addGraph()
+    customPlot.graph(0).setData(x, y)
+    # give the axes some labels:
+    customPlot.xAxis.setLabel("x")
+    customPlot.yAxis.setLabel("y")
+    # set axes ranges, so we see all data:
+    customPlot.xAxis.setRange(-1, 1)
+    customPlot.yAxis.setRange(0, 1)
 
 
     customPlot.show()
-
-
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
-    del dataTimer
-    
     customPlot = None
     return res
    
@@ -121,5 +70,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
 

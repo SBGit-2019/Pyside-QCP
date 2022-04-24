@@ -31,68 +31,87 @@ from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVB
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
-from qcustomplot import *
+from qcustomplot_pyside2 import *
+
+time = QTime.currentTime()
+lastPointKey = 0
+customPlot = None
+lastFpsKey = 0.0
+frameCount = 0
+
+def realtimeDataSlot(): # called by timer
+    # calculate two new data points:
+    global lastPointKey
+    global time
+    global customPlot
+    global lastFpsKey
+    global frameCount
+    key = time.elapsed()/1000.0 # time elapsed since start of demo, in seconds
+
+    if key-lastPointKey > 0.002: # at most add point every 2 ms
+      # add data to lines:
+      customPlot.graph(0).addData(key, math.sin(key)+uniform(0,1)*1.0*math.sin(key/0.3843))
+      customPlot.graph(1).addData(key, math.cos(key)+uniform(0,1)*0.5*math.sin(key/0.4364))
+      # rescale value (vertical) axis to fit the current data:
+      lastPointKey = key;
+
+    # make key axis range scroll with the data (at a constant range size of 8):
+    customPlot.xAxis.setRange(key, 8, Qt.AlignRight)
+    customPlot.replot();
+
+    # calculate frames per second:
+    frameCount += 1
+
+    if key-lastFpsKey > 2:  # average fps over 2 seconds
+      fps = float(frameCount)/(float)(key-lastFpsKey)
+      sz = customPlot.graph(0).dataCount()+customPlot.graph(1).dataCount()
+      fps_str = '{:3.2f}'.format(fps)
+      customPlot.setWindowTitle('Real Time Data Demo FPS: '+fps_str+" Data:"+str(sz))
+      lastFpsKey = key
+      frameCount = 0
+
+
 
 
 def demo(app):
+    global lastPointKey
+    global time
+    global customPlot
+    global lastFpsKey
+    global frameCount
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Scatter Pixmap Demo')
+    customPlot.setWindowTitle('Real Time Data Demo')
 
-    our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+    customPlot.addGraph() # blue line
+    customPlot.graph(0).setPen(QPen(QColor(40, 110, 255)))
+    customPlot.addGraph() # red line
+    customPlot.graph(1).setPen(QPen(QColor(255, 110, 40)))
 
-    customPlot.axisRect().setBackground(QPixmap(our_package_dir+"solarpanels.jpg"))
-    customPlot.addGraph()
-    customPlot.graph().setLineStyle(QCPGraph.lsLine)
+    timeTicker = QCPAxisTickerTime()
+    timeTicker.setTimeFormat("%h:%m:%s")
+    customPlot.xAxis.setTicker(timeTicker)
+    customPlot.axisRect().setupFullAxesBox()
+    customPlot.yAxis.setRange(-1.2, 1.2)
 
-    pen = QPen()
-    pen.setColor(QColor(255, 200, 20, 200))
-    pen.setStyle(Qt.DashLine)
-    pen.setWidthF(2.5)
-    customPlot.graph().setPen(pen)
-    customPlot.graph().setBrush(QBrush(QColor(255,200,20,70)))
-    customPlot.graph().setScatterStyle(QCPScatterStyle(QPixmap(our_package_dir+"sun.png")))
-    # set graph name, will show up in legend next to icon:
-    customPlot.graph().setName("Data from Photovoltaic\nenergy barometer 2011")
-    # set data:
-    year =  [ 2005 , 2006 , 2007 , 2008  , 2009  , 2010 , 2011 ]
-    value = [ 2.17 , 3.42 , 4.94 , 10.38 , 15.86 , 29.33 , 52.1 ]
-    customPlot.graph().setData(year, value)
+    # make left and bottom axes transfer their ranges to right and top axes:
+    customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)
+    customPlot.yAxis.rangeChanged.connect(customPlot.yAxis2.setRange)
 
+    # setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
+    dataTimer = QTimer()
+    dataTimer.timeout.connect(realtimeDataSlot)
+    dataTimer.start(0)
 
-    font = QFont("sans", 12, QFont.Bold)
-    text = QCPTextElement(customPlot, "Regenerative Energies", font)
-    # set title of plot:    
-    customPlot.plotLayout().insertRow(0)
-    customPlot.plotLayout().addElement(0, 0, text)
-    # axis configurations:
-    customPlot.xAxis.setLabel("Year")
-    customPlot.yAxis.setLabel("Installed Gigawatts of\nphotovoltaic in the European Union")
-    customPlot.xAxis2.setVisible(True)
-    customPlot.yAxis2.setVisible(True)
-    customPlot.xAxis2.setTickLabels(False)
-    customPlot.yAxis2.setTickLabels(False)
-    customPlot.xAxis2.setTicks(False)
-    customPlot.yAxis2.setTicks(False)
-    customPlot.xAxis2.setSubTicks(False)
-    customPlot.yAxis2.setSubTicks(False)
-    customPlot.xAxis.setRange(2004.5, 2011.5)
-    customPlot.yAxis.setRange(0, 52)
-    # setup legend:
-    font2 = QFont(QtGui.QFont().family(), 7)
-    customPlot.legend.setFont(font2)
-    customPlot.legend.setIconSize(50, 20)
-    customPlot.legend.setVisible(True)
-    customPlot.axisRect().insetLayout().setInsetAlignment(0, Qt.AlignLeft | Qt.AlignTop)
-
-
-    customPlot.rescaleAxes()
 
     customPlot.show()
+
 
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
+    del dataTimer
+    
     customPlot = None
     return res
    
@@ -103,6 +122,4 @@ if __name__ == '__main__':
     res = demo(app)
     sys.exit(res)
     
-    
-
 

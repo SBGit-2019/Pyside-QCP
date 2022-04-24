@@ -92,8 +92,8 @@ for PYBIN in /opt/python/*/bin; do
      pip wheel ${QCPDIR}  --no-deps -w wheelhouse/ 
 
 
-     wheel="qcustomplot-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
-     targetwheel="qcustomplot-${VERSION}-cp${PYCP}-abi3-${PLAT}.whl"
+     wheel="qcustomplot-pyside2-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
+     targetwheel="qcustomplot-pyside2-${VERSION}-cp${PYCP}-abi3-${PLAT}.whl"
      if [ -f "${QCPDIR}/wheelhouse/$targetwheel" ]; then
        rm -f ${QCPDIR}/wheelhouse/$targetwheel
      fi
@@ -107,6 +107,6 @@ done
 chmod a+rwx ${QCPDIR}/wheelhouse/
 
 rm -rf ${VENV}/
-rm -rf ${QCPDIR}/qcustomplot.egg-info
+rm -rf ${QCPDIR}/qcustomplot-pyside2.egg-info
 
 echo "Ready."

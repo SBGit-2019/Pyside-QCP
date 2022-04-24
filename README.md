@@ -9,13 +9,13 @@ The project can be found on [Github](https://github.com/SBGit-2019/Pyside-QCP/).
 
 You can install the library and run the examples with the following commands. Preferably you should do this in a python [*virtual environment*](https://docs.python.org/3/tutorial/venv.html).
 
-    pip install qcustomplot
+    pip install qcustomplot_pyside2
     qcustomplot_examples
 
 
 
 ## Examples
-The folder [*qcustomplot_examples*](https://github.com/SBGit-2019/Pyside-QCP/tree/master/qcustomplot_examples) contains the examples from the QCustomplot C++ webpage translated to Python. 
+The folder [*qcustomplot_examples_pyside2*](https://github.com/SBGit-2019/Pyside-QCP/tree/master/qcustomplot_examples_pyside2) contains the examples from the QCustomplot C++ webpage translated to Python. 
 These can be used as basis for own development or for seeing the features of the library. The example script *qcustomplot_examples* runs through all examples.
 
 ### Running all examples
@@ -34,7 +34,7 @@ These can be used as basis for own development or for seeing the features of the
     from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
     from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
     from PySide2.QtUiTools import QUiLoader
-    from qcustomplot import *
+    from qcustomplot_pyside2 import *
 
     def demo(app):
       # Create plot

@@ -31,66 +31,69 @@ from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVB
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
-from qcustomplot import *
+from qcustomplot_pyside2 import *
 
 
 def demo(app):
+    # generate the curve data points:
+    pointCount = 500
+
+    dataSpiral1X = [0.0] * pointCount
+    dataSpiral1Y = [0.0] * pointCount
+    dataSpiral2X = [0.0] * pointCount
+    dataSpiral2Y = [0.0] * pointCount
+    dataDeltoidX = [0.0] * pointCount
+    dataDeltoidY = [0.0] * pointCount
+    for i in range(0, pointCount):
+      phi = float(i)/float(pointCount-1)*8.0*math.pi
+      theta = float(i)/float(pointCount-1)*2.0*math.pi;
+      dataSpiral1X[i] = math.sqrt(phi)*math.cos(phi)
+      dataSpiral1Y[i] = math.sqrt(phi)*math.sin(phi)
+      dataSpiral2X[i] = -dataSpiral1X[i]
+      dataSpiral2Y[i] = -dataSpiral1Y[i]
+      dataDeltoidX[i] = 2.0*math.cos(2.0*theta)+math.cos(1.0*theta)+2.0*math.sin(theta)
+      dataDeltoidY[i] = 2.0*math.sin(2.0*theta)-math.sin(1.0*theta)
+
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Color Map Demo')
-    # configure axis rect:
-    customPlot.setInteractions(QCP.iRangeDrag|QCP.iRangeZoom) # this will also allow rescaling the color scale by dragging/zooming
-    customPlot.axisRect().setupFullAxesBox(True)
-    customPlot.xAxis.setLabel("x")
-    customPlot.yAxis.setLabel("y")
+    customPlot.setWindowTitle('Parametric Curves Demo')
 
-    # set up the QCPColorMap:
-    colorMap = QCPColorMap(customPlot.xAxis, customPlot.yAxis)
-    nx = 200
-    ny = 200
-    colorMap.data().setSize(nx, ny) # we want the color map to have nx * ny data points
-    colorMap.data().setRange(QCPRange(-4, 4), QCPRange(-4, 4)) # and span the coordinate range -4..4 in both key (x) and value (y) dimensions
-    # now we assign some data, by accessing the QCPColorMapData instance of the color map:
-    for xIndex in range(0, nx):
-        for yIndex in range(0, ny):
-            aa = colorMap.data().cellToCoord(xIndex, yIndex)
-            x = aa[0]
-            y = aa[1]
-            r = 3.0*math.sqrt(x*x+y*y)+1e-2
-            z = 2.0*x*(math.cos(r+2.0)/r-math.sin(r+2.0)/r) # the B field strength of dipole radiation (modulo physical constants)
-            colorMap.data().setCell(xIndex, yIndex, z)
-   
-    # add a color scale:
-    colorScale = QCPColorScale(customPlot)
-    customPlot.plotLayout().addElement(0, 1, colorScale) # add it to the right of the main axis rect
-    colorScale.setType(QCPAxis.atRight) # scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
-    colorMap.setColorScale(colorScale) # associate the color map with the color scale
-    colorScale.axis().setLabel("Magnetic Field Strength")
+    # pass the data to the curves; we know t (i in loop above) is ascending, so set alreadySorted=true (saves an extra internal sort):
+    fermatSpiral1 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
+    fermatSpiral1.setData(dataSpiral1X,dataSpiral1Y)
 
-    # set the color gradient of the color map to one of the presets:
-    h1 = QCPColorGradient(QCPColorGradient.gpPolar)
-    colorMap.setGradient(h1)
-    # we could have also created a QCPColorGradient instance and added own colors to
-    # the gradient, see the documentation of QCPColorGradient for what's possible.   
+    fermatSpiral2 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
+    fermatSpiral2.setData(dataSpiral2X,dataSpiral2Y)
 
-    # rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
-    colorMap.rescaleDataRange();
- 
-    # make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-    marginGroup = QCPMarginGroup(customPlot)
-    customPlot.axisRect().setMarginGroup(QCP.msBottom|QCP.msTop, marginGroup)
-    colorScale.setMarginGroup(QCP.msBottom|QCP.msTop, marginGroup)
+    deltoidRadial = QCPCurve(customPlot.xAxis, customPlot.yAxis)
+    deltoidRadial.setData(dataDeltoidX,dataDeltoidY)
 
+    # color the curves:
+    fermatSpiral1.setPen(QPen(Qt.blue))
+    fermatSpiral1.setBrush(QBrush(QColor(0, 0, 255, 20)))
+    fermatSpiral2.setPen(QPen(QColor(255, 120, 0)))
+    fermatSpiral2.setBrush(QBrush(QColor(255, 120, 0, 30)))
+
+    radialGrad = QRadialGradient(QPointF(310, 180), 200)
+    radialGrad.setColorAt(0, QColor(170, 20, 240, 100))
+    radialGrad.setColorAt(0.5, QColor(20, 10, 255, 40))
+    radialGrad.setColorAt(1,QColor(120, 20, 240, 10))
+    deltoidRadial.setPen(QPen(QColor(170, 20, 240)))
+    deltoidRadial.setBrush(QBrush(radialGrad))
+
+    # set some basic customPlot config:
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
     customPlot.axisRect().setupFullAxesBox()
-    # rescale the key (x) and value (y) axes so the whole color map is visible:    
     customPlot.rescaleAxes()
 
     customPlot.show()
+    
+    # Create and show the form
+    # Run the main Qt loop
     res = app.exec_()
     customPlot = None
     return res
-
+   
 
 if __name__ == '__main__':
     # Create the Qt Application

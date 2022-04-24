@@ -31,44 +31,58 @@ from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVB
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
-from qcustomplot import *
+from qcustomplot_pyside2 import *
+
 
 def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Statistical Demo')
+    customPlot.setWindowTitle('Texture Brush Demo')
 
-    statistical = QCPStatisticalBox(customPlot.xAxis, customPlot.yAxis)
-    boxBrush = QBrush(QColor(60, 60, 255, 100))
-    boxBrush.setStyle(Qt.Dense6Pattern) # make it look oldschool
-    statistical.setBrush(boxBrush)
- 
-    # specify data:
-    statistical.addData(1, 1.1, 1.9, 2.25, 2.7, 4.2)
-    vec1 = [ 0.7 , 0.34 , 0.45 , 6.2 , 5.8] # provide some outliers as QVector
-    statistical.addData(2, 0.8, 1.6, 2.2, 3.2, 4.9, vec1)
-    statistical.addData(3, 0.2, 0.7, 1.1, 1.6, 2.9)
+    our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
 
-    # prepare manual x axis labels:
-    customPlot.xAxis.setSubTicks(False)
-    customPlot.xAxis.setTickLength(0, 4)
-    customPlot.xAxis.setTickLabelRotation(20)
-    textTicker = QCPAxisTickerText()
-    textTicker.addTick(1, "Sample 1")
-    textTicker.addTick(2, "Sample 2")
-    textTicker.addTick(3, "Control Group")
-    customPlot.xAxis.setTicker(textTicker)
-
-    # prepare axes:
-    customPlot.yAxis.setLabel("O₂ Absorption [mg]")
-    customPlot.rescaleAxes()
-    customPlot.xAxis.scaleRange(1.7, customPlot.xAxis.range().center())
-    customPlot.yAxis.setRange(0, 7)
-    customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
+    # add two graphs with a textured fill:
+    customPlot.addGraph()
+    redDotPen = QPen()
+    redDotPen.setStyle(Qt.DotLine)
+    redDotPen.setColor(QColor(170, 100, 100, 180))
+    redDotPen.setWidthF(2)
+    customPlot.graph(0).setPen(redDotPen)
+    customPlot.graph(0).setBrush(QBrush(QPixmap(our_package_dir+"/balboa.jpg"))) # fill with texture of specified image
+    
+    customPlot.addGraph()
+    customPlot.graph(1).setPen(QPen(Qt.red))
+    
+    # activate channel fill for graph 0 towards graph 1:
+    customPlot.graph(0).setChannelFillGraph(customPlot.graph(1))
+    
+    # generate data:
+    x = [0.0]*250
+    y0 = [0.0]*250
+    y1 = [0.0]*250
+    for i in range(0, 250):
+      # just playing with numbers, not much to learn here
+      x[i] = 3*i/250.0
+      y0[i] = 1+math.exp(-x[i]*x[i]*0.8)*(x[i]*x[i]+x[i])
+      y1[i] = 1-math.exp(-x[i]*x[i]*0.4)*(x[i]*x[i])*0.1
+    
+    # pass data points to graphs:
+    customPlot.graph(0).setData(x, y0)
+    customPlot.graph(1).setData(x, y1)
+    # activate top and right axes, which are invisible by default:
+    customPlot.xAxis2.setVisible(True)
+    customPlot.yAxis2.setVisible(True)
+    # make tick labels invisible on top and right axis:
+    customPlot.xAxis2.setTickLabels(False)
+    customPlot.yAxis2.setTickLabels(False)
+    # set ranges:
+    customPlot.xAxis.setRange(0, 2.5)
+    customPlot.yAxis.setRange(0.9, 1.6)
+    # assign top/right axes same properties as bottom/left:
+    customPlot.axisRect().setupFullAxesBox()
 
 
     customPlot.show()
-
 
     # Create and show the form
     # Run the main Qt loop
@@ -82,6 +96,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
     
 

@@ -33,7 +33,7 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QTextFormat,QTextObjectInterface, QPicture,QTextCharFormat,QPyTextObject,QPageLayout,QPageSize
 from PySide2.QtPrintSupport import QPrinter
-from qcustomplot import *
+from qcustomplot_pyside2 import *
 
 class QCPDocumentObject(QPyTextObject):
     def __init__(self, parent):

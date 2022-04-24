@@ -3,6 +3,8 @@ wheelhouse
 qcustomplot.egg-info
 TEST
 misc
+QCustomPlot_PySide2.egg-info
+qcustomplot_pyside2.egg-info
 
 
 

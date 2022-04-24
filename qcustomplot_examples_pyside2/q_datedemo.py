@@ -31,57 +31,78 @@ from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVB
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
-from qcustomplot import *
+from qcustomplot_pyside2 import *
 
 
 def demo(app):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
-    customPlot.setWindowTitle('Texture Brush Demo')
+    customPlot.setWindowTitle('Date Demo')
 
-    our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+    # set locale to english, so we get english month names:
+    customPlot.setLocale(QLocale(QLocale.English, QLocale.UnitedKingdom))
+    # seconds of current time, we'll use it as starting point in time for data:
+    now = QDateTime.currentDateTime().toTime_t()
+    # create multiple graphs:
+    for gi in range(0, 5):
+      customPlot.addGraph()
+      color = QColor(20+200/4.0*gi,70*(1.6-gi/4.0), 150, 150)
+      customPlot.graph().setLineStyle(QCPGraph.lsLine)
+      customPlot.graph().setPen(QPen(color.lighter(200)))
+      customPlot.graph().setBrush(QBrush(color))
+      timeDataX = [0.0] * 250
+      timeDataY = [0.0] * 250
+      # generate random walk data:
+      for i in range(0,250) :
+        timeDataX[i] =now + 24*3600*i
+        if i == 0:
+          timeDataY[i]= (float(i)/50.0+1)*uniform(-0.5,0.5)
+        else:
+          timeDataY[i]= math.fabs(timeDataY[i-1])*(1+0.02/4.0*(4-gi)) + (float(i)/50.0+1)*uniform(-0.5,0.5)
+      customPlot.graph().setData(timeDataX, timeDataY)
 
-    # add two graphs with a textured fill:
-    customPlot.addGraph()
-    redDotPen = QPen()
-    redDotPen.setStyle(Qt.DotLine)
-    redDotPen.setColor(QColor(170, 100, 100, 180))
-    redDotPen.setWidthF(2)
-    customPlot.graph(0).setPen(redDotPen)
-    customPlot.graph(0).setBrush(QBrush(QPixmap(our_package_dir+"/balboa.jpg"))) # fill with texture of specified image
-    
-    customPlot.addGraph()
-    customPlot.graph(1).setPen(QPen(Qt.red))
-    
-    # activate channel fill for graph 0 towards graph 1:
-    customPlot.graph(0).setChannelFillGraph(customPlot.graph(1))
-    
-    # generate data:
-    x = [0.0]*250
-    y0 = [0.0]*250
-    y1 = [0.0]*250
-    for i in range(0, 250):
-      # just playing with numbers, not much to learn here
-      x[i] = 3*i/250.0
-      y0[i] = 1+math.exp(-x[i]*x[i]*0.8)*(x[i]*x[i]+x[i])
-      y1[i] = 1-math.exp(-x[i]*x[i]*0.4)*(x[i]*x[i])*0.1
-    
-    # pass data points to graphs:
-    customPlot.graph(0).setData(x, y0)
-    customPlot.graph(1).setData(x, y1)
-    # activate top and right axes, which are invisible by default:
+    dateTicker=QCPAxisTickerDateTime()
+    dateTicker.setDateTimeFormat("d. MMMM\nyyyy")
+    customPlot.xAxis.setTicker(dateTicker)
+
+    # configure left axis text labels:
+    textTicker=QCPAxisTickerText()
+    textTicker.addTick(10, "a bit\nlow")
+    textTicker.addTick(50, "quite\nhigh")
+    customPlot.yAxis.setTicker(textTicker)
+
+   #textTicker = QCPAxisTickerText()
+   #textTicker.addTick(1, "Sample 1")
+   #textTicker.addTick(2, "Sample 2")
+   #textTicker.addTick(3, "Control Group")
+   #customPlot.xAxis.setTicker(textTicker)
+
+    # set a more compact font size for bottom and left axis tick labels:
+    customPlot.xAxis.setTickLabelFont(QFont(QFont().family(), 8))
+    customPlot.yAxis.setTickLabelFont(QFont(QFont().family(), 8))
+
+    # set axis labels:
+    customPlot.xAxis.setLabel("Date")
+    customPlot.yAxis.setLabel("Random wobbly lines value")
+
+    # make top and right axes visible but without ticks and labels:
     customPlot.xAxis2.setVisible(True)
     customPlot.yAxis2.setVisible(True)
-    # make tick labels invisible on top and right axis:
+    customPlot.xAxis2.setTicks(False)
+    customPlot.yAxis2.setTicks(False)
     customPlot.xAxis2.setTickLabels(False)
     customPlot.yAxis2.setTickLabels(False)
-    # set ranges:
-    customPlot.xAxis.setRange(0, 2.5)
-    customPlot.yAxis.setRange(0.9, 1.6)
-    # assign top/right axes same properties as bottom/left:
-    customPlot.axisRect().setupFullAxesBox()
+
+    # set axis ranges to show all data:
+    customPlot.xAxis.setRange(now, now+24*3600*249)
+    customPlot.yAxis.setRange(0, 60)
+    # show legend with slightly transparent background brush:
+    customPlot.legend.setVisible(True)
+    customPlot.legend.setBrush(QColor(255, 255, 255, 150))
 
 
+
+    customPlot.rescaleAxes()
     customPlot.show()
 
     # Create and show the form
@@ -96,5 +117,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
+
 

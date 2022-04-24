@@ -31,7 +31,7 @@ In the folder *qcustomplot/qcp_examples* are the examples from the QCustomplot w
 
 ### Running the examples
 * Install the matching python wheel from the wheels directory (preferably in a virtual environment).
-* Start the shell script 'start.*' in the *qcustomplot/qcp_examples* folder 
+* Start the shell script *qcustomplot_examples* in the *qcustomplot_examples_pyside2* folder 
 
 ### Screenshots
 See the [Wiki] (https://github.com/SBGit-2019/Pyside-QCP/wiki) for some screenshots.
@@ -43,13 +43,32 @@ See the [Wiki] (https://github.com/SBGit-2019/Pyside-QCP/wiki) for some screensh
 Building on Linux is done with a Dockerimage with a _manylinux2_ (manylinux_2_17_x86_64) distribution. 
 The Dockerfile to create such an image is provided in the _Dockerfile_ or can be installed from 
 Docker Hub as *lyxhub/manylinux2014_x86_64_qt*
-Using
+Using for example the build directory *io*
 ```
+cd /io
+git clone https://github.com/SBGit-2019/Pyside-QCP.git
 docker run -v /io:/io lyxhub/manylinux2014_x86_64_qt
 ```
 This command will automatically create all Linux wheels in the directory _wheelhouse_.
 
-The github workflow _build_linux_wheels.yml_ performs this.
+The github workflow _build_linux_wheels.yml_ performs these steps.
+
+Outsode the manylinux image you need to:
+- sudo apt install mesa-common-dev libglu1-mesa-dev build-essential
+- sudo apt install patchelf
+- python -m venv /io/venv/py38
+- source /io/venv/bin/activate
+- Install Qt to /io/Qt (qt-unified-linux-x64-4.3.0-1-online.run)
+- Install pyside2 5.15.2 with shiboken2 and shiboken2 generator (pip install --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2 pyside2 shiboken2_generator)
+- Install libclang (>=8.0) libclang-release_110-based-linux-Ubuntu20.04-gcc9.3-x86_64.7z (
+https://download.qt.io/development_releases/prebuilt/libclang/)
+- export Qt5_DIR=/io/Qt/5.15.2/gcc_64/lib/cmake
+- export LLVM_INSTALL_DIR=/io/libclang
+- export LD_LIBRARY_PATH=/io/venv/py38/lib/python3.8/site-packages/PySide2/Qt/lib/
+- export MANYLINUX_PYTHON_VERSION=3.8
+- pip wheel  --no-deps .Â  -w wheelhouse/
+
+
 
 ### Installation for Windows 10:
 Installation of Qt and LLVM environment:

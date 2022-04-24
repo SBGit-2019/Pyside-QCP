@@ -118,7 +118,7 @@ print("ENV ",os.environ["MANYLINUX_PYTHON_VERSION"])
 print("CMAKE","-D MANYLINUX_PYTHON_VERSION={}".format(os.environ["MANYLINUX_PYTHON_VERSION"]))
 #sys.exit()
 setuptools.setup(
-    name="qcustomplot",
+    name="qcustomplot-pyside2",
     version="2.0.1",
     author="SBC",
     license = "GPT 3 | Commercial",
@@ -127,22 +127,22 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SBGit-2019/Pyside-QCP",
-    keywords=["QCP", "QCustomPlot"],
+    keywords=["QCP", "QCustomPlot", "PySide2","Plotting library"],
     #packages=setuptools.find_packages(),
-    packages=['qcustomplot', 'qcustomplot_examples'],
-    package_data = {'qcustomplot_examples':['*.py','*.ui', '*.jpg', '*.png']},
+    packages=['qcustomplot_pyside2', 'qcustomplot_examples_pyside2'],
+    package_data = {'qcustomplot_examples_pyside2':['*.py','*.ui', '*.jpg', '*.png']},
     entry_points={
     'console_scripts': [
-        'qcustomplot_examples = qcustomplot_examples.all_demos:main',
+        'qcustomplot_examples = qcustomplot_examples_pyside2.all_demos:main',
     ],
     'gui_scripts': [
-        'qcustomplot_examples_gui = qcustomplot_examples.all_demos:main',
+        'qcustomplot_examples_gui = qcustomplot_examples_pyside2.all_demos:main',
     ],
 },
-    
+
     #packages=[],
     ext_modules=[
-        CMakeExtension("qcustomplot.libqcustomplot", ".", [])
+        CMakeExtension("qcustomplot_pyside2.libqcustomplot", ".", [])
     ],
     install_requires=[
         'PySide2==5.15.2.1',
@@ -160,7 +160,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "License :: Other/Proprietary License",
         "Operating System :: Microsoft :: Windows",
-        "Operating System :: POSIX :: Linux",        
+        "Operating System :: POSIX :: Linux",
     ],
     include_package_data=True,
     cmdclass = {
