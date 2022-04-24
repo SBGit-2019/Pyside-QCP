@@ -66,7 +66,7 @@ https://download.qt.io/development_releases/prebuilt/libclang/)
 - export LLVM_INSTALL_DIR=/io/libclang
 - export LD_LIBRARY_PATH=/io/venv/py38/lib/python3.8/site-packages/PySide2/Qt/lib/
 - export MANYLINUX_PYTHON_VERSION=3.8
-- pip wheel  --no-deps .Â  -w wheelhouse/
+- pip wheel --no-deps . -w wheelhouse/
 
 
 
