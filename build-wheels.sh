@@ -90,10 +90,13 @@ for PYBIN in /opt/python/*/bin; do
      #python3 setup.py bdist_wheel
      #pip wheel ${QCPDIR}/ --no-clean --no-deps -w wheelhouse_${PYVER}/ 
      pip wheel ${QCPDIR}  --no-deps -w wheelhouse/ 
+     ls -l ${QCPDIR}/wheelhouse
 
 
-     wheel="qcustomplot-pyside2-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
-     targetwheel="qcustomplot-pyside2-${VERSION}-cp${PYCP}-abi3-${PLAT}.whl"
+     #      qcustomplot_pyside2-2.0.1-cp38-abi3-linux_x86_64.whl
+     #      qcustomplot_pyside2-2.0.1-cp310-abi3-linux_x86_64.whl
+     wheel=      "qcustomplot_pyside2-${VERSION}-cp${PYCP}-abi3-linux_x86_64.whl"
+     targetwheel="qcustomplot_pyside2-${VERSION}-cp${PYCP}-abi3-${PLAT}.whl"
      if [ -f "${QCPDIR}/wheelhouse/$targetwheel" ]; then
        rm -f ${QCPDIR}/wheelhouse/$targetwheel
      fi
@@ -107,6 +110,6 @@ done
 chmod a+rwx ${QCPDIR}/wheelhouse/
 
 rm -rf ${VENV}/
-rm -rf ${QCPDIR}/qcustomplot-pyside2.egg-info
+rm -rf ${QCPDIR}/qcustomplot_pyside2.egg-info
 
 echo "Ready."
