@@ -33,18 +33,18 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Bar Chart Demo')
 
     # set dark background gradient:
-    gradient = QLinearGradient(0, 0, 0, 400)  
+    gradient = QLinearGradient(0, 0, 0, 400)
     gradient.setColorAt(0, QColor(90, 90, 90))
     gradient.setColorAt(0.38, QColor(105, 105, 105))
     gradient.setColorAt(1, QColor(70, 70, 70))
     customPlot.setBackground(QBrush(gradient))
-    
+
     # create empty bar chart objects:
     regen = QCPBars(customPlot.xAxis, customPlot.yAxis)
     nuclear = QCPBars(customPlot.xAxis, customPlot.yAxis)
@@ -68,9 +68,9 @@ def demo(app):
     # stack bars on top of each other:
     nuclear.moveAbove(fossil)
     regen.moveAbove(nuclear)
-    
+
     # prepare x axis with country labels:
-    xAxis = customPlot.xAxis  
+    xAxis = customPlot.xAxis
     gridX = xAxis.grid()
     ticks = [1, 2, 3, 4, 5, 6, 7]
     labels = ["USA", "Japan", "Germany", "France", "UK", "Italy", "Canada"]
@@ -87,7 +87,7 @@ def demo(app):
     gridX.setPen(QPen(QColor(130, 130, 130), 0, Qt.DotLine))
     customPlot.xAxis.setTickLabelColor(Qt.white)
     customPlot.xAxis.setLabelColor(Qt.white)
-    
+
     # prepare y axis:
     yAxis = customPlot.yAxis
     gridY = yAxis.grid()
@@ -102,7 +102,7 @@ def demo(app):
     customPlot.yAxis.setLabelColor(Qt.white)
     gridY.setPen(QPen(QColor(130, 130, 130), 0, Qt.SolidLine))
     gridY.setSubGridPen(QPen(QColor(130, 130, 130), 0, Qt.DotLine))
-    
+
     # Add data:
     fossilData = [0.86*10.5, 0.83*5.5, 0.84*5.5, 0.52*5.8, 0.89*5.2, 0.90*4.2, 0.67*11.2]
     nuclearData = [0.08*10.5, 0.12*5.5, 0.12*5.5, 0.40*5.8, 0.09*5.2, 0.00*4.2, 0.07*11.2]
@@ -110,7 +110,7 @@ def demo(app):
     fossil.setData(ticks, fossilData)
     nuclear.setData(ticks, nuclearData)
     regen.setData(ticks, regenData)
-    
+
     # setup legend:
     customPlot.legend.setVisible(True)
     customPlot.axisRect().insetLayout().setInsetAlignment(0, Qt.AlignTop|Qt.AlignHCenter)
@@ -122,11 +122,16 @@ def demo(app):
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
+
     customPlot.show()
     res = app.exec_()
     customPlot = None
     return res
-    
+
 
 if __name__ == '__main__':
     # Create the Qt Application
@@ -134,7 +139,7 @@ if __name__ == '__main__':
     res = demo(app)
     sys.exit(res)
 
-    
+
 
 
 

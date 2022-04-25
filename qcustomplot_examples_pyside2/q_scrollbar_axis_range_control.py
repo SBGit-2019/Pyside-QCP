@@ -71,17 +71,17 @@ class MainWindow(QMainWindow):
         # just increase the the minimum/maximum values of the scroll bars as needed.
         self.ui.horizontalScrollBar.setRange(-500, 500);
         self.ui.verticalScrollBar.setRange(-500, 500);
-  
+
         # create connection between axes and scroll bars:
         self.ui.horizontalScrollBar.valueChanged.connect(self.horzScrollBarChanged)
         self.ui.verticalScrollBar.valueChanged.connect(self.vertScrollBarChanged)
         self.ui.plot.xAxis.rangeChanged.connect(self.xAxisChanged)
         self.ui.plot.yAxis.rangeChanged.connect(self.yAxisChanged)
-        
+
         # initialize axis range (and scroll bar positions via signals we just connected):
         self.ui.plot.xAxis.setRange(0, 6,  Qt.AlignCenter)
         self.ui.plot.yAxis.setRange(0, 10, Qt.AlignCenter)
-    
+
     def xAxisChanged(self, range):
       self.ui.horizontalScrollBar.setValue(round(range.center()*100.0)) # adjust position of scroll bar slider
       self.ui.horizontalScrollBar.setPageStep(round(range.size()*100.0)) # adjust size of scroll bar slider
@@ -121,20 +121,24 @@ class MainWindow(QMainWindow):
       self.ui.plot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
 
 
-def demo(app):
+def demo(app, demotime=0):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(mainWin.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     mainWin.show()
     res = app.exec_()
     mainWin.ui.plot = None
     return res
-    
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-    
-     
+
+
+

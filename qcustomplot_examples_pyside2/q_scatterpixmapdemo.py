@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Scatter Pixmap Demo')
@@ -62,7 +62,7 @@ def demo(app):
 
     font = QFont("sans", 12, QFont.Bold)
     text = QCPTextElement(customPlot, "Regenerative Energies", font)
-    # set title of plot:    
+    # set title of plot:
     customPlot.plotLayout().insertRow(0)
     customPlot.plotLayout().addElement(0, 0, text)
     # axis configurations:
@@ -88,6 +88,10 @@ def demo(app):
 
     customPlot.rescaleAxes()
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
     # Create and show the form
@@ -95,14 +99,14 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-    
+
+
 
 

@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Sinc Scatter Demo')
@@ -78,11 +78,11 @@ def demo(app):
     customPlot.graph(3).setName("Measurement")
 
     # generate ideal sinc curve data and some randomly perturbed data for scatter plot:
-    #x0 = [(0.0,0.0)] * 250 
-    x0 = [0.0] * 250 
-    y0 = [0.0] * 250 
-    yConfUpper = [0.0] * 250 
-    yConfLower = [0.0] * 250 
+    #x0 = [(0.0,0.0)] * 250
+    x0 = [0.0] * 250
+    y0 = [0.0] * 250
+    yConfUpper = [0.0] * 250
+    yConfLower = [0.0] * 250
     for i in range(0, 250):
       x0[i] = (i/249.0-0.5)*30+0.01 # by adding a small offset we make sure not do divide by zero in next code line
       y0[i] = math.sin(x0[i])/x0[i] # sinc function
@@ -93,9 +93,9 @@ def demo(app):
     #list1, list2 = zip(*x0)
 
 
-    x1 = [0.0] * 50 
-    y1 = [0.0] * 50 
-    y1err = [0.0] * 50 
+    x1 = [0.0] * 50
+    y1 = [0.0] * 50
+    y1err = [0.0] * 50
     for i in range(0, 50):
       # generate a gaussian distributed random number:
       tmp1 = uniform(0.0,1.0)
@@ -126,6 +126,10 @@ def demo(app):
     customPlot.axisRect().setupFullAxesBox()
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
 
@@ -134,7 +138,7 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application

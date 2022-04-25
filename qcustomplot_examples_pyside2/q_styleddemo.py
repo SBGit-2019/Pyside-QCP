@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     # prepare data:
     x1 = [0.0] * 20
     y1 = [0.0] * 20
@@ -48,7 +48,7 @@ def demo(app):
     for i in range(0, len(x2)):
       x2[i] = float(i)/99.0*10.0
       y2[i] = math.cos(x2[i]*0.85+math.sin(x2[i]*0.165+1.1))*math.sin(x2[i]*0.50)+1.7
-     
+
     x3 = [0.0] * 20
     y3 = [0.0] * 20
     for i in range(0, len(x3)):
@@ -168,6 +168,10 @@ def demo(app):
     customPlot.rescaleAxes()
     customPlot.yAxis.setRange(0, 2)
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
     res = app.exec_()
     customPlot = None

@@ -73,7 +73,7 @@ def realtimeDataSlot(): # called by timer
 
 
 
-def demo(app):
+def demo(app, demotime=0):
     global lastPointKey
     global time
     global customPlot
@@ -104,6 +104,10 @@ def demo(app):
     dataTimer.start(0)
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
 
@@ -111,15 +115,15 @@ def demo(app):
     # Run the main Qt loop
     res = app.exec_()
     del dataTimer
-    
+
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
 

@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Logarithmic Demo')
@@ -70,7 +70,7 @@ def demo(app):
     dataCount = 200
     dataFactorialCount = 21
     # Use tuples instead of lists
-    dataLinear = [(0.0,0.0)] * dataCount 
+    dataLinear = [(0.0,0.0)] * dataCount
     # Use lists
     dataMinusSinExpX =  [0.0] * dataCount
     dataMinusSinExpY =  [0.0] * dataCount
@@ -129,19 +129,23 @@ def demo(app):
     customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)
     customPlot.yAxis.rangeChanged.connect(customPlot.yAxis2.setRange)
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
-    
+
 
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+

@@ -35,7 +35,7 @@ from qcustomplot_pyside2 import *
 import shiboken2 as Shiboken
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Line Style Demo')
@@ -73,24 +73,28 @@ def demo(app):
     # make top right axes clones of bottom left axes:
     customPlot.axisRect().setupFullAxesBox()
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
-    
+
 
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-    
-    
+
+
+
 
 
 

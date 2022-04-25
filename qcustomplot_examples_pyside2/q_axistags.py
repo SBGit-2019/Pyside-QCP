@@ -86,7 +86,7 @@ class AxisTag(QObject):
       # ptPlotCoordinates of the passed parent axis, so the vertical coordinate is set to the new
       # value.
       self.mDummyTracer.position().setCoords(1, value)
-      
+
       # We want the arrow head to be at the same horizontal position as the axis backbone, even if
       # the axis has a certain offset from the axis rect border (like the added second y axis). Thus we
       # set the horizontal pixel position of the arrow end (head) to the axis offset (the pixel
@@ -160,13 +160,13 @@ class MainWindow(QMainWindow):
         mPlot.axisRect().addAxis(QCPAxis.atRight)
         mPlot.axisRect().axis(QCPAxis.atRight, 0).setPadding(30) # add some padding to have space for tags
         mPlot.axisRect().axis(QCPAxis.atRight, 1).setPadding(30) # add some padding to have space for tags
-        
+
         # create graphs:
         self.mGraph1 = mPlot.addGraph(mPlot.xAxis, mPlot.axisRect().axis(QCPAxis.atRight, 0))
         self.mGraph2 = mPlot.addGraph(mPlot.xAxis, mPlot.axisRect().axis(QCPAxis.atRight, 1))
         self.mGraph1.setPen(QPen(QColor(250, 120, 0)))
         self.mGraph2.setPen(QPen(QColor(0, 180, 60)))
-        
+
         # create tags with newly introduced AxisTag class (see axistag.h/.cpp):
         self.mTag1 = AxisTag(self.mGraph1.valueAxis())
         self.mTag1.setPen(self.mGraph1.pen())
@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
       self.mGraph1.rescaleValueAxis(False, True)
       self.mGraph2.rescaleValueAxis(False, True)
       self.mPlot.xAxis.setRange(self.mPlot.xAxis.range().upper, 100, Qt.AlignRight)
-      
+
       # update the vertical axis tag positions and texts to match the rightmost data point of the graphs:
       graph1Value = self.mGraph1.dataMainValue(self.mGraph1.dataCount()-1)
       graph2Value = self.mGraph2.dataMainValue(self.mGraph2.dataCount()-1)
@@ -197,29 +197,33 @@ class MainWindow(QMainWindow):
       self.mTag2.updatePosition(graph2Value)
       self.mTag1.setText(s1)
       self.mTag2.setText(s2)
-      
+
       self.mPlot.replot();
-       
+
     def __del__(self):
       del self.dataTimer
       #äself.mTag1.delete()
       #self.mTag2.delete()
       self.ui.mPlot = None
- 
-def demo(app):
+
+def demo(app, demotime=0):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(mainWin.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     mainWin.show()
     res = app.exec_()
     mainWin = None
     return res
-    
-    
+
+
 if __name__ == '__main__':
     # Create the Qt Application
     QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-     
+
+

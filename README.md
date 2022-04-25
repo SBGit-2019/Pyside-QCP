@@ -78,6 +78,10 @@ These can be used as basis for own development or for seeing the features of the
 See the [Wiki] (https://github.com/SBGit-2019/Pyside-QCP/wiki) for some screenshots and explanations.
 All screenshots can also be found in the [figures directory](https://github.com/SBGit-2019/Pyside-QCP/tree/master/FIG).
 
+## Versions
+The version naming of the Python bindings is analogue to the naming of the QCustomPlot library.
+- v2.0.1: QCustomPlot library 2.0.1: All basic features
+- v2.1.0: QCustomPlot library 2.1.0: Experimental radial plots
 
 ## License
 

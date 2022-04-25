@@ -33,7 +33,7 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Statistical Demo')
@@ -42,7 +42,7 @@ def demo(app):
     boxBrush = QBrush(QColor(60, 60, 255, 100))
     boxBrush.setStyle(Qt.Dense6Pattern) # make it look oldschool
     statistical.setBrush(boxBrush)
- 
+
     # specify data:
     statistical.addData(1, 1.1, 1.9, 2.25, 2.7, 4.2)
     vec1 = [ 0.7 , 0.34 , 0.45 , 6.2 , 5.8] # provide some outliers as QVector
@@ -67,6 +67,10 @@ def demo(app):
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
 
@@ -75,13 +79,13 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-    
+
+
 

@@ -33,7 +33,7 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Polarplot Demo')
@@ -66,6 +66,10 @@ def demo(app):
     angularAxis.setRange(0, 360)
     angularAxis.radialAxis().setRange(-10, 10)
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
 
     customPlot.show()
 

@@ -70,7 +70,7 @@ class MainWindow(QMainWindow):
         for i in range(0, n):
           x[i] = (float(i)/float(n)-0.5)*10.0*xScale + xOffset
           y[i] = (math.sin(x[i]*r1*5.0)*math.sin(math.cos(x[i]*r2)*r4*3.0)+r3*math.cos(math.sin(x[i])*r4*2.0))*yScale + yOffset
-      
+
         gx = self.ui.customPlot.addGraph()
         #print("GX=",gx," and ",self.ui.customPlot.graph())
         gx.setName("New graph "+str(self.ui.customPlot.graphCount()-1))
@@ -133,7 +133,7 @@ class MainWindow(QMainWindow):
         self.ui.customPlot.axisDoubleClick.connect(self.axisLabelDoubleClick)
         # connect slot that ties some axis selections together (especially opposite axes):
         self.ui.customPlot.selectionChangedByUser.connect(self.selectionChanged)
-        # connect slot that shows a message in the status bar when a graph is clicked:        
+        # connect slot that shows a message in the status bar when a graph is clicked:
         self.ui.customPlot.plottableClick.connect(self.graphClicked)
 
     def graphClicked(self, plottable, dataIndex, event):
@@ -141,7 +141,7 @@ class MainWindow(QMainWindow):
         # usually it's better to first check whether interface1D() returns non-zero, and only then use it.
         plottable.setName("Changed # "+str(dataIndex))
         # ERROR VALUE
-        pi1d = plottable.interface1D() 
+        pi1d = plottable.interface1D()
         dataValue = pi1d.dataMainValue(dataIndex)
         dataValue2 = plottable.dataMainValue(dataIndex)
         message = "Clicked on graph "+str(plottable.name())+" at data point "+str(dataIndex)+" with value "+str(dataValue2)
@@ -152,10 +152,10 @@ class MainWindow(QMainWindow):
         normally, axis base line, axis tick labels and axis labels are selectable separately, but we want
         the user only to be able to select the axis as a whole, so we tie the selected states of the tick labels
         and the axis base line together. However, the axis label shall be selectable individually.
-    
+
         The selection state of the left and right axes shall be synchronized as well as the state of the
         bottom and top axes.
-    
+
         Further, we want to synchronize the selection of the graphs with the selection state of the respective
         legend item belonging to that graph. So the user can select a graph by either clicking on the graph itself
         or on its legend item.
@@ -174,7 +174,7 @@ class MainWindow(QMainWindow):
             self.customPlot.yAxis2.setSelectedParts(QCPAxis.spAxis | QCPAxis.spTickLabels)
 
     def axisLabelDoubleClick(self, axis, part):
-        if part == QCPAxis.spAxisLabel : 
+        if part == QCPAxis.spAxisLabel :
             newLabel = QInputDialog.getText(self, "QCustomPlot example", "New axis label:", QLineEdit.Normal, axis.label());
             if newLabel[1] :
               axis.setLabel(newLabel[0]);
@@ -192,15 +192,21 @@ class MainWindow(QMainWindow):
     def createStatusBar(self):
         self.statusBar().showMessage("Ready")
 
-if __name__ == '__main__':
 
-    import sys
-
-    QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
-    app = QApplication(sys.argv)
+def demo(app, demotime=0):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(mainWin.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     mainWin.show()
     res = app.exec_()
     mainWin.ui.customPlot = None
+    return res
+
+if __name__ == '__main__':
+    # Create the Qt Application
+    app = QApplication(sys.argv)
+    res = demo(app)
     sys.exit(res)

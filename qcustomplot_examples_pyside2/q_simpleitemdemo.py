@@ -34,29 +34,33 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Simple Item Demo')
 
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
-    
+
     # add the text label at the top:
     textLabel = QCPItemText(customPlot)
     textLabel.setPositionAlignment(Qt.AlignTop|Qt.AlignHCenter)
-    textLabel.position().setType(QCPItemPosition.ptAxisRectRatio) 
-    textLabel.position().setCoords(0.5, 0) # place position at center/top of axis rect 
+    textLabel.position().setType(QCPItemPosition.ptAxisRectRatio)
+    textLabel.position().setCoords(0.5, 0) # place position at center/top of axis rect
     textLabel.setText("Text Item Demo")
     textLabel.setFont(QFont(QtGui.QFont().family(), 16)) # make font a bit larger
     textLabel.setPen(QPen(Qt.black)) # show black border around text
-    
+
     # add the arrow:
     arrow = QCPItemLine(customPlot)
-    arrow.start().setParentAnchor(textLabel.bottom()) 
-    arrow.end().setCoords(4, 1.6) # point to (4, 1.6) in x-y-plot coordinates 
+    arrow.start().setParentAnchor(textLabel.bottom())
+    arrow.end().setCoords(4, 1.6) # point to (4, 1.6) in x-y-plot coordinates
     spike = QCPLineEnding(QCPLineEnding.esSpikeArrow)
     arrow.setHead(spike)
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
     # Create and show the form
@@ -64,13 +68,13 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
 
 

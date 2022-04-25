@@ -72,7 +72,7 @@ class QCPDocumentObject(QPyTextObject):
       qcpPainter.begin(picture)
       plot.toPainter(qcpPainter, width, height)
       qcpPainter.end()
-      
+
       result = QTextCharFormat()
       result.setObjectType(MainWindow.QCPTextFormat)
       result.setProperty(MainWindow.QCPData, picture)
@@ -125,20 +125,20 @@ class MainWindow(QMainWindow):
       print("on_actionInsert_Plot_triggered")
       ui = self.ui
       cursor = ui.textEdit.textCursor()
-      
+
       # insert the current plot at the cursor position. QCPDocumentObject::generatePlotFormat creates a
       # vectorized snapshot of the passed plot (with the specified width and height) which gets inserted
       # into the text document.
       if ui.cbUseCurrentSize.isChecked():
         width = 0
         height = 0
-      else :  
+      else :
         width  = ui.sbWidth.value()
         height = ui.sbHeight.value()
 
       dd = QCPDocumentObject.generatePlotFormat(ui.plot, width, height)
       cursor.insertText(chr(0xfffc),dd)
-      
+
       ui.textEdit.setTextCursor(cursor)
 
     def on_actionSave_Document_triggered(self):
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow):
      #    return
      #fileName = fileName[0]+".pdf"
       print("FILENAMKE=",fileName)
-      
+
       printer = QPrinter()
       printer.setOutputFormat(QPrinter.PdfFormat)
       printer.setOutputFileName(fileName)
@@ -182,7 +182,7 @@ class MainWindow(QMainWindow):
         x[i] = i
         y0[i] = math.exp(-i/150.0)*math.cos(i/10.0) # exponentially decaying cosine
         y1[i] = math.exp(-i/150.0) # exponential envelope
-      
+
       # configure right and top axis to show ticks but no labels:
       # (see QCPAxisRect::setupFullAxesBox for a quicker method to do this)
       ui.plot.xAxis2.setVisible(True)
@@ -203,21 +203,25 @@ class MainWindow(QMainWindow):
       # Allow user to drag axis ranges with mouse, zoom with mouse wheel and select graphs by clicking:
       ui.plot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
 
-def demo(app):
+def demo(app, demotime=0):
     mainWin = MainWindow()
     mainWin.resize(800, 600)
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(mainWin.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     mainWin.show()
-   
+
 
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     mainWin.ui.plot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
-    sys.exit(res)    
+    sys.exit(res)

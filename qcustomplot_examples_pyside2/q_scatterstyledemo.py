@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Scatter Style Demo')
@@ -43,7 +43,7 @@ def demo(app):
     customPlot.legend.setFont(QFont("Helvetica", 9))
     customPlot.legend.setRowSpacing(-3)
     shapes = [QCPScatterStyle.ssCross, QCPScatterStyle.ssPlus, QCPScatterStyle.ssCircle, QCPScatterStyle.ssDisc, QCPScatterStyle.ssSquare, QCPScatterStyle.ssDiamond, QCPScatterStyle.ssStar, QCPScatterStyle.ssTriangle, QCPScatterStyle.ssTriangleInverted, QCPScatterStyle.ssCrossSquare, QCPScatterStyle.ssPlusSquare, QCPScatterStyle.ssCrossCircle, QCPScatterStyle.ssPlusCircle, QCPScatterStyle.ssPeace, QCPScatterStyle.ssCustom]
-      
+
     pen = QPen()
     # add graphs with different scatter styles:
     for i in range(0, len(shapes)):
@@ -62,9 +62,9 @@ def demo(app):
       #print("dirxx=",dir(QCPScatterStyle.ScatterShape))
       #for key in QCPScatterStyle.ScatterShape.values:
       #    print("KE=",key)
-      keyS = (shapes[i].name).decode("utf-8") 
+      keyS = (shapes[i].name).decode("utf-8")
       current = QCPScatterStyle.ScatterShape.values[keyS]
-      #print("bla=",   shapes[i]) 
+      #print("bla=",   shapes[i])
       #print("blak=",   current.name)
       # ToDo: customPlot.graph().setName(QCPScatterStyle.staticMetaObject.enumerator(QCPScatterStyle.staticMetaObject.indexOfEnumerator("ScatterShape")).valueToKey(shapes[i]))
       customPlot.graph().setName(keyS)
@@ -89,17 +89,21 @@ def demo(app):
 
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+

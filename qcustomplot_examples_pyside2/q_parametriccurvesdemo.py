@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     # generate the curve data points:
     pointCount = 500
 
@@ -86,14 +86,18 @@ def demo(app):
     customPlot.axisRect().setupFullAxesBox()
     customPlot.rescaleAxes()
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
-    
+
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application

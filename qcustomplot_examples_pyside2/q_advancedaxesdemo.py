@@ -33,7 +33,7 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(550, 400)
     customPlot.setWindowTitle('Advanced Axes Demo')
@@ -97,7 +97,7 @@ def demo(app):
     for i in range(0, len(dataRandomX)):
       dataRandomX[i] = float(i)/float(len(dataRandomX))*10.0
       dataRandomY[i] = uniform(0.0,1.0)-0.5+dataRandomY[max(0,i-1)]
-    
+
     rMax = max (dataRandomY)
     rMin = min(dataRandomY)
     rAbs = max(abs(rMax),abs(rMin))
@@ -150,6 +150,10 @@ def demo(app):
 
 
    # customPlot.rescaleAxes()
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
 
     customPlot.show()
     res = app.exec_()
@@ -162,7 +166,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
 
 
 

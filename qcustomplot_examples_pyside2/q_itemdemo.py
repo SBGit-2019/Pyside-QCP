@@ -43,7 +43,7 @@ def bracketDataSlot():
   global itemDemoPhaseTracer
 
   secs = QCPAxisTickerDateTime.dateTimeToKey(QDateTime.currentDateTime())
-  
+
   # update data to make phase move:
   n = 500
   phase = secs*5
@@ -53,34 +53,34 @@ def bracketDataSlot():
   for i in range(0, n):
     x[i] = i/(n-1)*34 - 17
     y[i] = math.exp(-x[i]*x[i]/20.0)*math.sin(k*x[i]+phase)
-  
+
   customPlot.graph().setData(x, y)
-  
+
   itemDemoPhaseTracer.setGraphKey((8*math.pi+math.fmod(math.pi*1.5-phase, 6*math.pi))/k)
-  
+
   customPlot.replot()
-  
+
   # calculate frames per second:
-  key = secs  
+  key = secs
   frameCount += 1
 
-  if key-lastFpsKey > 2: # average fps over 2 seconds 
+  if key-lastFpsKey > 2: # average fps over 2 seconds
       fps = float(frameCount)/(float)(key-lastFpsKey)
       fps_str = '{:3.2f}'.format(fps)
       customPlot.setWindowTitle('Real Time Data Demo FPS: '+fps_str)
       lastFpsKey = key
       frameCount = 0
-  
 
 
 
-def demo(app):
+
+def demo(app, demotime=0):
     global customPlot
     global itemDemoPhaseTracer
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Item Demo')
-    
+
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
     graph = customPlot.addGraph()
     n = 500
@@ -91,7 +91,7 @@ def demo(app):
     for i in range(0, n):
       x[i] = i/(n-1)*34 - 17
       y[i] = math.exp(-x[i]*x[i]/20.0)*math.sin(k*x[i]+phase)
-    
+
     xAxis = customPlot.yAxis
     gridX = xAxis.grid()
     graph.setData(x, y)
@@ -113,7 +113,7 @@ def demo(app):
     wavePacketText.setPositionAlignment(Qt.AlignBottom|Qt.AlignHCenter)
     wavePacketText.setText("Wavepacket")
     wavePacketText.setFont(QFont(QtGui.QFont().family(), 10))
-   
+
     # add the phase tracer (red circle) which sticks to the graph data (and gets updated in bracketDataSlot by timer event):
     phaseTracer = QCPItemTracer(customPlot)
     itemDemoPhaseTracer = phaseTracer # so we can access it later in the bracketDataSlot for animation
@@ -124,7 +124,7 @@ def demo(app):
     phaseTracer.setPen(QPen(Qt.red))
     phaseTracer.setBrush(Qt.red)
     phaseTracer.setSize(7)
-   
+
     # add label for phase tracer:
     phaseTracerText = QCPItemText(customPlot)
     phaseTracerText.position().setType(QCPItemPosition.ptAxisRectRatio)   # ToDo: position2?
@@ -147,7 +147,7 @@ def demo(app):
     phaseTracerArrow.endDir().setCoords(30, 30)
     phaseTracerArrow.setHead(spike)
     phaseTracerArrow.setTail(QCPLineEnding(QCPLineEnding.esBar, (phaseTracerText.bottom().pixelPosition().y()-phaseTracerText.top().pixelPosition().y())*0.85))
-    
+
     # add the group velocity tracer (green circle):
     groupTracer = QCPItemTracer(customPlot)
     groupTracer.setGraph(graph)
@@ -157,7 +157,7 @@ def demo(app):
     groupTracer.setPen(QPen(Qt.green))
     groupTracer.setBrush(Qt.green)
     groupTracer.setSize(7)
-    
+
     # add label for group tracer:
     groupTracerText = QCPItemText(customPlot)
     groupTracerText.position().setType(QCPItemPosition.ptAxisRectRatio)   # ToDo: position2?
@@ -167,7 +167,7 @@ def demo(app):
     groupTracerText.setTextAlignment(Qt.AlignLeft)
     groupTracerText.setFont(QFont(QtGui.QFont().family(), 9))
     groupTracerText.setPadding(QMargins(8, 0, 0, 0))
-    
+
     # add arrow pointing at group tracer, coming from label:
     groupTracerArrow = QCPItemCurve(customPlot)
     groupTracerArrow.start().setParentAnchor(groupTracerText.left())
@@ -178,7 +178,7 @@ def demo(app):
     groupTracerArrow.endDir().setCoords(0, -40)
     groupTracerArrow.setHead(spike)
     groupTracerArrow.setTail(QCPLineEnding(QCPLineEnding.esBar, (groupTracerText.bottom().pixelPosition().y()-groupTracerText.top().pixelPosition().y())*0.85))
-    
+
     # add dispersion arrow:
     arrow = QCPItemCurve(customPlot)
     arrow.start().setCoords(1, -1.1)
@@ -186,14 +186,14 @@ def demo(app):
     arrow.endDir().setCoords(-5, -0.3)
     arrow.end().setCoords(-10, -0.2)
     arrow.setHead(spike)
-    
+
     # add the dispersion arrow label:
     dispersionText = QCPItemText(customPlot)
     dispersionText.position().setCoords(-6, -0.9)
     dispersionText.setRotation(40)
     dispersionText.setText("Dispersion with\nvp < vg")
     dispersionText.setFont(QFont(QtGui.QFont().family(), 10))
-    
+
     # setup a timer that repeatedly calls MainWindow.bracketDataSlot:
     # ToDo: dataTimer.timeout.connect(this.bracketDataSlot)
     # ToDo: dataTimer.start(0) # Interval 0 means to refresh as fast as possible"""
@@ -201,6 +201,10 @@ def demo(app):
     dataTimer.timeout.connect(bracketDataSlot)
     dataTimer.start(0)
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
     # Create and show the form
@@ -208,7 +212,7 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application

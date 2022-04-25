@@ -126,20 +126,24 @@ class Window(QWidget):
         self.setLayout(mainLayout)
 
 
-def demo(app):
+def demo(app, demotime=0):
     window = Window()
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(window.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     window.show()
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     window = None
-    return res    
-    
-    
+    return res
+
+
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-    
+
+

@@ -34,13 +34,13 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Financial Charts Demo')
 
     customPlot.legend.setVisible(True)
-    
+
     # generate two sets of random walk data (one for candlestick and one for ohlc chart):
     n = 500
     time = [0.0]*n
@@ -57,7 +57,7 @@ def demo(app):
       time[i] = startTime + 3600*i
       value1[i] = value1[i-1] + (uniform(0.0,1.0)-0.5)*10
       value2[i] = value2[i-1] + (uniform(0.0,1.0)-0.5)*3
-       
+
     # create candlestick chart:
     candlesticks = QCPFinancial(customPlot.xAxis, customPlot.yAxis)
     candlesticks.setName("Candlestick")
@@ -70,7 +70,7 @@ def demo(app):
     candlesticks.setBrushNegative(QColor(40, 40, 40))
     candlesticks.setPenPositive(QPen(QColor(0, 0, 0)))
     candlesticks.setPenNegative(QPen(QColor(0, 0, 0)))
-    
+
     # create ohlc chart:
     ohlc = QCPFinancial(customPlot.xAxis, customPlot.yAxis)
     ohlc.setName("OHLC")
@@ -79,7 +79,7 @@ def demo(app):
     ohlc.setData(fdata2) # divide binSize by 3 just to make the ohlc bars a bit denser
     ohlc.setWidth(binSize*0.2)
     ohlc.setTwoColored(True)
-    
+
     # create bottom axis rect for volume bar chart:
     QWIDGETSIZE_MAX = (1 << 24) - 1 # ToDo: QWIDGETSIZE_MAX is not defined in PySide2?
     volumeAxisRect = QCPAxisRect(customPlot)
@@ -101,18 +101,18 @@ def demo(app):
         volumeNeg.addData(startTime+3600*5.0*i, math.fabs(v))
       else:
         volumePos.addData(startTime+3600*5.0*i, math.fabs(v))
-    
+
     volumePos.setWidth(3600*4)
     volumePos.setPen(Qt.NoPen)
     volumePos.setBrush(QColor(100, 180, 110))
     volumeNeg.setWidth(3600*4)
     volumeNeg.setPen(Qt.NoPen)
     volumeNeg.setBrush(QColor(180, 90, 90))
-    
+
     # interconnect x axis ranges of main and bottom axis rects:
     customPlot.xAxis.rangeChanged.connect(volumeAxisRect.axis(QCPAxis.atBottom).setRange)
     volumeAxisRect.axis(QCPAxis.atBottom).rangeChanged.connect(customPlot.xAxis.setRange)
-    
+
     # configure axes of both main and bottom axis rect:
     dateTimeTicker = QCPAxisTickerDateTime()
     dateTimeTicker.setDateTimeSpec(Qt.UTC)
@@ -129,19 +129,24 @@ def demo(app):
     customPlot.rescaleAxes()
     customPlot.xAxis.scaleRange(1.025, customPlot.xAxis.range().center())
     customPlot.yAxis.scaleRange(1.1, customPlot.yAxis.range().center())
-    
+
     # make axis rects' left side line up:
     group = QCPMarginGroup(customPlot)
     customPlot.axisRect().setMarginGroup(QCP.msLeft|QCP.msRight, group)
     volumeAxisRect.setMarginGroup(QCP.msLeft|QCP.msRight, group)
-    
+
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
+
     customPlot.show()
     # Create and show the form
     # Run the main Qt loop
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 
 if __name__ == '__main__':

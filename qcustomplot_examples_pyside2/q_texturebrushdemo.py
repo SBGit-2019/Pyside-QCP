@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Texture Brush Demo')
@@ -49,13 +49,13 @@ def demo(app):
     redDotPen.setWidthF(2)
     customPlot.graph(0).setPen(redDotPen)
     customPlot.graph(0).setBrush(QBrush(QPixmap(our_package_dir+"/balboa.jpg"))) # fill with texture of specified image
-    
+
     customPlot.addGraph()
     customPlot.graph(1).setPen(QPen(Qt.red))
-    
+
     # activate channel fill for graph 0 towards graph 1:
     customPlot.graph(0).setChannelFillGraph(customPlot.graph(1))
-    
+
     # generate data:
     x = [0.0]*250
     y0 = [0.0]*250
@@ -65,7 +65,7 @@ def demo(app):
       x[i] = 3*i/250.0
       y0[i] = 1+math.exp(-x[i]*x[i]*0.8)*(x[i]*x[i]+x[i])
       y1[i] = 1-math.exp(-x[i]*x[i]*0.4)*(x[i]*x[i])*0.1
-    
+
     # pass data points to graphs:
     customPlot.graph(0).setData(x, y0)
     customPlot.graph(1).setData(x, y1)
@@ -82,6 +82,10 @@ def demo(app):
     customPlot.axisRect().setupFullAxesBox()
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
     # Create and show the form
@@ -89,12 +93,12 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
 

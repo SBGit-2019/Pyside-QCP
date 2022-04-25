@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Color Map Demo')
@@ -59,7 +59,7 @@ def demo(app):
             r = 3.0*math.sqrt(x*x+y*y)+1e-2
             z = 2.0*x*(math.cos(r+2.0)/r-math.sin(r+2.0)/r) # the B field strength of dipole radiation (modulo physical constants)
             colorMap.data().setCell(xIndex, yIndex, z)
-   
+
     # add a color scale:
     colorScale = QCPColorScale(customPlot)
     customPlot.plotLayout().addElement(0, 1, colorScale) # add it to the right of the main axis rect
@@ -71,11 +71,11 @@ def demo(app):
     h1 = QCPColorGradient(QCPColorGradient.gpPolar)
     colorMap.setGradient(h1)
     # we could have also created a QCPColorGradient instance and added own colors to
-    # the gradient, see the documentation of QCPColorGradient for what's possible.   
+    # the gradient, see the documentation of QCPColorGradient for what's possible.
 
     # rescale the data dimension (color) such that all data points lie in the span visualized by the color gradient:
     colorMap.rescaleDataRange();
- 
+
     # make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
     marginGroup = QCPMarginGroup(customPlot)
     customPlot.axisRect().setMarginGroup(QCP.msBottom|QCP.msTop, marginGroup)
@@ -83,8 +83,13 @@ def demo(app):
 
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom | QCP.iSelectPlottables)
     customPlot.axisRect().setupFullAxesBox()
-    # rescale the key (x) and value (y) axes so the whole color map is visible:    
+    # rescale the key (x) and value (y) axes so the whole color map is visible:
     customPlot.rescaleAxes()
+
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
 
     customPlot.show()
     res = app.exec_()

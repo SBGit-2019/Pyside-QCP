@@ -33,12 +33,12 @@ from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,Q
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Simple Demo')
 
-  
+
     # add two new graphs and set their look:
     customPlot.addGraph()
     customPlot.graph(0).setPen(QPen(Qt.blue)) # line color blue for first graph
@@ -46,14 +46,14 @@ def demo(app):
     customPlot.addGraph()
     customPlot.graph(1).setPen(QPen(Qt.red)) # line color red for second graph
     # generate some points of data (y0 for first, y1 for second graph):
-    x = [0.0] * 251 
-    y0 = [0.0] * 251 
-    y1 = [0.0] * 251 
+    x = [0.0] * 251
+    y0 = [0.0] * 251
+    y1 = [0.0] * 251
     for i in range(0,251):
       x[i] = i
       y0[i] = math.exp(-i/150.0)*math.cos(i/10.0) # exponentially decaying cosine
       y1[i] = math.exp(-i/150.0)              # exponential envelope
-    
+
     # configure right and top axis to show ticks but no labels:
     # (see QCPAxisRect::setupFullAxesBox for a quicker method to do this)
     customPlot.xAxis2.setVisible(True)
@@ -61,7 +61,7 @@ def demo(app):
     customPlot.yAxis2.setVisible(True)
     customPlot.yAxis2.setTickLabels(False)
     # make left and bottom axes always transfer their ranges to right and top axes:
-    customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)    
+    customPlot.xAxis.rangeChanged.connect(customPlot.xAxis2.setRange)
     customPlot.yAxis.rangeChanged.connect(customPlot.yAxis2.setRange)
     # pass data points to graphs:
     customPlot.graph(0).setData(x, y0)
@@ -76,6 +76,10 @@ def demo(app):
 
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
     # Create and show the form
@@ -83,14 +87,14 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
-    
-    
- 
+
+
+
+

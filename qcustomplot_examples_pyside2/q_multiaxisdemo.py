@@ -34,7 +34,7 @@ from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
 
 
-def demo(app):
+def demo(app, demotime=0):
     customPlot = QCustomPlot()
     customPlot.resize(800, 600)
     customPlot.setWindowTitle('Multi Axis Demo')
@@ -43,7 +43,7 @@ def demo(app):
 
 
     customPlot.setInteractions(QCP.iRangeDrag | QCP.iRangeZoom)
-    
+
     customPlot.setLocale(QLocale(QLocale.English, QLocale.UnitedKingdom)) # period as decimal separator and comma as thousand separator
     customPlot.legend.setVisible(True)
     legendFont = QFont()
@@ -53,7 +53,7 @@ def demo(app):
     customPlot.legend.setBrush(QBrush(QColor(255,255,255,230)))
     # by default, the legend is in the inset layout of the main axis rect. So this is how we access it to change legend placement:
     customPlot.axisRect().insetLayout().setInsetAlignment(0, Qt.AlignBottom|Qt.AlignRight)
-    
+
     # setup for graph 0: key axis left, value axis bottom
     # will contain left maxwell-like function
     customPlot.addGraph(customPlot.yAxis, customPlot.xAxis)
@@ -62,7 +62,7 @@ def demo(app):
     customPlot.graph(0).setLineStyle(QCPGraph.lsLine)
     customPlot.graph(0).setScatterStyle(QCPScatterStyle(QCPScatterStyle.ssDisc, 5))
     customPlot.graph(0).setName("Left maxwell function")
-    
+
     # setup for graph 1: key axis bottom, value axis left (those are the default axes)
     # will contain bottom maxwell-like function with error bars
     customPlot.addGraph()
@@ -79,13 +79,13 @@ def demo(app):
     errorBars = QCPErrorBars(customPlot.xAxis, customPlot.yAxis)
     errorBars.removeFromLegend()
     errorBars.setDataPlottable(customPlot.graph(1))
-    
+
     # setup for graph 2: key axis top, value axis right
     # will contain high frequency sine with low frequency beating:
     customPlot.addGraph(customPlot.xAxis2, customPlot.yAxis2)
     customPlot.graph(2).setPen(QPen(Qt.blue))
     customPlot.graph(2).setName("High frequency sine")
-    
+
     # setup for graph 3: same axes as graph 2
     # will contain low frequency beating envelope of graph 2
     customPlot.addGraph(customPlot.xAxis2, customPlot.yAxis2)
@@ -95,7 +95,7 @@ def demo(app):
     blueDotPen.setWidthF(4)
     customPlot.graph(3).setPen(blueDotPen)
     customPlot.graph(3).setName("Sine envelope")
-    
+
     # setup for graph 4: key axis right, value axis top
     # will contain parabolically distributed data points with some random perturbance
     customPlot.addGraph(customPlot.yAxis2, customPlot.xAxis2)
@@ -103,7 +103,7 @@ def demo(app):
     customPlot.graph(4).setLineStyle(QCPGraph.lsNone)
     customPlot.graph(4).setScatterStyle(QCPScatterStyle(QCPScatterStyle.ssCircle, 4))
     customPlot.graph(4).setName("Some random data around\na quadratic function")
-    
+
     # generate data, just playing with numbers, not much to learn here:
     x0 = [0.0] * 25
     y0 = [0.0] * 25
@@ -120,12 +120,12 @@ def demo(app):
     for i in range(0, 25): # data for graph 0
       x0[i] = 3*i/25.0
       y0[i] = math.exp(-x0[i]*x0[i]*0.8)*(x0[i]*x0[i]+x0[i])
-    
+
     for i in range(0, 15): # data for graph 1
       x1[i] = 3*i/15.0
       y1[i] = math.exp(-x1[i]*x1[i])*(x1[i]*x1[i])*2.6
       y1err[i] = y1[i]*0.25
-    
+
     for i in range(0, 250): # data for graphs 2, 3 and 4
       x2[i] = i/250.0*3*math.pi
       x3[i] = x2[i]
@@ -133,8 +133,8 @@ def demo(app):
       y2[i] = math.sin(x2[i]*12)*math.cos(x2[i])*10
       y3[i] = math.cos(x3[i])*10
       y4[i] = 0.01*x4[i]*x4[i] + 1.5*(uniform(0.0,1.0)-0.5) + 1.5*math.pi
-    
-    
+
+
     # pass data points to graphs:
     customPlot.graph(0).setData(x0, y0)
     customPlot.graph(1).setData(x1, y1)
@@ -172,6 +172,10 @@ def demo(app):
     customPlot.yAxis2.setSubTickLength(1, 1)
 
 
+    closeTimer = QTimer()
+    closeTimer.timeout.connect(customPlot.close)
+    if demotime > 0:
+        closeTimer.start(demotime)
     customPlot.show()
 
     # Create and show the form
@@ -179,13 +183,13 @@ def demo(app):
     res = app.exec_()
     customPlot = None
     return res
-   
+
 
 if __name__ == '__main__':
     # Create the Qt Application
     app = QApplication(sys.argv)
     res = demo(app)
     sys.exit(res)
-    
+
 
 
