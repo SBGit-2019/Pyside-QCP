@@ -1,4 +1,4 @@
-name: Docker Manylinux Wheels 2.1.0
+name: Docker Manylinux Wheels
 
 on:
   #push:
@@ -60,7 +60,7 @@ jobs:
         
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_linux
+        name: wheelhouse_linux_2_1_0
         path: ${{github.workspace}}/wheelhouse/*     
 
 

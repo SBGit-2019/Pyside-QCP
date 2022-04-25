@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels 2.1.0
+name:  MSBuild Windows Wheels
 
 on:
   #push:
@@ -116,7 +116,7 @@ jobs:
     
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_windows
+        name: wheelhouse_windows_2_1_0
         path: ${{github.workspace}}/wheelhouse/*        
       
 
