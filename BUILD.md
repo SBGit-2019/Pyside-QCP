@@ -1,6 +1,6 @@
 # Building Pyside2 bindings for QCustomplot
 
-This project creates Python (v3.6-3.10) bindings for the popular OpenSource [QCustomPlot](https://www.qcustomplot.com/) (v2.01) Qt (v5.15.2) plotting library.
+This project creates Python (v3.6-3.10) bindings for the popular OpenSource [QCustomPlot](https://www.qcustomplot.com/) pölotting library for Qt v5.15.2.
 
 ## Getting Started
 

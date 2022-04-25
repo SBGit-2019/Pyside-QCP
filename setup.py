@@ -83,7 +83,8 @@ class CMakeBuild(build_ext):
             elif platform.system() == "Linux":
                 lib_ext = ".so"
                 lib_name = "libqcustomplot"
-                thread_num = check_output(["nproc"], encoding="utf-8")
+                thread_num = check_output(["nproc","--all"], encoding="utf-8")
+                print("NPROC ",thread_num) # 16
                 print("MAKE_LOC ",make_location) # /io/Pyside-QCP/build/temp.linux-x86_64-cpython-38
                 print("extdir ",extdir) #/io/Pyside-QCP/build/lib.linux-x86_64-cpython-38/qcustomplot
                 subprocess.check_call(
@@ -105,11 +106,11 @@ class CMakeBuild(build_ext):
             elif platform.system() == "Windows":
                 lib_ext = ".pyd"
                 lib_name = "qcustomplot"
-                thread_num = 1
+                thread_num = 4
                 # cmake --build . --target ALL_BUILD --config Release
                 os.environ["PATH"] += os.pathsep + os.environ['VIRTUAL_ENV']+"/Lib/site-packages/shiboken2"
                 subprocess.check_call(
-                    ["cmake", "--build", ".", "--target", "ALL_BUILD", "--config",cfg], cwd=make_location
+                    ["cmake", "--build", ".", "-j", str(thread_num).rstrip(), "--target", "ALL_BUILD", "--config",cfg], cwd=make_location
                 , shell=True)
 
 
@@ -119,11 +120,11 @@ print("CMAKE","-D MANYLINUX_PYTHON_VERSION={}".format(os.environ["MANYLINUX_PYTH
 #sys.exit()
 setuptools.setup(
     name="qcustomplot-pyside2",
-    version="2.0.1",
+    version="2.1.0",
     author="SBC",
     license = "GPT 3 | Commercial",
     author_email="58021350+SBGit-2019@users.noreply.github.com",
-    description="QCustomplot 2.0.1 for Pyside2 5.15.2",
+    description="QCustomplot 2.1.0 for Pyside2 5.15.2",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SBGit-2019/Pyside-QCP",

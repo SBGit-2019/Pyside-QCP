@@ -82,6 +82,8 @@ def main():
     qcustomplot_examples_pyside2.q_textinterface.demo(app)
     print("q_texturebrushdemo")
     qcustomplot_examples_pyside2.q_texturebrushdemo.demo(app)
+    print("q_polarplotdemo")
+    qcustomplot_examples_pyside2.q_polarplotdemo.demo(app)
 
 
 if __name__ == '__main__':

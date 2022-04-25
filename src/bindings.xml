@@ -745,4 +745,31 @@
         </add-function>
     </object-type>
 
+    <rejection class="QCPPolarAxisRadial" field-name="*"/>
+    <object-type name="QCPPolarAxisRadial">
+        <enum-type name="AngleReference" />
+        <enum-type name="ScaleType" />
+        <enum-type name="SelectablePart"  flags="SelectableParts" />
+        <enum-type name="LabelMode" />
+    </object-type> 
+
+    <rejection class="QCPPolarAxisAngular" field-name="*"/>
+    <object-type name="QCPPolarAxisAngular"> 
+        <enum-type name="SelectablePart"  flags="SelectableParts" />
+        <enum-type name="LabelMode" />
+    </object-type> 
+
+    <rejection class="QCPPolarGrid" field-name="*"/>
+    <object-type name="QCPPolarGrid"> 
+        <enum-type name="GridType" flags="GridTypes" />
+    </object-type> 
+
+    <rejection class="QCPPolarGraph" field-name="*"/>
+    <object-type name="QCPPolarGraph">
+        <enum-type name="LineStyle" />
+    </object-type> 
+
+    <rejection class="QCPPolarLegendItem" field-name="*"/>
+    <object-type name="QCPPolarLegendItem"> </object-type> 
+
 </typesystem>

@@ -54,6 +54,11 @@ set(generated_sources
   #  ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable1d_wrapper.cpp
   # Name of bindins_module_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcustomplot_module_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolarlegenditem_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolargraph_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolargrid_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolaraxisangular_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolaraxisradial_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemline_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolorscale_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolorscaleaxisrectprivate_wrapper.cpp
@@ -131,7 +136,6 @@ set(generated_sources
 find_package(Python3 ${MANYLINUX_PYTHON_VERSION} EXACT REQUIRED COMPONENTS Interpreter Development.Module)
 #find_package(Python3 3.8 EXACT REQUIRED COMPONENTS Interpreter Development.Module)
 #find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
-#set(QMAKE_CXXFLAGS "-fno-sized-deallocation")
 message("Python3_INCLUDE_DIRS " ${Python3_INCLUDE_DIRS})
 message("Python3_LIBRARIES " ${Python3_LIBRARIES})
 
@@ -217,17 +221,8 @@ set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH ${shiboken2_module_path} ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-# =============================================================================================
-# !!! End of dubious section.
-# =============================================================================================
 
 # =============================== CMake target - qcp_library ===============================
-# Define the sample shared library for which we will create bindings.
-#set(${qcp_library}_sources qcustomplot.cpp)
-#add_library(${qcp_library} SHARED ${${qcp_library}_sources})
-#target_link_libraries(${qcp_library} Qt5::Core Qt5::Widgets Qt5::Gui Qt5::PrintSupport)
-#set_property(TARGET ${qcp_library} PROPERTY PREFIX "")
-
 get_target_property(qtcore_lib_includes Qt5::Core INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(qtcore_lib_includes2 Qt5::Widgets INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(qtcore_lib_includes3 Qt5::Gui INTERFACE_INCLUDE_DIRECTORIES)
@@ -235,11 +230,6 @@ get_target_property(qtcore_lib_includes4 Qt5::PrintSupport INTERFACE_INCLUDE_DIR
 list(JOIN qtcore_lib_includes  ";-I" lib_includes)
 set(lib_includes "-I${lib_includes}")
 
-
-# Needed mostly on Windows to export symbols, and create a .lib file, otherwise the binding
-# library can't link to the sample library.
-#target_compile_definitions(${qcp_library} PRIVATE QCUSTOMPLOT_COMPILE_LIBRARY)
-#target_compile_definitions(${qcp_library} INTERFACE QCUSTOMPLOT_USE_LIBRARY)
 
 # ====================== Shiboken target for generating binding C++ files  ====================
 # Set up the options to pass to shiboken.
@@ -314,12 +304,8 @@ if (WIN32)
 endif()
 
 
-# ================================= Dubious deployment section ================================
+# ================================= Windows deployment section ================================
 if(WIN32)
-    # =========================================================================================
-    # !!! (The section below is deployment related, so in a real world application you will
-    # want to take care of this properly (this is simply to eliminate errors that users usually
-    # encounter.
     # =========================================================================================
     # Circumvent some "#pragma comment(lib)"s in "include/pyconfig.h" which might force to link
     # against a wrong python shared library.
@@ -335,40 +321,8 @@ if(WIN32)
 
     set_target_properties(${bindings_library}
                            PROPERTIES LINK_FLAGS "${python_additional_link_flags}")
-
-#    # Add custom target to hard-link shiboken shared libraries into the build folder, so that
-#    # the user doesn't have to set the PATH manually to point to the PySide2 package.
-#	message("CMake to check shiboken links")
-#    foreach(library_path ${shiboken_shared_libraries})
-#       string(REGEX REPLACE ".lib$" ".dll" library_path ${library_path})
-#        get_filename_component(base_name ${library_path} NAME)
-#        get_filename_component(base_dir ${library_path} DIRECTORY)
-#		message("library_path=" ${library_path})
-#		message("base_name=" ${base_name})
-#		message("base_dir=" ${base_dir})
-#        file(TO_NATIVE_PATH ${library_path} source_path)
-#        file(TO_NATIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${base_name}" dest_path)
-#		message("source_path=" ${source_path})
-#		message("dest_path=" ${dest_path})
-#        #  mklink /H E:\io\Pyside-QCP\build\temp.win-amd64-cpython-38\Release\shiboken2.abi3.dll E:\venv\py38\Lib\site-packages\shiboken2\shiboken2.abi3.dll
-#        add_custom_command(OUTPUT "${base_name}"
-#                            COMMAND echo mklink /H "${dest_path}" "${source_path}"
-#                            DEPENDS ${library_path}
-#                            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-#                            COMMENT "Creating hardlink to shiboken shared library ${base_name}")
-#
-#        # Fake target that depends on the previous one, but has special ALL keyword, which means
-#        # it will always be executed.
-#        add_custom_target("fake_${base_name}" ALL DEPENDS ${base_name})
-#    endforeach()
-    # =========================================================================================
-    # !!! End of dubious section.
-    # =========================================================================================
 endif()
 
-# =============================================================================================
-# !!! (The section below is deployment related, so in a real world application you will want to
-# take care of this properly with some custom script or tool).
 # =============================================================================================
 # Install the library and the bindings module into the source folder near the main.py file, so
 # that the Python interpeter successfully imports the used module.
@@ -376,9 +330,6 @@ install(TARGETS ${bindings_library}
         LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}
         )
-# =============================================================================================
-# !!! End of dubious section.
-# =============================================================================================
 
 
 
