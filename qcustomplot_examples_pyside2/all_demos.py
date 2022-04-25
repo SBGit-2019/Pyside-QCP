@@ -32,7 +32,7 @@ import qcustomplot_examples_pyside2.q_polarplotdemo
 
 
 
-def main(demotime):
+def main(demotime=7500):
     QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
 
