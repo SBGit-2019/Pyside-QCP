@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels
+name:  MSBuild Windows Wheels 2.1.0
 
 on:
   #push:
