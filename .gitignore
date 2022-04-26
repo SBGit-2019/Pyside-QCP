@@ -1,4 +1,5 @@
 build
+dist
 wheelhouse
 qcustomplot.egg-info
 TEST

@@ -104,7 +104,6 @@
          %RETURN_TYPE r = cppSelf->ticker().data();
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
         <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc&quot; , 1, 12 );-->
-
         </inject-code> 
         </add-function>
     </object-type>
@@ -177,13 +176,11 @@
     <rejection class="QCPAxisTicker" field-name="*"/>
     <object-type name="QCPAxisTicker"> 
         <enum-type name="TickStepStrategy" />
-		<!--
           <modify-function signature="getMantissa(double,double*)const"  access="public"  >
             <modify-argument index="2">
            <remove-argument/>
             </modify-argument>
           </modify-function>
--->
     </object-type> 
 
     <object-type name="QCPLineEnding"> 
@@ -268,6 +265,12 @@
         <modify-function signature="layerableAt(const QPointF&amp;,bool,QVariant*)const" >
           <modify-argument index="3"> <remove-argument/> </modify-argument>
         </modify-function>
+          <modify-function signature="plottableAt(const QPointF&amp;,bool,int*)const" access="public"  >
+            <modify-argument index="3"> 
+              <remove-argument/>
+              <replace-default-expression with="0"/>
+            </modify-argument>
+          </modify-function>
     </object-type> 
 
     <rejection class="QCPGraphData" field-name="*"/>
@@ -295,7 +298,51 @@
         -->
         </inject-code> 
         </add-function>
+        <add-function signature="data()" return-type="QCPGraphDataContainer*" access="public" static="no" >
+          <!--
+            <modify-argument index="return">
+            <define-ownership class="target" owner="c++" />
+            </modify-argument>
+          -->
+        <inject-code class="target" position="beginning">
+          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ade42&quot; , 1, 12 );  -->
+         %RETURN_TYPE r = cppSelf->data().data();
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc42&quot; , 1, 12 ); -->
+        </inject-code> 
+        </add-function>
+        <add-function signature="setData(QCPGraphDataContainer*)" return-type="void" access="public" static="no" >
+          <!--  <modify-argument index="1">
+            <define-ownership class="native" owner="default" invalidate-after-use="yes" />
+          </modify-argument>-->
+        <inject-code class="target" position="beginning">
+          <!--qDebug(&quot;%s=%d %d &quot; , &quot;abc&quot; , 1, 12 ); -->
+
+          QCPGraphDataContainer::const_iterator sit= cppArg0-&gt;constBegin();
+          QCPGraphDataContainer::const_iterator sitEnd= cppArg0-&gt;constEnd();
+          QVector&lt;QCPGraphData&gt; tempData(cppArg0-&gt;size());
+          QVector&lt;QCPGraphData&gt;::iterator it = tempData.begin();
+          const QVector&lt;QCPGraphData&gt;::iterator itEnd = tempData.end();
+          int i = 0;
+          while (it != itEnd &amp;&amp; sit != sitEnd)
+          {
+            it-&gt;key = sit-&gt;key;
+            it-&gt;value = sit-&gt;value;
+            ++it;
+            ++sit;
+            ++i;
+          }
+          %CPPSELF -&gt; data()-&gt;clear();
+          %CPPSELF -&gt; data()-&gt;add(tempData, true);
+
+          <!--qDebug(&quot;%s=%d %d &quot; , &quot;ayc&quot; , 1, 12 );-->
+        </inject-code> 
+        </add-function>
     </object-type> 
+
+    <rejection class="QCPGraphDataContainer" field-name="*"/>
+    <object-type name="QCPGraphDataContainer">
+    </object-type>
 
     <rejection class="QCPScatterStyle" field-name="*"/>
     <object-type name="QCPScatterStyle">
@@ -428,10 +475,15 @@
     <object-type name="QCPColorGradient" >
         <enum-type name="ColorInterpolation" />
         <enum-type name="GradientPreset" />
+        <enum-type name="NanHandling" />
     </object-type>
 
     <rejection class="QCPAbstractLegendItem"  field-name="*"/>
     <object-type name="QCPAbstractLegendItem" >
+    </object-type>
+
+    <rejection class="QCPPlottableLegendItem"  field-name="*"/>
+    <object-type name="QCPPlottableLegendItem" >
     </object-type>
 
     <rejection class="QCPLegend"  field-name="*"/>
@@ -716,12 +768,10 @@
     <rejection class="QCPItemPixmap"  field-name="*"/>
     <object-type name="QCPItemPixmap" >
         <enum-type name="AnchorIndex" />
-		<!--
           <modify-function signature="getFinalRect(bool*,bool*)const" access="public"  >
             <modify-argument index="1"> <remove-argument/> </modify-argument>
             <modify-argument index="2"> <remove-argument/> </modify-argument>
           </modify-function>
-		  -->
     </object-type>
 
     <rejection class="QCPItemBracket"  field-name="*"/>
@@ -771,5 +821,29 @@
 
     <rejection class="QCPPolarLegendItem" field-name="*"/>
     <object-type name="QCPPolarLegendItem"> </object-type> 
+
+    <!--
+    <rejection class="QCPErrorBarsDataContainer" field-name="*"/>
+    <object-type name="QCPErrorBarsDataContainer"> </object-type> 
+    -->
+  
+    <!--
+    <rejection class="QCPErrorBarsDataContainer" field-name="*"/>
+    <container-type name="QCPErrorBarsDataContainer" type="vector">
+    <include file-name="QVector" location="global"/>
+    <conversion-rule>
+        <native-to-target>
+            <insert-template name="cppvector_to_pylist_conversion"/>
+        </native-to-target>
+        <target-to-native>
+            <add-conversion type="PySequence">
+                <insert-template name="pyseq_to_cppvector_conversion"/>
+            </add-conversion>
+        </target-to-native>
+    </conversion-rule>
+  </container-type>
+    -->
+  
+
 
 </typesystem>

@@ -54,6 +54,9 @@ set(generated_sources
   #  ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable1d_wrapper.cpp
   # Name of bindins_module_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcustomplot_module_wrapper.cpp
+   # ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbarsdatacontainer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpgraphdatacontainer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpplottablelegenditem_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolarlegenditem_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolargraph_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolargrid_wrapper.cpp
