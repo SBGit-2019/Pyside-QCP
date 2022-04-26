@@ -28,7 +28,7 @@ import sys
 import math
 from random import uniform,randint
 from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow
-from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
+from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath, QGuiApplication
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
@@ -62,7 +62,8 @@ def demo(app, demotime=0):
       y4[i] = (0.5-y3[i])+((x4[i]-2.0)*(x4[i]-2.0)*0.02)
 
     customPlot = QCustomPlot()
-    customPlot.resize(800, 600)
+    screen = QGuiApplication.primaryScreen().geometry()
+    customPlot.resize(screen.height(), screen.height()*0.75)
     customPlot.setWindowTitle('QCustomPlot Pyside2 Demo II')
 
     # create and configure plottables:

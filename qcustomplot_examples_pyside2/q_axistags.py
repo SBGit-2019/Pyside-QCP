@@ -28,7 +28,7 @@ import sys
 import math
 from random import uniform,randint
 from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow
-from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
+from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath, QGuiApplication
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
 from qcustomplot_pyside2 import *
@@ -208,7 +208,8 @@ class MainWindow(QMainWindow):
 
 def demo(app, demotime=0):
     mainWin = MainWindow()
-    mainWin.resize(800, 600)
+    screen = QGuiApplication.primaryScreen().geometry()
+    mainWin.resize(screen.height(), screen.height()*0.75)	
     closeTimer = QTimer()
     closeTimer.timeout.connect(mainWin.close)
     if demotime > 0:

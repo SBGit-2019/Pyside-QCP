@@ -28,7 +28,7 @@ import sys
 import math
 from random import uniform,randint
 from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow
-from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath
+from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath, QGuiApplication
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtSvg import QSvgRenderer
@@ -128,6 +128,8 @@ class Window(QWidget):
 
 def demo(app, demotime=0):
     window = Window()
+    screen = QGuiApplication.primaryScreen().geometry()
+    window.resize(screen.height(), screen.height()*0.75)	
     closeTimer = QTimer()
     closeTimer.timeout.connect(window.close)
     if demotime > 0:
