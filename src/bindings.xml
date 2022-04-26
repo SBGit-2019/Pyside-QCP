@@ -176,7 +176,7 @@
     <rejection class="QCPAxisTicker" field-name="*"/>
     <object-type name="QCPAxisTicker"> 
         <enum-type name="TickStepStrategy" />
-          <modify-function signature="getMantissa(double,double*)const"  access="public"  >
+          <modify-function signature="getMantissa(double,double*)const"  access="protected"  >
             <modify-argument index="2">
            <remove-argument/>
             </modify-argument>
@@ -768,7 +768,7 @@
     <rejection class="QCPItemPixmap"  field-name="*"/>
     <object-type name="QCPItemPixmap" >
         <enum-type name="AnchorIndex" />
-          <modify-function signature="getFinalRect(bool*,bool*)const" access="public"  >
+          <modify-function signature="getFinalRect(bool*,bool*)const" access="protected"  >
             <modify-argument index="1"> <remove-argument/> </modify-argument>
             <modify-argument index="2"> <remove-argument/> </modify-argument>
           </modify-function>
