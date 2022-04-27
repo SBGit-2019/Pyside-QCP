@@ -114,6 +114,12 @@ def demo(app, demotime=0):
     customPlot.graph(2).setData(x0, y0)
     customPlot.graph(3).setData(x1, y1)
     errorBars.setData(y1err)
+    # Try change of data
+    errorDatas = errorBars.data()
+    errorDatasMinus = [x-0.05 for x in errorDatas[0]]
+    errorDatasPlus = [x-0.02 for x in errorDatas[1]]
+    errorBars.setData(errorDatasMinus,errorDatasPlus)
+
     customPlot.graph(2).rescaleAxes()
     customPlot.graph(3).rescaleAxes(True)
     # setup look of bottom tick labels:

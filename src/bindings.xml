@@ -28,6 +28,7 @@
     <primitive-type name="bool"/>
     <primitive-type name="std::string"/>
     <load-typesystem name="typesystem_core.xml" generate="no"/>
+    <load-typesystem name="typesystem_core_common.xml" generate="no"/>
     <load-typesystem name="typesystem_widgets.xml" generate="no"/>
     <load-typesystem name="typesystem_gui.xml" generate="no"/>
 
@@ -610,6 +611,26 @@
     <rejection class="QCPErrorBars"  field-name="*"/>
     <object-type name="QCPErrorBars" >
         <enum-type name="ErrorType" />
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          <!--qDebug(&quot;%s=%d %d &quot; , &quot;ade52&quot; , 1, 2 );  -->
+          %PYARG_0 = PyTuple_New(2);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          QCPErrorBarsDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double errorMinus = it-&gt;errorMinus;
+            double errorPlus = it-&gt;errorPlus;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](errorMinus));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](errorPlus));
+            ++i;
+          }
+          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc42&quot; , 1, 12 ); -->
+        </inject-code> 
+        </add-function>
     </object-type>
 
     <rejection class="QCPErrorBarsData"  field-name="*"/>
@@ -822,14 +843,20 @@
     <rejection class="QCPPolarLegendItem" field-name="*"/>
     <object-type name="QCPPolarLegendItem"> </object-type> 
 
-    <!--
+      <!--  QVector<QCPErrorBarsData>-->
+        <!--
     <rejection class="QCPErrorBarsDataContainer" field-name="*"/>
     <object-type name="QCPErrorBarsDataContainer"> </object-type> 
-    -->
-  
+  -->
+
     <!--
-    <rejection class="QCPErrorBarsDataContainer" field-name="*"/>
-    <container-type name="QCPErrorBarsDataContainer" type="vector">
+    <container-type name="QVector<QCPErrorBarsData>" type="vector">
+    <include file-name="QVector" location="global"/>
+    </container-type>
+    -->
+
+      <!--
+    <container-type name="QCPErrorBarsData" type="vector">
     <include file-name="QVector" location="global"/>
     <conversion-rule>
         <native-to-target>
@@ -841,9 +868,9 @@
             </add-conversion>
         </target-to-native>
     </conversion-rule>
-  </container-type>
-    -->
-  
 
+  </container-type>
+      -->
+  
 
 </typesystem>
