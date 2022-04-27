@@ -67,6 +67,10 @@ def demo(app, demotime=0):
     angularAxis.setRange(0, 360)
     angularAxis.radialAxis().setRange(-10, 10)
 
+    # Check data access
+    data = g1.data()
+    g1.setData(data[0], data[1])
+
     closeTimer = QTimer()
     closeTimer.timeout.connect(customPlot.close)
     if demotime > 0:

@@ -62,6 +62,10 @@ def demo(app, demotime=0):
     # pass the data to the curves; we know t (i in loop above) is ascending, so set alreadySorted=true (saves an extra internal sort):
     fermatSpiral1 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
     fermatSpiral1.setData(dataSpiral1X,dataSpiral1Y)
+    data = fermatSpiral1.data()
+    # Just to test the data access
+    fermatSpiral1.setData(data[0], data[1], data[2]);
+
 
     fermatSpiral2 = QCPCurve(customPlot.xAxis, customPlot.yAxis)
     fermatSpiral2.setData(dataSpiral2X,dataSpiral2Y)

@@ -71,6 +71,8 @@ def demo(app, demotime=0):
     candlesticks.setBrushNegative(QColor(40, 40, 40))
     candlesticks.setPenPositive(QPen(QColor(0, 0, 0)))
     candlesticks.setPenNegative(QPen(QColor(0, 0, 0)))
+    data =  candlesticks.data()
+    candlesticks.setData(data[0], data[1], data[2], data[3], data[4])
 
     # create ohlc chart:
     ohlc = QCPFinancial(customPlot.xAxis, customPlot.yAxis)
@@ -109,6 +111,9 @@ def demo(app, demotime=0):
     volumeNeg.setWidth(3600*4)
     volumeNeg.setPen(Qt.NoPen)
     volumeNeg.setBrush(QColor(180, 90, 90))
+
+    data = volumePos.data()
+    volumePos.setData(data[0], data[1])
 
     # interconnect x axis ranges of main and bottom axis rects:
     customPlot.xAxis.rangeChanged.connect(volumeAxisRect.axis(QCPAxis.atBottom).setRange)

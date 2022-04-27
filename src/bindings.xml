@@ -101,10 +101,8 @@
         </add-function>
         <add-function signature="ticker()" return-type="QCPAxisTicker*" access="public" static="no" >
         <inject-code class="target" position="beginning">
-          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ade&quot; , 1, 12 ); -->
          %RETURN_TYPE r = cppSelf->ticker().data();
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
-        <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc&quot; , 1, 12 );-->
         </inject-code> 
         </add-function>
     </object-type>
@@ -112,6 +110,24 @@
     <rejection class="QCPBars" field-name="*"/>
     <object-type name="QCPBars">
         <enum-type name="WidthType" />
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          %PYARG_0 = PyTuple_New(2);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          QCPBarsDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double key = it-&gt;key;
+            double value = it-&gt;value;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](key));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](value));
+            ++i;
+          }
+        </inject-code> 
+        </add-function>
     </object-type> 
 
     <rejection class="QCPBarsGroup" field-name="*"/>
@@ -284,7 +300,6 @@
         <inject-code class="target" position="beginning">
         QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlotTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
         %RETURN_TYPE r = cppSelf2->dataMainValue(cppArg0);
-        <!-- qDebug(&quot;%s=%f %d &quot; , &quot;amh&quot; , r, cppArg0 ); -->
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
         </inject-code> 
         </add-function>
@@ -292,33 +307,35 @@
         <add-function signature="dataCount()" return-type="int" access="public" static="no" >
         <inject-code class="target" position="beginning">
          <insert-template name="plottable_template" />
-        <!--
-        QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlot_PySideTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
-        %RETURN_TYPE r = cppSelf2->%FUNCTION_NAME();
-        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
-        -->
         </inject-code> 
         </add-function>
-        <add-function signature="data()" return-type="QCPGraphDataContainer*" access="public" static="no" >
-          <!--
-            <modify-argument index="return">
-            <define-ownership class="target" owner="c++" />
-            </modify-argument>
-          -->
+        <!-- Use dataContainer() for direct access to container -->
+        <add-function signature="dataContainer()" return-type="QCPGraphDataContainer*" access="public" static="no" >
         <inject-code class="target" position="beginning">
-          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ade42&quot; , 1, 12 );  -->
          %RETURN_TYPE r = cppSelf->data().data();
-        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
-          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc42&quot; , 1, 12 ); -->
+         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+        </inject-code> 
+        </add-function>
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          %PYARG_0 = PyTuple_New(2);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          QCPGraphDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double key = it-&gt;key;
+            double value = it-&gt;value;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](key));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](value));
+            ++i;
+          }
         </inject-code> 
         </add-function>
         <add-function signature="setData(QCPGraphDataContainer*)" return-type="void" access="public" static="no" >
-          <!--  <modify-argument index="1">
-            <define-ownership class="native" owner="default" invalidate-after-use="yes" />
-          </modify-argument>-->
         <inject-code class="target" position="beginning">
-          <!--qDebug(&quot;%s=%d %d &quot; , &quot;abc&quot; , 1, 12 ); -->
-
           QCPGraphDataContainer::const_iterator sit= cppArg0-&gt;constBegin();
           QCPGraphDataContainer::const_iterator sitEnd= cppArg0-&gt;constEnd();
           QVector&lt;QCPGraphData&gt; tempData(cppArg0-&gt;size());
@@ -335,8 +352,6 @@
           }
           %CPPSELF -&gt; data()-&gt;clear();
           %CPPSELF -&gt; data()-&gt;add(tempData, true);
-
-          <!--qDebug(&quot;%s=%d %d &quot; , &quot;ayc&quot; , 1, 12 );-->
         </inject-code> 
         </add-function>
     </object-type> 
@@ -384,10 +399,8 @@
         <enum-type name="AnchorIndex" />
         <add-function signature="position1()" return-type="QCPItemPosition*" access="public" static="no" >
         <inject-code class="target" position="beginning">
-          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;xbc&quot; , 1, 12 ); -->
-        %RETURN_TYPE r = %CPPSELF -&gt; position;
+         %RETURN_TYPE r = %CPPSELF -&gt; position;
          %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
-         <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ybc&quot; , 1, 12 ); -->
         </inject-code> 
         </add-function>
         <add-function signature="position()" return-type="const QCPItemPosition*" access="public" static="no" >
@@ -500,12 +513,6 @@
     <object-type name="QCPColorScaleAxisRectPrivate" >
     </object-type>
 
-    <!--
-    <rejection class="QCPColorScale2"  field-name="*"/>
-    <object-type name="QCPColorScale2" >
-    </object-type>
-    -->
-
     <rejection class="QCPColorScale"  field-name="*"/>
     <object-type name="QCPColorScale" >
     </object-type>
@@ -517,6 +524,28 @@
     <rejection class="QCPCurve"  field-name="*"/>
     <object-type name="QCPCurve" >
         <enum-type name="LineStyle" />
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          %PYARG_0 = PyTuple_New(3);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list2 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          PyTuple_SET_ITEM(%PYARG_0, 2, list2);
+          QCPCurveDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double t = it-&gt;t;
+            double key = it-&gt;key;
+            double value = it-&gt;value;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](t));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](key));
+            PyList_SET_ITEM(list2, i, %CONVERTTOPYTHON[double](value));
+            ++i;
+          }
+        </inject-code> 
+        </add-function>
     </object-type>
 
     <rejection class="QCPStatisticalBoxData"  field-name="*"/>
@@ -525,6 +554,40 @@
 
     <rejection class="QCPStatisticalBox"  field-name="*"/>
     <object-type name="QCPStatisticalBox" >
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          %PYARG_0 = PyTuple_New(6);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list2 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list3 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list4 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list5 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          PyTuple_SET_ITEM(%PYARG_0, 2, list2);
+          PyTuple_SET_ITEM(%PYARG_0, 3, list3);
+          PyTuple_SET_ITEM(%PYARG_0, 4, list4);
+          PyTuple_SET_ITEM(%PYARG_0, 5, list5);
+          QCPStatisticalBoxDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double key = it-&gt;key;
+            double minimum = it-&gt;minimum;
+            double lowerQuartile = it-&gt;lowerQuartile;
+            double median = it-&gt;median;
+            double upperQuartile = it-&gt;upperQuartile;
+            double maximum = it-&gt;maximum;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](key));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](minimum));
+            PyList_SET_ITEM(list2, i, %CONVERTTOPYTHON[double](lowerQuartile));
+            PyList_SET_ITEM(list3, i, %CONVERTTOPYTHON[double](median));
+            PyList_SET_ITEM(list4, i, %CONVERTTOPYTHON[double](upperQuartile));
+            PyList_SET_ITEM(list5, i, %CONVERTTOPYTHON[double](maximum));
+            ++i;
+          }
+        </inject-code> 
+        </add-function>
     </object-type>
 
 
@@ -552,12 +615,9 @@
               double a=0;
               double b=0;
               %CPPSELF.%FUNCTION_NAME (%1,%2,&amp;a,&amp;b);
-              <!--
-             %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
-             -->
-             %PYARG_0 = PyTuple_New(2);
-             PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[double](a));
-             PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[double](b));
+              %PYARG_0 = PyTuple_New(2);
+              PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[double](a));
+              PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[double](b));
             </inject-code>
           </modify-function>
 
@@ -577,12 +637,9 @@
               int a=0;
               int b=0;
               %CPPSELF.%FUNCTION_NAME (%1,%2,&amp;a,&amp;b);
-              <!--
-             %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
-             -->
-             %PYARG_0 = PyTuple_New(2);
-             PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[int](a));
-             PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[int](b));
+              %PYARG_0 = PyTuple_New(2);
+              PyTuple_SET_ITEM(%PYARG_0, 0, %CONVERTTOPYTHON[int](a));
+              PyTuple_SET_ITEM(%PYARG_0, 1, %CONVERTTOPYTHON[int](b));
             </inject-code>
           </modify-function>
     </object-type>
@@ -602,6 +659,36 @@
          %CPPSELF -&gt; setData( QSharedPointer &lt; QCPFinancialDataContainer &gt; (%1)); 
         </inject-code> 
         </add-function>
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          %PYARG_0 = PyTuple_New(5);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list2 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list3 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list4 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          PyTuple_SET_ITEM(%PYARG_0, 2, list2);
+          PyTuple_SET_ITEM(%PYARG_0, 3, list3);
+          PyTuple_SET_ITEM(%PYARG_0, 4, list4);
+          QCPFinancialDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double key = it-&gt;key;
+            double open = it-&gt;open;
+            double high = it-&gt;high;
+            double low = it-&gt;low;
+            double close = it-&gt;close;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](key));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](open));
+            PyList_SET_ITEM(list2, i, %CONVERTTOPYTHON[double](high));
+            PyList_SET_ITEM(list3, i, %CONVERTTOPYTHON[double](low));
+            PyList_SET_ITEM(list4, i, %CONVERTTOPYTHON[double](close));
+            ++i;
+          }
+        </inject-code> 
+        </add-function>
     </object-type>
 
     <rejection class="QCPFinancialData"  field-name="*"/>
@@ -613,7 +700,6 @@
         <enum-type name="ErrorType" />
         <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
         <inject-code class="target" position="beginning">
-          <!--qDebug(&quot;%s=%d %d &quot; , &quot;ade52&quot; , 1, 2 );  -->
           %PYARG_0 = PyTuple_New(2);
           PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
           PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
@@ -628,7 +714,6 @@
             PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](errorPlus));
             ++i;
           }
-          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;ahc42&quot; , 1, 12 ); -->
         </inject-code> 
         </add-function>
     </object-type>
@@ -642,8 +727,6 @@
         <add-function signature="end()" return-type="const QCPItemPosition*" access="public" static="no" >
         <inject-code class="target" position="beginning">
          <insert-template name="create_getter" />
-      <!--  %RETURN_TYPE r = %CPPSELF -&gt; %FUNCTION_NAME;
-         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);-->
         </inject-code> 
         </add-function>
         <add-function signature="start()" return-type="const QCPItemPosition*" access="public" static="no" >
@@ -838,39 +921,28 @@
     <rejection class="QCPPolarGraph" field-name="*"/>
     <object-type name="QCPPolarGraph">
         <enum-type name="LineStyle" />
+        <add-function signature="data()" return-type="PyObject*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+          %PYARG_0 = PyTuple_New(2);
+          PyObject *list0 = PyList_New(cppSelf-&gt;data()->size());
+          PyObject *list1 = PyList_New(cppSelf-&gt;data()->size());
+          PyTuple_SET_ITEM(%PYARG_0, 0, list0);
+          PyTuple_SET_ITEM(%PYARG_0, 1, list1);
+          QCPGraphDataContainer::const_iterator it;
+          int i=0;
+          for (it = cppSelf-&gt;data()-&gt;constBegin(); it != cppSelf-&gt;data()->constEnd(); ++it) {
+            double key = it-&gt;key;
+            double value = it-&gt;value;
+            PyList_SET_ITEM(list0, i, %CONVERTTOPYTHON[double](key));
+            PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](value));
+            ++i;
+          }
+        </inject-code> 
+        </add-function>
     </object-type> 
 
     <rejection class="QCPPolarLegendItem" field-name="*"/>
     <object-type name="QCPPolarLegendItem"> </object-type> 
 
-      <!--  QVector<QCPErrorBarsData>-->
-        <!--
-    <rejection class="QCPErrorBarsDataContainer" field-name="*"/>
-    <object-type name="QCPErrorBarsDataContainer"> </object-type> 
-  -->
-
-    <!--
-    <container-type name="QVector<QCPErrorBarsData>" type="vector">
-    <include file-name="QVector" location="global"/>
-    </container-type>
-    -->
-
-      <!--
-    <container-type name="QCPErrorBarsData" type="vector">
-    <include file-name="QVector" location="global"/>
-    <conversion-rule>
-        <native-to-target>
-            <insert-template name="cppvector_to_pylist_conversion"/>
-        </native-to-target>
-        <target-to-native>
-            <add-conversion type="PySequence">
-                <insert-template name="pyseq_to_cppvector_conversion"/>
-            </add-conversion>
-        </target-to-native>
-    </conversion-rule>
-
-  </container-type>
-      -->
-  
 
 </typesystem>

@@ -50,6 +50,10 @@ def demo(app, demotime=0):
     statistical.addData(2, 0.8, 1.6, 2.2, 3.2, 4.9, vec1)
     statistical.addData(3, 0.2, 0.7, 1.1, 1.6, 2.9)
 
+    # Check data access
+    data = statistical.data()
+    statistical.setData(data[0], data[1], data[2], data[3], data[4], data[5])
+
     # prepare manual x axis labels:
     customPlot.xAxis.setSubTicks(False)
     customPlot.xAxis.setTickLength(0, 4)

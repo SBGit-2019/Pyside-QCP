@@ -113,6 +113,14 @@ def demo(app, demotime=0):
     customPlot.graph(1).setData(x0, yConfLower)
     customPlot.graph(2).setData(x0, y0)
     customPlot.graph(3).setData(x1, y1)
+
+    # Check direct data access
+    grph =  customPlot.graph(0)
+    data = grph.data()
+    container = grph.dataContainer()
+    grph.setData(container)
+    grph.setData(data[0],data[1])
+
     errorBars.setData(y1err)
     # Try change of data
     errorDatas = errorBars.data()
