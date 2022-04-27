@@ -1803,7 +1803,11 @@ protected:
   QTimeZone mTimeZone;
 # endif
   // non-property members:
-  enum DateStrategy {dsNone, dsUniformTimeInDay, dsUniformDayInMonth} mDateStrategy;
+// PYSIDE2-FIX: Enum separete (since protected not so necessary)
+  enum DateStrategy {dsNone, dsUniformTimeInDay, dsUniformDayInMonth};
+  DateStrategy mDateStrategy;
+// PYSIDE2-FIX: end
+
   
   // reimplemented virtual methods:
   virtual double getTickStep(const QCPRange &range) Q_DECL_OVERRIDE;

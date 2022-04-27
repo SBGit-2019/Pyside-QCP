@@ -147,7 +147,7 @@
 
     <rejection class="QCPAxisTickerDateTime" field-name="*"/>
     <object-type name="QCPAxisTickerDateTime"> 
-      <!--        <enum-type name="DateStrategy" /> LEADS TO AUTOGEN ERROR  -->
+        <enum-type name="DateStrategy" /> 
     </object-type> 
 
     <rejection class="QCPAxisTickerTime" field-name="*"/>
