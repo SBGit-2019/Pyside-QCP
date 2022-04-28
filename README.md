@@ -91,7 +91,7 @@ The version naming of the Python bindings is analogue to the naming of the QCust
 
 ## License
 
-This project is licensed under the GPL v3 License - see the [LICENSE](https://github.com/SBGit-2019/Pyside-QCP/blob/master/LICENSE) file for details.
+This project is licensed under the GPLv3+ License - see the [LICENSE](https://github.com/SBGit-2019/Pyside-QCP/blob/master/LICENSE) file for details.
 Additionally, you can also use this project in commercial projects if you have a commercial license for the used libraries
 - Qt 5.x
 - QCustomPlot 2.x

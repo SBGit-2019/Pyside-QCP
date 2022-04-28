@@ -10,8 +10,7 @@ Building instructions are provided for Linux and Windows 10.
 ### QCustomplot patches
 Note, that the original QCustomplot 2.x source code needs a handful of minor patches to compile with the current shiboken2 generator
 (mainly due to bugs in the generator). Also the bindings generations on Windows 10 needs some minor adjustments. This project contains
-a patchfile against the original [QCustomplot source code](https://www.qcustomplot.com/) and (probably temporarily) the original source files
-(GPL V3) with the patch applied.
+a patchfile against the original [QCustomplot source code](https://www.qcustomplot.com/) and (probably temporarily) the original source files (GPL V3) with the patch applied.
 
 With these files a build can be made directly from this project.
 

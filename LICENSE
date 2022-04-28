@@ -1,5 +1,5 @@
 The Pyside2 QCustomplot bindings and the wheel can be used under the following licenses:
-* GPT-3
+* GPLv3+
 * Commercial 
 
 ------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ for the used components:
 * QCustomplot
 The bindings do not add any additional license requirements.
 ------------------------------------------------------------------------------------------
-GPT3:
+GPLv3+:
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

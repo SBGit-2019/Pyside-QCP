@@ -122,7 +122,7 @@ setuptools.setup(
     name="qcustomplot-pyside2",
     version="2.1.0",
     author="SBC",
-    license = "GPT 3 | Commercial",
+    license = "GPLv3+ | Commercial",
     author_email="58021350+SBGit-2019@users.noreply.github.com",
     description="QCustomplot 2.1.0 for Pyside2 5.15.2",
     long_description=long_description,
