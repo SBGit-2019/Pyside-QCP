@@ -1,5 +1,6 @@
 import sys
 import os
+import signal
 from PySide2.QtWidgets import QApplication
 from PySide2.QtCore import Qt, QCoreApplication
 
@@ -30,9 +31,16 @@ import qcustomplot_examples_pyside2.q_textinterface
 import qcustomplot_examples_pyside2.q_texturebrushdemo
 import qcustomplot_examples_pyside2.q_polarplotdemo
 
-
-
 def main(demotime=7500):
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    if len(sys.argv) > 1:
+        demotime = int(sys.argv.pop(1))
+    if demotime == 0:
+        print(f"There is no automatic slide switching. Close the window to continue.")
+    else:
+        print(f"Automatic demo slide switching after {demotime} ms enabled.")
+
+
     QCoreApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
 
@@ -95,7 +103,6 @@ if __name__ == '__main__':
         demotime = int(sys.argv[1])
     else:
         demotime = 7500
-    print("demotime=",demotime)
     main(demotime)
     sys.exit(0)
 

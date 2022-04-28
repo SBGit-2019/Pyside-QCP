@@ -7,18 +7,24 @@ The project can be found on [Github](https://github.com/SBGit-2019/Pyside-QCP/).
 
 ## Installation
 
-You can install the library and run the examples with the following commands. Preferably you should do this in a python [*virtual environment*](https://docs.python.org/3/tutorial/venv.html).
+You can install the library and run the examples with the following commands.
+Preferably you should do this in a python [*virtual environment*](https://docs.python.org/3/tutorial/venv.html).
 
-    pip install qcustomplot_pyside2
-    qcustomplot_examples
+    pip install qcustomplot_pyside2  # Install latest version of the library
+    qcustomplot_examples             # Start demos with default delay
+    qcustomplot_examples 0           # Start demos without automatic continuation
+    qcustomplot_examples 5000        # Continue demos every 5000 ms
 
 
 
 ## Examples
 The folder [*qcustomplot_examples_pyside2*](https://github.com/SBGit-2019/Pyside-QCP/tree/master/qcustomplot_examples_pyside2) contains the examples from the QCustomplot C++ webpage translated to Python. 
-These can be used as basis for own development or for seeing the features of the library. The example script *qcustomplot_examples* runs through all examples.
+These can be used as basis for own development or for seeing the features of the library. 
 
 ### Running all examples
+The example command *qcustomplot_examples* linking to the script *all_demos.py* runs through all examples
+with a default or user specified delay time.
+
 - Install the matching python wheel from the wheels directory (preferably in a virtual environment).
 - Start the shell script 'qcustomplot_examples' which will run all examples 
 
@@ -81,7 +87,7 @@ All screenshots can also be found in the [figures directory](https://github.com/
 ## Versions
 The version naming of the Python bindings is analogue to the naming of the QCustomPlot library.
 - v2.0.1: QCustomPlot library 2.0.1: All basic features
-- v2.1.0: QCustomPlot library 2.1.0: Experimental radial plots
+- v2.1.0: QCustomPlot library 2.1.0: Experimental radial plots and more bindings.
 
 ## License
 
