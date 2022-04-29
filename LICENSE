@@ -5,11 +5,11 @@ The Pyside2 QCustomplot bindings and the wheel can be used under the following l
 ------------------------------------------------------------------------------------------
 Commercial:
 
-The Pyside2 QCP bindings can be used commercially provided you have a commercial license
-for the used components:
-* Qt
-* QCustomplot
-The bindings do not add any additional license requirements.
+You can use these bindings / these python wheels in commercial projects:
+- if you have a commercial license for QCustomPlot 2.x
+- fullfill the Qt license requirements, which typically mean you are using only the LGPL features of Qt 5.x or have a commercial license of Qt 5.x (as the bindings link only dynamically to Qt)
+
+That is, the bindings do not add any additional license requirements.
 ------------------------------------------------------------------------------------------
 GPLv3+:
 

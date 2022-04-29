@@ -92,10 +92,10 @@ The version naming of the Python bindings is analogue to the naming of the QCust
 ## License
 
 This project is licensed under the GPLv3+ License - see the [LICENSE](https://github.com/SBGit-2019/Pyside-QCP/blob/master/LICENSE) file for details.
-Additionally, you can also use this project in commercial projects if you have a commercial license for the used libraries
-- Qt 5.x
-- QCustomPlot 2.x
-The use of this python wheel is implicitly  also allowed when the above license requirements are fulfilled.
+
+Additionally, you can also use these bindings / these python wheels in commercial projects:
+- if you have a commercial license for QCustomPlot 2.x
+- fullfill the Qt license requirements, which typically mean you are using only the LGPL features of Qt 5.x or have a commercial license of Qt 5.x (as the bindings link only dynamically to Qt)
 
 Note that commercial licenses are available for [QCustomPlot] at https://www.qcustomplot.com/.
 
