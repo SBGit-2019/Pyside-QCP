@@ -33,6 +33,8 @@ import qcustomplot_examples_pyside2.q_polarplotdemo
 
 def main(demotime=7500):
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+    if sys.platform == 'win32':
+        signal.signal(signal.SIGBREAK, signal.SIG_DFL)
     if len(sys.argv) > 1:
         demotime = int(sys.argv.pop(1))
     if demotime == 0:
