@@ -88,6 +88,7 @@ All screenshots can also be found in the [figures directory](https://github.com/
 The version naming of the Python bindings is analogue to the naming of the QCustomPlot library.
 - v2.0.1: QCustomPlot library 2.0.1: All basic features
 - v2.1.0: QCustomPlot library 2.1.0: Experimental radial plots and more bindings.
+- v2.1.1: Small bugfixes
 
 ## License
 
