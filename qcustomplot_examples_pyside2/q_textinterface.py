@@ -109,7 +109,9 @@ class Window(QWidget):
         self.fileNameLineEdit = QLineEdit()
         insertTextObjectButton = QPushButton(self.tr("Insert Image"))
 
-        self.fileNameLineEdit.setText('./heart.svg')
+
+        our_package_dir = os.path.abspath(os.path.dirname(__file__))+"/"
+        self.fileNameLineEdit.setText(our_package_dir+'heart.svg')
         QtCore.QObject.connect(insertTextObjectButton, QtCore.SIGNAL('clicked()'), self.insertTextObject)
 
         bottomLayout = QHBoxLayout()

@@ -128,6 +128,11 @@
           }
         </inject-code> 
         </add-function>
+        <add-function signature="interface1D()" return-type="QCPBars*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](cppSelf);
+        </inject-code> 
+        </add-function>
     </object-type> 
 
     <rejection class="QCPBarsGroup" field-name="*"/>
@@ -212,16 +217,18 @@
     <interface-type name="QCPPlottableInterface1D"> 
     </interface-type> 
 
+
     <rejection class="QCPAbstractPlottable"  field-name="*"/>
     <object-type name="QCPAbstractPlottable"  >
     </object-type>
     <rejection class="QCPAbstractPlottable1D"  field-name="*"/>
+    <!--<object-type name="QCPAbstractPlottable1D" generate='no'>-->
     <object-type name="QCPAbstractPlottable1D" generate='no'>
       <!--
-        <add-function signature="mhget2(int)" return-type="double" access="public" static="no" >
+        <add-function signature="get_x(int)" return-type="double" access="public" static="no" >
         <inject-code class="target" position="beginning">
         %RETURN_TYPE r = cppSelf->dataMainValue(cppArg0);
-        qDebug(&quot;%s=%f %d &quot; , &quot;zmh&quot; , r, cppArg0 );
+        qDebug(&quot;%s=%f %d &quot; , &quot;zx&quot; , r, cppArg0 );
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
         </inject-code> 
         </add-function>
@@ -301,6 +308,11 @@
         QCPAbstractPlottable1D&lt;QCPGraphData&gt; *cppSelf2 = static_cast&lt;QCPAbstractPlottable1D&lt;QCPGraphData&gt; *&gt;(reinterpret_cast&lt; ::QCPAbstractPlottable1D&lt;QCPGraphData&gt;*&gt;(Shiboken::Conversions::cppPointer(SbkQCustomPlotTypes[SBK_QCPGRAPH_IDX], reinterpret_cast&lt;SbkObject *&gt;(self))));
         %RETURN_TYPE r = cppSelf2->dataMainValue(cppArg0);
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+        </inject-code> 
+        </add-function>
+        <add-function signature="interface1D()" return-type="QCPGraph*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](cppSelf);
         </inject-code> 
         </add-function>
 
@@ -546,6 +558,11 @@
           }
         </inject-code> 
         </add-function>
+        <add-function signature="interface1D()" return-type="QCPCurve*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](cppSelf);
+        </inject-code> 
+        </add-function>
     </object-type>
 
     <rejection class="QCPStatisticalBoxData"  field-name="*"/>
@@ -714,6 +731,11 @@
             PyList_SET_ITEM(list1, i, %CONVERTTOPYTHON[double](errorPlus));
             ++i;
           }
+        </inject-code> 
+        </add-function>
+        <add-function signature="interface1D_ex()" return-type="QCPErrorBars*" access="public" static="no" >
+        <inject-code class="target" position="beginning">
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](cppSelf);
         </inject-code> 
         </add-function>
     </object-type>

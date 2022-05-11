@@ -122,7 +122,7 @@ class MainWindow(QMainWindow):
         self.actionSave_Document.triggered.connect(self.on_actionSave_Document_triggered)
 
     def on_actionInsert_Plot_triggered(self):
-      print("on_actionInsert_Plot_triggered")
+      #print("on_actionInsert_Plot_triggered")
       ui = self.ui
       cursor = ui.textEdit.textCursor()
 
@@ -142,7 +142,7 @@ class MainWindow(QMainWindow):
       ui.textEdit.setTextCursor(cursor)
 
     def on_actionSave_Document_triggered(self):
-      print("on_actionSave_Document_triggered")
+      #print("on_actionSave_Document_triggered")
       ui = self.ui
       fileName = "./q_text-document-integration.pdf"
      #fileName = QFileDialog.getSaveFileName(self, "Save document...", qApp.applicationDirPath(), "*.pdf", None)
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
      #    print("No file")
      #    return
      #fileName = fileName[0]+".pdf"
-      print("FILENAMKE=",fileName)
+      print("FILENAME=",fileName)
 
       printer = QPrinter()
       printer.setOutputFormat(QPrinter.PdfFormat)

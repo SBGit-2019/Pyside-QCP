@@ -27,7 +27,7 @@ from PySide2 import QtGui
 import sys
 import math
 from random import uniform,randint
-from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow
+from PySide2.QtWidgets import QApplication, QDialog, QLineEdit, QPushButton, QVBoxLayout,QWidget,QMainWindow, QInputDialog
 from PySide2.QtGui import QLinearGradient, QRadialGradient, QColor, QBrush, QPen, QFont, QPixmap, QPainterPath, QGuiApplication
 from PySide2.QtCore import Qt, QMargins,QPointF,QObject,QCoreApplication,QFile,QTimer,QLocale,QDateTime,QDate,QSize,QTime
 from PySide2.QtUiTools import QUiLoader
@@ -144,6 +144,7 @@ class MainWindow(QMainWindow):
         pi1d = plottable.interface1D()
         dataValue = pi1d.dataMainValue(dataIndex)
         dataValue2 = plottable.dataMainValue(dataIndex)
+        # print("Datavalue ",dataValue, dataValue2)
         message = "Clicked on graph "+str(plottable.name())+" at data point "+str(dataIndex)+" with value "+str(dataValue2)
         self.ui.statusBar.showMessage(message, 2500)
 

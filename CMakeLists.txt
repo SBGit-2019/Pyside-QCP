@@ -51,8 +51,8 @@ set(bindings_library "QCustomPlot")
 set(wrapped_header ${CMAKE_SOURCE_DIR}/src/bindings.h)
 set(typesystem_file ${CMAKE_SOURCE_DIR}/src/bindings.xml)
 set(generated_sources
-  #  ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable1d_wrapper.cpp
   # Name of bindins_module_wrapper.cpp
+  #   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable1d_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcustomplot_module_wrapper.cpp
    #${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbarsdatacontainer_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpgraphdatacontainer_wrapper.cpp
