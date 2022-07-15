@@ -1,5 +1,5 @@
 FROM quay.io/pypa/manylinux2014_x86_64
-LABEL maintainer SBGit <58021350+SBGit-2019@users.noreply.github.com>
+LABEL maintainer SBGit <sbc-dev@posteo.de>
 
 RUN cd /opt && \
     yum install -y libxslt-1.1.28-6.el7.x86_64 wget p7zip && \

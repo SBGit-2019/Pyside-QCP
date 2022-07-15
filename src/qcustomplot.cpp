@@ -10888,7 +10888,10 @@ void QCPScatterStyle::drawShape(QCPPainter *painter, double x, double y) const
     case ssNone: break;
     case ssDot:
     {
-      painter->drawLine(QPointF(x, y), QPointF(x+0.0001, y));
+// PYSIDE2-FIX
+      // painter->drawLine(QPointF(x, y), QPointF(x+0.0001, y));
+	  painter->drawPoint(QPointF(x, y));
+// END PYSIDE2-FIX	  
       break;
     }
     case ssCross:
