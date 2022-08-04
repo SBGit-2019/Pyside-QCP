@@ -90,6 +90,7 @@ The version naming of the Python bindings is analogue to the naming of the QCust
 - v2.1.0: QCustomPlot library 2.1.0: Experimental radial plots and more bindings.
 - v2.1.1: Small bugfixes
 - v2.1.2: Small bugfixes for Scatterplot with single points
+- v2.1.3: Bugfix for zero line and issue #4
 
 ## License
 

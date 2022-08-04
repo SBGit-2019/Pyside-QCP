@@ -7971,7 +7971,9 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
   {
     // draw zeroline:
     int zeroLineIndex = -1;
-    if (mZeroLinePen.style() != Qt::NoPen && mParentAxis->mRange.lower < 0 && mParentAxis->mRange.upper > 0)
+    // PYSIDE2-FIX: BUG
+    if (mZeroLinePen.style() != Qt::NoPen && mParentAxis->mRange.lower <= 0 && mParentAxis->mRange.upper >= 0)
+    // END PYSIDE2-FIX	  
     {
       applyAntialiasingHint(painter, mAntialiasedZeroLine, QCP::aeZeroLine);
       painter->setPen(mZeroLinePen);
@@ -8000,7 +8002,9 @@ void QCPGrid::drawGridLines(QCPPainter *painter) const
   {
     // draw zeroline:
     int zeroLineIndex = -1;
-    if (mZeroLinePen.style() != Qt::NoPen && mParentAxis->mRange.lower < 0 && mParentAxis->mRange.upper > 0)
+    // PYSIDE2-FIX: BUG
+    if (mZeroLinePen.style() != Qt::NoPen && mParentAxis->mRange.lower <= 0 && mParentAxis->mRange.upper >= 0)
+    // END PYSIDE2-FIX	  
     {
       applyAntialiasingHint(painter, mAntialiasedZeroLine, QCP::aeZeroLine);
       painter->setPen(mZeroLinePen);

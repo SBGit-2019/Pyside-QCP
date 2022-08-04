@@ -89,9 +89,8 @@
             <define-ownership class="target" owner="c++" />
             </modify-argument>-->
         <inject-code class="target" position="beginning">
-          <!-- qDebug(&quot;%s=%d %d &quot; , &quot;abc&quot; , 1, 12 ); -->
-         %CPPSELF -&gt; ticker() = QSharedPointer &lt; QCPAxisTicker &gt; (%1); 
-         <!-- qDebug(&quot;%s=%d %d &quot; , &quot;axc&quot; , 1, 12 );-->
+		<!-- qDebug() &lt;&lt; &quot; bindings setTicker &quot; &lt;&lt;  Q_FUNC_INFO  &lt;&lt; (%1) ; -->
+		%CPPSELF -&gt; setTicker( QSharedPointer &lt; QCPAxisTicker &gt; (%1) );
         </inject-code> 
         </add-function>
         <add-function signature="removeTicker(void)" return-type="void" access="public" static="no" >
@@ -927,12 +926,44 @@
         <enum-type name="ScaleType" />
         <enum-type name="SelectablePart"  flags="SelectableParts" />
         <enum-type name="LabelMode" />
+        <add-function signature="setTicker(QCPAxisTicker*)" return-type="void" access="public" static="no" >
+            <inject-code class="target" position="beginning">
+		%CPPSELF -&gt; setTicker( QSharedPointer &lt; QCPAxisTicker &gt; (%1) );
+            </inject-code> 
+        </add-function>
+        <add-function signature="removeTicker(void)" return-type="void" access="public" static="no" >
+            <inject-code class="target" position="beginning">
+                %CPPSELF -&gt; ticker().clear();
+            </inject-code> 
+        </add-function>
+        <add-function signature="ticker()" return-type="QCPAxisTicker*" access="public" static="no" >
+            <inject-code class="target" position="beginning">
+                %RETURN_TYPE r = cppSelf->ticker().data();
+                %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+            </inject-code> 
+        </add-function>
     </object-type> 
 
     <rejection class="QCPPolarAxisAngular" field-name="*"/>
     <object-type name="QCPPolarAxisAngular"> 
         <enum-type name="SelectablePart"  flags="SelectableParts" />
         <enum-type name="LabelMode" />
+        <add-function signature="setTicker(QCPAxisTicker*)" return-type="void" access="public" static="no" >
+            <inject-code class="target" position="beginning">
+		%CPPSELF -&gt; setTicker( QSharedPointer &lt; QCPAxisTicker &gt; (%1) );
+            </inject-code> 
+        </add-function>
+        <add-function signature="removeTicker(void)" return-type="void" access="public" static="no" >
+            <inject-code class="target" position="beginning">
+                %CPPSELF -&gt; ticker().clear();
+            </inject-code> 
+        </add-function>
+        <add-function signature="ticker()" return-type="QCPAxisTicker*" access="public" static="no" >
+            <inject-code class="target" position="beginning">
+                %RETURN_TYPE r = cppSelf->ticker().data();
+                %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+            </inject-code> 
+        </add-function>
     </object-type> 
 
     <rejection class="QCPPolarGrid" field-name="*"/>
