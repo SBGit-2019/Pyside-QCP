@@ -7,7 +7,9 @@
 # ./build-wheels.sh
 
 #set -e -u -x
+# Quit shell on error
 set -e 
+# Export all defined variables
 set -a 
 
 #export PLAT="manylinux_2_17_x86_64"
@@ -82,9 +84,10 @@ for PYBIN in /opt/python/*/bin; do
      python3 -m venv ${VENV}/
      source ${VENV}//bin/activate
      #which python
+     python -m pip install pip==21.2.1
+     pip install --cache-dir ${CACHE} cmake-build-extension==0.5.0 wheel==0.37.1
+     pip install --cache-dir ${CACHE} setuptools==59.6.0
      pip install --cache-dir ${CACHE} --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2==5.15.2.1  pyside2==5.15.2.1 shiboken2_generator==5.15.2.1
-     pip install --cache-dir ${CACHE} cmake-build-extension==0.5.1 wheel==0.37.1
-     pip install --cache-dir ${CACHE} setuptools==63.0.0
      echo cmake -D MANYLINUX_PYTHON_VERSION=${PYVER} ..
      export  MANYLINUX_PYTHON_VERSION="${PYVER}"
      #python3 setup.py bdist_wheel
