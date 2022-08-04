@@ -1,4 +1,4 @@
-name: Docker Manylinux Wheels
+name: Docker Manylinux Wheels 3.6
 
 on:
   #push:
