@@ -11,7 +11,7 @@ export PLAT="manylinux2014_x86_64"
 export QCPDIR=/io/Pyside-QCP
 export VENV=/tmp/venv/pyside2
 export CACHE=/tmp/pycache
-export VERSION=2.1.3
+export VERSION=2.1.4
 
 echo "VENV="${VENV}
 echo "QCPDIR="${QCPDIR}
