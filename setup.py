@@ -120,7 +120,7 @@ print("CMAKE","-D MANYLINUX_PYTHON_VERSION={}".format(os.environ["MANYLINUX_PYTH
 #sys.exit()
 setuptools.setup(
     name="qcustomplot-pyside2",
-    version="2.1.3",
+    version="2.1.4",
     author="SBC",
     license = "GPLv3+ | Commercial",
     author_email="sbc-dev@posteo.de",
