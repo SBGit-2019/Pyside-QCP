@@ -55,6 +55,8 @@ set(generated_sources
   #   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library}/qcpabstractplottable1d_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcustomplot_module_wrapper.cpp
    #${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbarsdatacontainer_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemstraightline_wrapper.cpp
+   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemtext_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpgraphdatacontainer_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpplottablelegenditem_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppolarlegenditem_wrapper.cpp
@@ -86,7 +88,6 @@ set(generated_sources
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemellipse_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemrect_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemcurve_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemstraightline_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbarsdata_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcperrorbars_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpcolormap_wrapper.cpp
@@ -106,7 +107,6 @@ set(generated_sources
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpabstractpaintbuffer_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcppaintbufferpixmap_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcplayer_wrapper.cpp
-   ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemtext_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemanchor_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemposition_wrapper.cpp
    ${CMAKE_CURRENT_BINARY_DIR}/${bindings_library_src}/qcpitemtracer_wrapper.cpp
@@ -240,6 +240,7 @@ set(shiboken_options --generator-set=shiboken --enable-parent-ctor-heuristic
     --enable-return-value-heuristic --use-isnull-as-nb_nonzero
     --avoid-protected-hack
     --enable-pyside-extensions
+    #    --debug-level=full
     ${lib_includes}
     -I${CMAKE_SOURCE_DIR}
     -T${CMAKE_SOURCE_DIR}

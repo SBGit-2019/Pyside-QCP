@@ -19,7 +19,7 @@ export PLAT="manylinux2014_x86_64"
 QCPDIR=/io/Pyside-QCP
 VENV=/tmp/venv/pyside2
 CACHE=/tmp/pycache
-VERSION=2.1.4
+VERSION=2.1.5
 
 echo "VENV="${VENV}
 echo "QCPDIR="${QCPDIR}
@@ -50,7 +50,7 @@ for PYBIN in /opt/python/*/bin; do
      #fi
      echo "Processing python interpreted "${PYBIN}
 
-     PYLIB=${PYBIN/bin/lib}
+     PYLIB=${PYBIN/../lib}
      PYVER=""
      [[ ${PYBIN} =~ cp310-cp310/bin$ ]] &&  PYVER="3.10"
      [[ ${PYBIN} =~ cp39-cp39/bin$ ]] &&  PYVER="3.9"

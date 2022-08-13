@@ -45,6 +45,10 @@
         %RETURN_TYPE r = %CPPSELF -&gt; %FUNCTION_NAME;
         %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
     </template>
+    <template name="create_public_getter">
+        %RETURN_TYPE r = %CPPSELF -&gt; $NAME;
+        %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
+    </template>
 
 
 
@@ -152,8 +156,12 @@
     <rejection class="QCPGrid" field-name="*"/>
     <object-type name="QCPGrid"> </object-type> 
 
-  <!--  <rejection class="QCPAxisPainterPrivate" function-name="*"/> -->
-    <rejection class="QCPAxisPainterPrivate" field-name="*"/>
+    <rejection class="QCPAxisPainterPrivate" field-name="mParentPlot"/>
+    <rejection class="QCPAxisPainterPrivate" field-name="mLabelParameterHash"/>
+    <rejection class="QCPAxisPainterPrivate" field-name="mLabelCache"/>
+    <rejection class="QCPAxisPainterPrivate" field-name="mAxisSelectionBox"/>
+    <rejection class="QCPAxisPainterPrivate" field-name="mTickLabelsSelectionBox"/>
+    <rejection class="QCPAxisPainterPrivate" field-name="mLabelSelectionBox"/>
     <object-type name="QCPAxisPainterPrivate"> </object-type> 
 
   <!--  <rejection class="QCPSelectionDecorator" function-name="*"/> -->
@@ -296,7 +304,6 @@
           </modify-function>
     </object-type> 
 
-    <rejection class="QCPGraphData" field-name="*"/>
     <object-type name="QCPGraphData"> </object-type> 
 
     <rejection class="QCPGraph" field-name="*"/>
@@ -386,12 +393,25 @@
     <object-type name="QCPAbstractItem" >
     </object-type>
 
-    <rejection class="QCPItemTracer"  field-name="*"/>
+    <rejection class="QCPItemTracer"  field-name="mPen"/>
+    <rejection class="QCPItemTracer"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemTracer"  field-name="mBrush"/>
+    <rejection class="QCPItemTracer"  field-name="mSelectedBrush"/>
+    <rejection class="QCPItemTracer"  field-name="mSize"/>
+    <rejection class="QCPItemTracer"  field-name="mStyle"/>
+    <rejection class="QCPItemTracer"  field-name="mGraph"/>
+    <rejection class="QCPItemTracer"  field-name="mGraphKey"/>
+    <rejection class="QCPItemTracer"  field-name="mInterpolating"/>
     <object-type name="QCPItemTracer" >
         <enum-type name="TracerStyle" />
-        <add-function signature="position()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_position()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="position" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>
@@ -405,7 +425,17 @@
         <enum-type name="PositionType" />
     </object-type>
 
-    <rejection class="QCPItemText"  field-name="*"/>
+    <rejection class="QCPItemText"  field-name="mColor"/>
+    <rejection class="QCPItemText"  field-name="mSelectedColor"/>
+    <rejection class="QCPItemText"  field-name="mPen"/>
+    <rejection class="QCPItemText"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemText"  field-name="mBrush"/>
+    <rejection class="QCPItemText"  field-name="mSelectedBrush"/>
+    <rejection class="QCPItemText"  field-name="mText"/>
+    <rejection class="QCPItemText"  field-name="mPositionAlignment"/>
+    <rejection class="QCPItemText"  field-name="mTextAlignment"/>
+    <rejection class="QCPItemText"  field-name="mRotation"/>
+    <rejection class="QCPItemText"  field-name="mPadding"/>
     <object-type name="QCPItemText" >
         <enum-type name="AnchorIndex" />
         <add-function signature="position1()" return-type="QCPItemPosition*" access="public" static="no" >
@@ -414,49 +444,94 @@
          %PYARG_0 = %CONVERTTOPYTHON[%RETURN_TYPE](r);
         </inject-code> 
         </add-function>
-        <add-function signature="position()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_position()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="position" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="topLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_topLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topLeft" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="top" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="topRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_topRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topRight" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="right" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottomRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomRight" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottom" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottomLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomLeft" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="left" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>
@@ -528,7 +603,6 @@
     <object-type name="QCPColorScale" >
     </object-type>
     
-    <rejection class="QCPCurveData"  field-name="*"/>
     <object-type name="QCPCurveData" >
     </object-type>
 
@@ -564,7 +638,6 @@
         </add-function>
     </object-type>
 
-    <rejection class="QCPStatisticalBoxData"  field-name="*"/>
     <object-type name="QCPStatisticalBoxData" >
     </object-type>
 
@@ -707,7 +780,6 @@
         </add-function>
     </object-type>
 
-    <rejection class="QCPFinancialData"  field-name="*"/>
     <object-type name="QCPFinancialData" >
     </object-type>
 
@@ -739,158 +811,332 @@
         </add-function>
     </object-type>
 
-    <rejection class="QCPErrorBarsData"  field-name="*"/>
     <object-type name="QCPErrorBarsData" >
     </object-type>
 
-    <rejection class="QCPItemLine"  field-name="*"/>
+    <rejection class="QCPItemLine"  field-name="mPen"/>
+    <rejection class="QCPItemLine"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemLine"  field-name="mHead"/>
+    <rejection class="QCPItemLine"  field-name="mTail"/>
     <object-type name="QCPItemLine" >
-        <add-function signature="end()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_end()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="end" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="start()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_start()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="start" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>
 
-    <rejection class="QCPItemStraightLine"  field-name="*"/>
+    <rejection class="QCPItemStraightLine"  field-name="mPen"/>
+    <rejection class="QCPItemStraightLine"  field-name="mSelectedPen"/>
     <object-type name="QCPItemStraightLine" >
+      <!--
+        <add-function signature="point1()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
+        <inject-code class="target" position="beginning">
+           <insert-template name="create_getter" />
+        </inject-code> 
+        </add-function>
+      -->
+        <add-function signature="get_point1()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
+        <inject-code class="target" position="beginning">
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="point1" />
+          </insert-template>
+        </inject-code> 
+        </add-function>
+        <add-function signature="get_point2()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
+        <inject-code class="target" position="beginning">
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="point2" />
+          </insert-template>
+        </inject-code> 
+        </add-function>
     </object-type>
 
-    <rejection class="QCPItemCurve"  field-name="*"/>
+    <rejection class="QCPItemCurve"  field-name="mPen"/>
+    <rejection class="QCPItemCurve"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemCurve"  field-name="mHead"/>
+    <rejection class="QCPItemCurve"  field-name="mTail"/>
     <object-type name="QCPItemCurve" >
-        <add-function signature="start()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_start()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="start" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="startDir()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_startDir()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="startDir" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="end()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_end()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="end" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="endDir()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_endDir()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="endDir" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>
 
-    <rejection class="QCPItemRect"  field-name="*"/>
+    <rejection class="QCPItemRect"  field-name="mPen"/>
+    <rejection class="QCPItemRect"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemRect"  field-name="mBrush"/>
+    <rejection class="QCPItemRect"  field-name="mSelectedBrush"/>
     <object-type name="QCPItemRect" >
         <enum-type name="AnchorIndex" />
-        <add-function signature="topLeft()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_topLeft()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topLeft" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomRight()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_bottomRight()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomRight" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="top" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="topRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_topRight()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topRight" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="right" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottom" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottomLeft()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomLeft" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="left" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>
 
-    <rejection class="QCPItemEllipse"  field-name="*"/>
+    <rejection class="QCPItemEllipse"  field-name="mPen"/>
+    <rejection class="QCPItemEllipse"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemEllipse"  field-name="mBrush"/>
+    <rejection class="QCPItemEllipse"  field-name="mSelectedBrush"/>
     <object-type name="QCPItemEllipse" >
         <enum-type name="AnchorIndex" />
-        <add-function signature="topLeft()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_topLeft()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topLeft" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomRight()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_bottomRight()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomRight" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="topLeftRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_topLeftRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topLeftRim" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_top()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="top" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="topRightRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_topRightRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="topRightRim" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_right()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="right" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomRightRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottomRightRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomRightRim" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottom()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottom" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="bottomLeftRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_bottomLeftRim()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="bottomLeftRim" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_left()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="left" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="center()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_center()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="center" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>
 
-    <rejection class="QCPItemPixmap"  field-name="*"/>
+    <rejection class="QCPItemPixmap"  field-name="mPixmap"/>
+    <rejection class="QCPItemPixmap"  field-name="mScaledPixmap"/>
+    <rejection class="QCPItemPixmap"  field-name="mScaled"/>
+    <rejection class="QCPItemPixmap"  field-name="mScaledPixmapInvalidated"/>
+    <rejection class="QCPItemPixmap"  field-name="mAspectRatioMode"/>
+    <rejection class="QCPItemPixmap"  field-name="mTransformationMode"/>
+    <rejection class="QCPItemPixmap"  field-name="mPen"/>
+    <rejection class="QCPItemPixmap"  field-name="mSelectedPen"/>
     <object-type name="QCPItemPixmap" >
         <enum-type name="AnchorIndex" />
           <modify-function signature="getFinalRect(bool*,bool*)const" access="protected"  >
@@ -899,23 +1145,42 @@
           </modify-function>
     </object-type>
 
-    <rejection class="QCPItemBracket"  field-name="*"/>
+    <rejection class="QCPItemBracket"  field-name="aiCenter"/>
+    <rejection class="QCPItemBracket"  field-name="mPen"/>
+    <rejection class="QCPItemBracket"  field-name="mSelectedPen"/>
+    <rejection class="QCPItemBracket"  field-name="mLength"/>
+    <rejection class="QCPItemBracket"  field-name="mStyle"/>
     <object-type name="QCPItemBracket" >
         <enum-type name="BracketStyle" />
         <enum-type name="AnchorIndex" />
-        <add-function signature="left()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_left()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="left" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="right()" return-type="const QCPItemPosition*" access="public" static="no" >
+        <add-function signature="get_right()" return-type="const QCPItemPosition*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="right" />
+          </insert-template>
         </inject-code> 
         </add-function>
-        <add-function signature="center()" return-type="const QCPItemAnchor*" access="public" static="no" >
+        <add-function signature="get_center()" return-type="const QCPItemAnchor*" access="public" static="no" >
+            <modify-argument index="0">
+              <define-ownership class="target" owner="c++" />
+            </modify-argument>
         <inject-code class="target" position="beginning">
-         <insert-template name="create_getter" />
+          <insert-template name="create_public_getter">
+            <replace from="$NAME" to="center" />
+          </insert-template>
         </inject-code> 
         </add-function>
     </object-type>

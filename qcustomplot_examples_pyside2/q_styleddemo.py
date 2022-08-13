@@ -158,7 +158,7 @@ def demo(app, demotime=0):
     groupTracerText.setPen(QPen(QColor(255, 255, 255, 80), 1))
     groupTracerText.setColor(Qt.white)
     groupTracerText.setBrush(textGradient)
-    pos =  groupTracerText.position()
+    pos =  groupTracerText.position
     pos.setType(QCPItemPosition.ptAxisRectRatio)
     pos.setCoords(0.85, 0.3)
     groupTracerText.setText("\nThis is an example \nplot label text!\n")

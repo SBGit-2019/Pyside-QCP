@@ -677,7 +677,7 @@ public:
                  };
   Q_ENUMS(LayerMode)
   
-  QCPLayer(QCustomPlot* parentPlot, const QString &layerName);
+  QCPLayer(QCustomPlot* parent, const QString &layerName);
   virtual ~QCPLayer();
   
   // getters:
@@ -1129,7 +1129,7 @@ class QCP_LIB_DECL QCPSelectionRect : public QCPLayerable
 {
   Q_OBJECT
 public:
-  explicit QCPSelectionRect(QCustomPlot *parentPlot);
+  explicit QCPSelectionRect(QCustomPlot *parent);
   virtual ~QCPSelectionRect() Q_DECL_OVERRIDE;
   
   // getters:
@@ -1183,7 +1183,7 @@ class QCP_LIB_DECL QCPMarginGroup : public QObject
 {
   Q_OBJECT
 public:
-  explicit QCPMarginGroup(QCustomPlot *parentPlot);
+  explicit QCPMarginGroup(QCustomPlot *parent);
   virtual ~QCPMarginGroup();
   
   // non-virtual methods:
@@ -1247,7 +1247,7 @@ public:
                           };
   Q_ENUMS(SizeConstraintRect)
 
-  explicit QCPLayoutElement(QCustomPlot *parentPlot=nullptr);
+  explicit QCPLayoutElement(QCustomPlot *parent=nullptr);
   virtual ~QCPLayoutElement() Q_DECL_OVERRIDE;
   
   // getters:
@@ -1599,7 +1599,7 @@ public:
                    };
   Q_ENUMS(AnchorSide)
   
-  explicit QCPLabelPainterPrivate(QCustomPlot *parentPlot);
+  explicit QCPLabelPainterPrivate(QCustomPlot *parent);
   virtual ~QCPLabelPainterPrivate();
   
   // setters:
@@ -2405,7 +2405,7 @@ Q_DECLARE_METATYPE(QCPAxis::SelectablePart)
 class QCP_LIB_DECL QCPAxisPainterPrivate
 {
 public:
-  explicit QCPAxisPainterPrivate(QCustomPlot *parentPlot);
+  explicit QCPAxisPainterPrivate(QCustomPlot *parent);
   virtual ~QCPAxisPainterPrivate();
   
   virtual void draw(QCPPainter *painter);
@@ -3586,7 +3586,7 @@ class QCP_LIB_DECL QCPItemAnchor
 {
   Q_GADGET
 public:
-  QCPItemAnchor(QCustomPlot *parentPlot, QCPAbstractItem *parentItem, const QString &name, int anchorId=-1);
+  QCPItemAnchor(QCustomPlot *parent, QCPAbstractItem *parentItem, const QString &name, int anchorId=-1);
   virtual ~QCPItemAnchor();
   
   // getters:
@@ -3641,7 +3641,7 @@ public:
                     };
   Q_ENUMS(PositionType)
   
-  QCPItemPosition(QCustomPlot *parentPlot, QCPAbstractItem *parentItem, const QString &name);
+  QCPItemPosition(QCustomPlot *parent, QCPAbstractItem *parentItem, const QString &name);
   virtual ~QCPItemPosition() Q_DECL_OVERRIDE;
   
   // getters:
@@ -3700,7 +3700,7 @@ class QCP_LIB_DECL QCPAbstractItem : public QCPLayerable
   Q_PROPERTY(bool selected READ selected WRITE setSelected NOTIFY selectionChanged)
   /// \endcond
 public:
-  explicit QCPAbstractItem(QCustomPlot *parentPlot);
+  explicit QCPAbstractItem(QCustomPlot *parent);
   virtual ~QCPAbstractItem() Q_DECL_OVERRIDE;
   
   // getters:
@@ -4915,7 +4915,7 @@ class QCP_LIB_DECL QCPAxisRect : public QCPLayoutElement
   Q_PROPERTY(Qt::Orientations rangeZoom READ rangeZoom WRITE setRangeZoom)
   /// \endcond
 public:
-  explicit QCPAxisRect(QCustomPlot *parentPlot, bool setupDefaultAxes=true);
+  explicit QCPAxisRect(QCustomPlot *parent, bool setupDefaultAxes=true);
   virtual ~QCPAxisRect() Q_DECL_OVERRIDE;
   
   // getters:
@@ -5261,11 +5261,11 @@ class QCP_LIB_DECL QCPTextElement : public QCPLayoutElement
   Q_PROPERTY(bool selected READ selected WRITE setSelected NOTIFY selectionChanged)
   /// \endcond
 public:
-  explicit QCPTextElement(QCustomPlot *parentPlot);
-  QCPTextElement(QCustomPlot *parentPlot, const QString &text);
-  QCPTextElement(QCustomPlot *parentPlot, const QString &text, double pointSize);
-  QCPTextElement(QCustomPlot *parentPlot, const QString &text, const QString &fontFamily, double pointSize);
-  QCPTextElement(QCustomPlot *parentPlot, const QString &text, const QFont &font);
+  explicit QCPTextElement(QCustomPlot *parent);
+  QCPTextElement(QCustomPlot *parent, const QString &text);
+  QCPTextElement(QCustomPlot *parent, const QString &text, double pointSize);
+  QCPTextElement(QCustomPlot *parent, const QString &text, const QString &fontFamily, double pointSize);
+  QCPTextElement(QCustomPlot *parent, const QString &text, const QFont &font);
   
   // getters:
   QString text() const { return mText; }
@@ -5375,7 +5375,7 @@ class QCP_LIB_DECL QCPColorScale : public QCPLayoutElement
   Q_PROPERTY(bool rangeZoom READ rangeZoom WRITE setRangeZoom)
   /// \endcond
 public:
-  explicit QCPColorScale(QCustomPlot *parentPlot);
+  explicit QCPColorScale(QCustomPlot *parent);
   virtual ~QCPColorScale() Q_DECL_OVERRIDE;
   
   // getters:
@@ -5718,7 +5718,7 @@ public:
                    };
   Q_ENUMS(SpacingType)
   
-  explicit QCPBarsGroup(QCustomPlot *parentPlot);
+  explicit QCPBarsGroup(QCustomPlot *parent);
   virtual ~QCPBarsGroup();
   
   // getters:
@@ -6411,12 +6411,14 @@ class QCP_LIB_DECL QCPItemStraightLine : public QCPAbstractItem
   Q_PROPERTY(QPen selectedPen READ selectedPen WRITE setSelectedPen)
   /// \endcond
 public:
-  explicit QCPItemStraightLine(QCustomPlot *parentPlot);
+  explicit QCPItemStraightLine(QCustomPlot *parent);
   virtual ~QCPItemStraightLine() Q_DECL_OVERRIDE;
   
   // getters:
   QPen pen() const { return mPen; }
   QPen selectedPen() const { return mSelectedPen; }
+  QCPItemPosition * getPoint1() { return point1; }
+
   
   // setters;
   void setPen(const QPen &pen);
@@ -6425,8 +6427,8 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const point1;
-  QCPItemPosition * const point2;
+  QCPItemPosition * point1;
+  QCPItemPosition * point2;
   
 protected:
   // property members:
@@ -6456,7 +6458,7 @@ class QCP_LIB_DECL QCPItemLine : public QCPAbstractItem
   Q_PROPERTY(QCPLineEnding tail READ tail WRITE setTail)
   /// \endcond
 public:
-  explicit QCPItemLine(QCustomPlot *parentPlot);
+  explicit QCPItemLine(QCustomPlot *parent);
   virtual ~QCPItemLine() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6474,8 +6476,10 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const start;
-  QCPItemPosition * const end;
+  // PYSIDE2-FIX: const
+  QCPItemPosition * start;
+  QCPItemPosition * end;
+  // END PYSIDE2-FIX
   
 protected:
   // property members:
@@ -6506,7 +6510,7 @@ class QCP_LIB_DECL QCPItemCurve : public QCPAbstractItem
   Q_PROPERTY(QCPLineEnding tail READ tail WRITE setTail)
   /// \endcond
 public:
-  explicit QCPItemCurve(QCustomPlot *parentPlot);
+  explicit QCPItemCurve(QCustomPlot *parent);
   virtual ~QCPItemCurve() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6524,10 +6528,12 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const start;
-  QCPItemPosition * const startDir;
-  QCPItemPosition * const endDir;
-  QCPItemPosition * const end;
+  // PYSIDE2-FIX
+  QCPItemPosition * start;
+  QCPItemPosition * startDir;
+  QCPItemPosition * endDir;
+  QCPItemPosition * end;
+  // END PYSIDE2-FIX
   
 protected:
   // property members:
@@ -6557,7 +6563,7 @@ class QCP_LIB_DECL QCPItemRect : public QCPAbstractItem
   Q_PROPERTY(QBrush selectedBrush READ selectedBrush WRITE setSelectedBrush)
   /// \endcond
 public:
-  explicit QCPItemRect(QCustomPlot *parentPlot);
+  explicit QCPItemRect(QCustomPlot *parent);
   virtual ~QCPItemRect() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6575,14 +6581,16 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const topLeft;
-  QCPItemPosition * const bottomRight;
-  QCPItemAnchor * const top;
-  QCPItemAnchor * const topRight;
-  QCPItemAnchor * const right;
-  QCPItemAnchor * const bottom;
-  QCPItemAnchor * const bottomLeft;
-  QCPItemAnchor * const left;
+  // PYSIDE2-FIX
+  QCPItemPosition * topLeft;
+  QCPItemPosition * bottomRight;
+  QCPItemAnchor * top;
+  QCPItemAnchor * topRight;
+  QCPItemAnchor * right;
+  QCPItemAnchor * bottom;
+  QCPItemAnchor * bottomLeft;
+  QCPItemAnchor * left;
+  // END PYSIDE2-FIX
   
 protected:
   enum AnchorIndex {aiTop, aiTopRight, aiRight, aiBottom, aiBottomLeft, aiLeft};
@@ -6625,7 +6633,7 @@ class QCP_LIB_DECL QCPItemText : public QCPAbstractItem
   Q_PROPERTY(QMargins padding READ padding WRITE setPadding)
   /// \endcond
 public:
-  explicit QCPItemText(QCustomPlot *parentPlot);
+  explicit QCPItemText(QCustomPlot *parent);
   virtual ~QCPItemText() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6661,15 +6669,17 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const position;
-  QCPItemAnchor * const topLeft;
-  QCPItemAnchor * const top;
-  QCPItemAnchor * const topRight;
-  QCPItemAnchor * const right;
-  QCPItemAnchor * const bottomRight;
-  QCPItemAnchor * const bottom;
-  QCPItemAnchor * const bottomLeft;
-  QCPItemAnchor * const left;
+  // PYSIDE2-FIX
+  QCPItemPosition * position;
+  QCPItemAnchor * topLeft;
+  QCPItemAnchor * top;
+  QCPItemAnchor * topRight;
+  QCPItemAnchor * right;
+  QCPItemAnchor * bottomRight;
+  QCPItemAnchor * bottom;
+  QCPItemAnchor * bottomLeft;
+  QCPItemAnchor * left;
+  // END PYSIDE2-FIX
   
 protected:
   enum AnchorIndex {aiTopLeft, aiTop, aiTopRight, aiRight, aiBottomRight, aiBottom, aiBottomLeft, aiLeft};
@@ -6713,7 +6723,7 @@ class QCP_LIB_DECL QCPItemEllipse : public QCPAbstractItem
   Q_PROPERTY(QBrush selectedBrush READ selectedBrush WRITE setSelectedBrush)
   /// \endcond
 public:
-  explicit QCPItemEllipse(QCustomPlot *parentPlot);
+  explicit QCPItemEllipse(QCustomPlot *parent);
   virtual ~QCPItemEllipse() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6731,17 +6741,19 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const topLeft;
-  QCPItemPosition * const bottomRight;
-  QCPItemAnchor * const topLeftRim;
-  QCPItemAnchor * const top;
-  QCPItemAnchor * const topRightRim;
-  QCPItemAnchor * const right;
-  QCPItemAnchor * const bottomRightRim;
-  QCPItemAnchor * const bottom;
-  QCPItemAnchor * const bottomLeftRim;
-  QCPItemAnchor * const left;
-  QCPItemAnchor * const center;
+  // PYSIDE2-FIX
+  QCPItemPosition * topLeft;
+  QCPItemPosition * bottomRight;
+  QCPItemAnchor * topLeftRim;
+  QCPItemAnchor * top;
+  QCPItemAnchor * topRightRim;
+  QCPItemAnchor * right;
+  QCPItemAnchor * bottomRightRim;
+  QCPItemAnchor * bottom;
+  QCPItemAnchor * bottomLeftRim;
+  QCPItemAnchor * left;
+  QCPItemAnchor * center;
+  // END PYSIDE2-FIX
   
 protected:
   enum AnchorIndex {aiTopLeftRim, aiTop, aiTopRightRim, aiRight, aiBottomRightRim, aiBottom, aiBottomLeftRim, aiLeft, aiCenter};
@@ -6777,7 +6789,7 @@ class QCP_LIB_DECL QCPItemPixmap : public QCPAbstractItem
   Q_PROPERTY(QPen selectedPen READ selectedPen WRITE setSelectedPen)
   /// \endcond
 public:
-  explicit QCPItemPixmap(QCustomPlot *parentPlot);
+  explicit QCPItemPixmap(QCustomPlot *parent);
   virtual ~QCPItemPixmap() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6797,14 +6809,16 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const topLeft;
-  QCPItemPosition * const bottomRight;
-  QCPItemAnchor * const top;
-  QCPItemAnchor * const topRight;
-  QCPItemAnchor * const right;
-  QCPItemAnchor * const bottom;
-  QCPItemAnchor * const bottomLeft;
-  QCPItemAnchor * const left;
+  // PYSIDE2-FIX
+  QCPItemPosition * topLeft;
+  QCPItemPosition * bottomRight;
+  QCPItemAnchor * top;
+  QCPItemAnchor * topRight;
+  QCPItemAnchor * right;
+  QCPItemAnchor * bottom;
+  QCPItemAnchor * bottomLeft;
+  QCPItemAnchor * left;
+  // END PYSIDE2-FIX
   
 protected:
   enum AnchorIndex {aiTop, aiTopRight, aiRight, aiBottom, aiBottomLeft, aiLeft};
@@ -6862,7 +6876,7 @@ public:
                    };
   Q_ENUMS(TracerStyle)
 
-  explicit QCPItemTracer(QCustomPlot *parentPlot);
+  explicit QCPItemTracer(QCustomPlot *parent);
   virtual ~QCPItemTracer() Q_DECL_OVERRIDE;
 
   // getters:
@@ -6893,7 +6907,7 @@ public:
   // non-virtual methods:
   void updatePosition();
 
-  QCPItemPosition * const position;
+  QCPItemPosition * position;
 
 protected:
   // property members:
@@ -6943,7 +6957,7 @@ public:
   };
   Q_ENUMS(BracketStyle)
 
-  explicit QCPItemBracket(QCustomPlot *parentPlot);
+  explicit QCPItemBracket(QCustomPlot *parent);
   virtual ~QCPItemBracket() Q_DECL_OVERRIDE;
   
   // getters:
@@ -6961,9 +6975,11 @@ public:
   // reimplemented virtual methods:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details=nullptr) const Q_DECL_OVERRIDE;
   
-  QCPItemPosition * const left;
-  QCPItemPosition * const right;
-  QCPItemAnchor * const center;
+  // PYSIDE2-FIX
+  QCPItemPosition * left;
+  QCPItemPosition * right;
+  QCPItemAnchor * center;
+  // END PYSIDE2-FIX
   
 protected:
   // property members:
@@ -7267,7 +7283,7 @@ public:
                  };
   Q_ENUMS(LabelMode)
   
-  explicit QCPPolarAxisAngular(QCustomPlot *parentPlot);
+  explicit QCPPolarAxisAngular(QCustomPlot *parent);
   virtual ~QCPPolarAxisAngular();
   
   // getters:

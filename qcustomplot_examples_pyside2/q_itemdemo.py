@@ -103,14 +103,14 @@ def demo(app, demotime=0):
 
     # add the bracket at the top:
     bracket = QCPItemBracket(customPlot)
-    bracket.left().setCoords(-8, 1.1)
-    bracket.right().setCoords(8, 1.1)
+    bracket.left.setCoords(-8, 1.1)
+    bracket.right.setCoords(8, 1.1)
     bracket.setLength(13)
 
     # add the text label at the top:
     wavePacketText = QCPItemText(customPlot)
     # ToDo: wavePacketText.position2().setParentAnchor(bracket.center)
-    wavePacketText.position().setCoords(0, -10) # move 10 pixels to the top from bracket center anchor  # ToDo: position2?
+    wavePacketText.position.setCoords(0, -10) # move 10 pixels to the top from bracket center anchor  # ToDo: position2?
     wavePacketText.setPositionAlignment(Qt.AlignBottom|Qt.AlignHCenter)
     wavePacketText.setText("Wavepacket")
     wavePacketText.setFont(QFont(QtGui.QFont().family(), 10))
@@ -128,9 +128,9 @@ def demo(app, demotime=0):
 
     # add label for phase tracer:
     phaseTracerText = QCPItemText(customPlot)
-    phaseTracerText.position().setType(QCPItemPosition.ptAxisRectRatio)   # ToDo: position2?
+    phaseTracerText.position.setType(QCPItemPosition.ptAxisRectRatio)   # ToDo: position2?
     phaseTracerText.setPositionAlignment(Qt.AlignRight|Qt.AlignBottom)
-    phaseTracerText.position().setCoords(1.0, 0.95) # lower right corner of axis rect   # ToDo: position2?
+    phaseTracerText.position.setCoords(1.0, 0.95) # lower right corner of axis rect   # ToDo: position2?
     phaseTracerText.setText("Points of fixed\nphase define\nphase velocity vp")
     phaseTracerText.setTextAlignment(Qt.AlignLeft)
     phaseTracerText.setFont(QFont(QtGui.QFont().family(), 9))
@@ -139,15 +139,15 @@ def demo(app, demotime=0):
     # add arrow pointing at phase tracer, coming from label:
     spike = QCPLineEnding(QCPLineEnding.esSpikeArrow)
     phaseTracerArrow = QCPItemCurve(customPlot)
-    phaseTracerArrow.start().setParentAnchor(phaseTracerText.left())
-    phaseTracerArrow.startDir().setParentAnchor(phaseTracerArrow.start())
-    phaseTracerArrow.startDir().setCoords(-40, 0) # direction 30 pixels to the left of parent anchor (tracerArrow.start)
-    phaseTracerArrow.end().setParentAnchor(phaseTracer.position())
-    phaseTracerArrow.end().setCoords(10, 10)
-    phaseTracerArrow.endDir().setParentAnchor(phaseTracerArrow.end())
-    phaseTracerArrow.endDir().setCoords(30, 30)
+    phaseTracerArrow.start.setParentAnchor(phaseTracerText.left)
+    phaseTracerArrow.startDir.setParentAnchor(phaseTracerArrow.start)
+    phaseTracerArrow.startDir.setCoords(-40, 0) # direction 30 pixels to the left of parent anchor (tracerArrow.start)
+    phaseTracerArrow.end.setParentAnchor(phaseTracer.position)
+    phaseTracerArrow.end.setCoords(10, 10)
+    phaseTracerArrow.endDir.setParentAnchor(phaseTracerArrow.end)
+    phaseTracerArrow.endDir.setCoords(30, 30)
     phaseTracerArrow.setHead(spike)
-    phaseTracerArrow.setTail(QCPLineEnding(QCPLineEnding.esBar, (phaseTracerText.bottom().pixelPosition().y()-phaseTracerText.top().pixelPosition().y())*0.85))
+    phaseTracerArrow.setTail(QCPLineEnding(QCPLineEnding.esBar, (phaseTracerText.bottom.pixelPosition().y()-phaseTracerText.top.pixelPosition().y())*0.85))
 
     # add the group velocity tracer (green circle):
     groupTracer = QCPItemTracer(customPlot)
@@ -161,9 +161,9 @@ def demo(app, demotime=0):
 
     # add label for group tracer:
     groupTracerText = QCPItemText(customPlot)
-    groupTracerText.position().setType(QCPItemPosition.ptAxisRectRatio)   # ToDo: position2?
+    groupTracerText.position.setType(QCPItemPosition.ptAxisRectRatio)   # ToDo: position2?
     groupTracerText.setPositionAlignment(Qt.AlignRight|Qt.AlignTop)
-    groupTracerText.position().setCoords(1.0, 0.20) # lower right corner of axis rect   # ToDo: position2?
+    groupTracerText.position.setCoords(1.0, 0.20) # lower right corner of axis rect   # ToDo: position2?
     groupTracerText.setText("Fixed positions in\nwave packet define\ngroup velocity vg")
     groupTracerText.setTextAlignment(Qt.AlignLeft)
     groupTracerText.setFont(QFont(QtGui.QFont().family(), 9))
@@ -171,26 +171,26 @@ def demo(app, demotime=0):
 
     # add arrow pointing at group tracer, coming from label:
     groupTracerArrow = QCPItemCurve(customPlot)
-    groupTracerArrow.start().setParentAnchor(groupTracerText.left())
-    groupTracerArrow.startDir().setParentAnchor(groupTracerArrow.start())
-    groupTracerArrow.startDir().setCoords(-40, 0) # direction 30 pixels to the left of parent anchor (tracerArrow.start)
-    groupTracerArrow.end().setCoords(5.5, 0.4)
-    groupTracerArrow.endDir().setParentAnchor(groupTracerArrow.end())
-    groupTracerArrow.endDir().setCoords(0, -40)
+    groupTracerArrow.start.setParentAnchor(groupTracerText.left)
+    groupTracerArrow.startDir.setParentAnchor(groupTracerArrow.start)
+    groupTracerArrow.startDir.setCoords(-40, 0) # direction 30 pixels to the left of parent anchor (tracerArrow.start)
+    groupTracerArrow.end.setCoords(5.5, 0.4)
+    groupTracerArrow.endDir.setParentAnchor(groupTracerArrow.end)
+    groupTracerArrow.endDir.setCoords(0, -40)
     groupTracerArrow.setHead(spike)
-    groupTracerArrow.setTail(QCPLineEnding(QCPLineEnding.esBar, (groupTracerText.bottom().pixelPosition().y()-groupTracerText.top().pixelPosition().y())*0.85))
+    groupTracerArrow.setTail(QCPLineEnding(QCPLineEnding.esBar, (groupTracerText.bottom.pixelPosition().y()-groupTracerText.top.pixelPosition().y())*0.85))
 
     # add dispersion arrow:
     arrow = QCPItemCurve(customPlot)
-    arrow.start().setCoords(1, -1.1)
-    arrow.startDir().setCoords(-1, -1.3)
-    arrow.endDir().setCoords(-5, -0.3)
-    arrow.end().setCoords(-10, -0.2)
+    arrow.start.setCoords(1, -1.1)
+    arrow.startDir.setCoords(-1, -1.3)
+    arrow.endDir.setCoords(-5, -0.3)
+    arrow.end.setCoords(-10, -0.2)
     arrow.setHead(spike)
 
     # add the dispersion arrow label:
     dispersionText = QCPItemText(customPlot)
-    dispersionText.position().setCoords(-6, -0.9)
+    dispersionText.position.setCoords(-6, -0.9)
     dispersionText.setRotation(40)
     dispersionText.setText("Dispersion with\nvp < vg")
     dispersionText.setFont(QFont(QtGui.QFont().family(), 10))

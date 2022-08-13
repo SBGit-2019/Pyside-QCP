@@ -42,11 +42,11 @@ class AxisTag(QObject):
 
       self.mDummyTracer = QCPItemTracer(parentPlot)
       self.mDummyTracer.setVisible(False)
-      self.mDummyTracer.position().setTypeX(QCPItemPosition.ptAxisRectRatio)
-      self.mDummyTracer.position().setTypeY(QCPItemPosition.ptPlotCoords)
-      self.mDummyTracer.position().setAxisRect(self.mAxis.axisRect())
-      self.mDummyTracer.position().setCoords(1, 0)
-      self.mDummyTracer.position().setAxes(None, self.mAxis)
+      self.mDummyTracer.position.setTypeX(QCPItemPosition.ptAxisRectRatio)
+      self.mDummyTracer.position.setTypeY(QCPItemPosition.ptPlotCoords)
+      self.mDummyTracer.position.setAxisRect(self.mAxis.axisRect())
+      self.mDummyTracer.position.setCoords(1, 0)
+      self.mDummyTracer.position.setAxes(None, self.mAxis)
 
       # the arrow end (head) is set to move along with the dummy tracer by setting it as its parent
       # anchor. Its coordinate system (setCoords) is thus pixels, and this is how the needed horizontal
@@ -58,9 +58,9 @@ class AxisTag(QObject):
       self.mArrow.setLayer("overlay")
       self.mArrow.setClipToAxisRect(False)
       self.mArrow.setHead(spike)
-      self.mArrow.end().setParentAnchor(self.mDummyTracer.position())
-      self.mArrow.start().setParentAnchor(self.mArrow.end())
-      self.mArrow.start().setCoords(15, 0)
+      self.mArrow.end.setParentAnchor(self.mDummyTracer.position)
+      self.mArrow.start.setParentAnchor(self.mArrow.end)
+      self.mArrow.start.setCoords(15, 0)
 
       # The text label is anchored at the arrow start (tail) and has its "position" aligned at the
       # left, and vertically centered to the text label box.
@@ -72,7 +72,7 @@ class AxisTag(QObject):
       self.mLabel.setBrush(QBrush(QColor(128,128,128,40)))
       self.mLabel.setPen(QPen(Qt.blue))
       self.mLabel.setPositionAlignment(Qt.AlignLeft|Qt.AlignVCenter)
-      self.mLabel.position().setParentAnchor(self.mArrow.start())
+      self.mLabel.position.setParentAnchor(self.mArrow.start)
 
     def __del__(self):
       pass
@@ -85,14 +85,14 @@ class AxisTag(QObject):
       # of the axis rect, it is always kept at 1. The vertical coordinate type was set to
       # ptPlotCoordinates of the passed parent axis, so the vertical coordinate is set to the new
       # value.
-      self.mDummyTracer.position().setCoords(1, value)
+      self.mDummyTracer.position.setCoords(1, value)
 
       # We want the arrow head to be at the same horizontal position as the axis backbone, even if
       # the axis has a certain offset from the axis rect border (like the added second y axis). Thus we
       # set the horizontal pixel position of the arrow end (head) to the axis offset (the pixel
       # distance to the axis rect border). This works because the parent anchor of the arrow end is
       # the dummy tracer, which, as described earlier, is tied to the right axis rect border.
-      self.mArrow.end().setCoords(self.mAxis.offset(), 0)
+      self.mArrow.end.setCoords(self.mAxis.offset(), 0)
 
     def setText(self, text):
       self.mLabel.setText(text)

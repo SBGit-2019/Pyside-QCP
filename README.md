@@ -65,10 +65,11 @@ with a default or user specified delay time.
       customPlot.xAxis.setRange(-1, 1)
       customPlot.yAxis.setRange(0, 1)
 
-    	# show the plot
+      # show the plot
       customPlot.show()
       # run the main Qt loop
       res = app.exec_()
+      # Make sure and manually reset pointer
       customPlot = None
       return res
    
@@ -91,6 +92,7 @@ The version naming of the Python bindings is analogue to the naming of the QCust
 - v2.1.1: Small bugfixes
 - v2.1.2: Small bugfixes for Scatterplot with single points
 - v2.1.4: Bugfix for zero line and issue #4
+- v2.1.5: Allow python access to all public fields of QCP #5
 
 ## License
 
