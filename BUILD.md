@@ -52,7 +52,7 @@ This command will automatically create all Linux wheels in the directory _wheelh
 
 The github workflow _build_linux_wheels.yml_ performs these steps.
 
-Outsode the manylinux image you need to:
+Outside the manylinux image you need to:
 - sudo apt install mesa-common-dev libglu1-mesa-dev build-essential
 - sudo apt install patchelf
 - python -m venv /io/venv/py38
