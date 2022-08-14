@@ -92,8 +92,8 @@ The version naming of the Python bindings is analogue to the naming of the QCust
 - v2.1.1: Small bugfixes
 - v2.1.2: Small bugfixes for Scatterplot with single points
 - v2.1.4: Bugfix for zero line and issue #4
-- v2.1.5: Allow python access to all public fields of QCP #5 
-          (Note: Access to QCP *public fields* has changed from methods, e.g. w.start() to fields, e.g. w.start)
+- v2.1.5: Allow python access to all public fields of QCP (issue #5) 
+          (Note: Access to QCP *public fields* has changed from methods, e.g. w.start() to fields, e.g. w.start, methods are available still as w.get_start())
 
 ## License
 
