@@ -146,8 +146,8 @@ setuptools.setup(
         CMakeExtension("qcustomplot_pyside2.libqcustomplot", ".", [])
     ],
     install_requires=[
-        'PySide2==5.15.2.1',
-        'shiboken2==5.15.2.1'
+        'PySide2==5.15.2',
+        'shiboken2==5.15.2'
     ],
     python_requires='>=3.6',
     classifiers=[
