@@ -1,4 +1,4 @@
-name: Docker Manylinux Wheels 3.6
+name: Docker Manylinux Wheels 3.9 (branch pyside2-5.15.2)
 
 on:
   #push:
@@ -26,6 +26,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: pyside2-5.15.2
     
     - name: Check environment
       run: |
@@ -56,12 +58,12 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         pwd
-        chmod u+x build-wheels_36.sh
-        ./build-wheels_36.sh  
+        chmod u+x build-wheels_39.sh
+        ./build-wheels_39.sh  
         
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_linux_2_1_5
+        name: wheelhouse_linux_2_1_5_b_5152
         path: ${{github.workspace}}/wheelhouse/*     
 
 

@@ -56,6 +56,7 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         pwd
+        chmod u+x ./build-wheels.sh
         ./build-wheels.sh  
         
     - uses: actions/upload-artifact@v3
