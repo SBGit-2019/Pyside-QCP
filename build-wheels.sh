@@ -19,7 +19,7 @@ export PLAT="manylinux2014_x86_64"
 QCPDIR=/io/Pyside-QCP
 VENV=/tmp/venv/pyside2
 CACHE=/tmp/pycache
-VERSION=2.1.5
+VERSION=2.1.4.90
 
 echo "VENV="${VENV}
 echo "QCPDIR="${QCPDIR}
@@ -87,7 +87,7 @@ for PYBIN in /opt/python/*/bin; do
      python -m pip install pip==21.2.1
      pip install --cache-dir ${CACHE} cmake-build-extension==0.5.0 wheel==0.37.1
      pip install --cache-dir ${CACHE} setuptools==59.6.0
-     pip install --cache-dir ${CACHE} --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2==5.15.2.1  pyside2==5.15.2.1 shiboken2_generator==5.15.2.1
+     pip install --cache-dir ${CACHE} --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2==5.15.2  pyside2==5.15.2 shiboken2_generator==5.15.2
      echo cmake -D MANYLINUX_PYTHON_VERSION=${PYVER} ..
      export  MANYLINUX_PYTHON_VERSION="${PYVER}"
      #python3 setup.py bdist_wheel

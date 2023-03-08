@@ -11,7 +11,7 @@ export PLAT="manylinux2014_x86_64"
 export QCPDIR=/io/Pyside-QCP
 export VENV=/tmp/venv/pyside2
 export CACHE=/tmp/pycache
-export VERSION=2.1.5
+export VERSION=2.1.4.90
 
 echo "VENV="${VENV}
 echo "QCPDIR="${QCPDIR}
@@ -49,7 +49,7 @@ source ${VENV}//bin/activate
 python -m pip install pip==21.2.1
 pip install --cache-dir ${CACHE} cmake-build-extension==0.5.0 wheel==0.37.1
 pip install --cache-dir ${CACHE} setuptools==59.6.0
-pip install --cache-dir ${CACHE} --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2==5.15.2.1  pyside2==5.15.2.1 shiboken2_generator==5.15.2.1
+pip install --cache-dir ${CACHE} --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2==5.15.2  pyside2==5.15.2 shiboken2_generator==5.15.2
 echo cmake -D MANYLINUX_PYTHON_VERSION=${PYVER} ..
 export  MANYLINUX_PYTHON_VERSION="${PYVER}"
 pip wheel ${QCPDIR}  --no-deps -w wheelhouse/ 

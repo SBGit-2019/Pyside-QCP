@@ -120,11 +120,11 @@ print("CMAKE","-D MANYLINUX_PYTHON_VERSION={}".format(os.environ["MANYLINUX_PYTH
 #sys.exit()
 setuptools.setup(
     name="qcustomplot-pyside2",
-    version="2.1.5",
+    version="2.1.4.90",
     author="SBC",
     license = "GPLv3+ | Commercial",
     author_email="sbc-dev@posteo.de",
-    description="QCustomplot 2.1.0 for Pyside2 5.15.2",
+    description="QCustomplot 2.1.0 for Pyside2 5.15.2 (compat build for Pyside2 5.15.2 (_0)). ",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/SBGit-2019/Pyside-QCP",
