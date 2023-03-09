@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels Python 3.8 only (branch pyside2-5.15.2)
+name:  MSBuild Windows Wheels 3.9 (branch pyside2-5.15.2)
 
 on:
   #push:

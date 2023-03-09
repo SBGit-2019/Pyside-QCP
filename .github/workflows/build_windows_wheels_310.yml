@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels Python 3.10 only
+name:  MSBuild Windows Wheels 3.10
 
 on:
   #push:
