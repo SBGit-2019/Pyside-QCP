@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels
+name:  MSBuild Windows Wheels Python 3.8 only
 
 on:
   #push:
@@ -16,7 +16,7 @@ on:
         default: false  
         
 env:
-    #MANYLINUX_PYTHON_VERSION: '3.8'
+    #MANYLINUX_PYTHON_VERSION: '3.9'
     LLVM_INSTALL_DIR: '${{github.workspace}}/../libclang'
     VCINSTALLDIR: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/"
      
@@ -26,7 +26,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [ '3.6', '3.7', '3.8', '3.9', '3.10' ]
+        python-version: [ '3.9' ]
       fail-fast: true
       max-parallel: 1
         
@@ -116,7 +116,7 @@ jobs:
     
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_windows_2_1_5
+        name: wheelhouse_windows_2_1_5_cp38
         path: ${{github.workspace}}/wheelhouse/*        
       
 

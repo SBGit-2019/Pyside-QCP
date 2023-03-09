@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels
+name:  MSBuild Windows Wheels Python 3.10 only
 
 on:
   #push:
@@ -26,7 +26,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [ '3.6', '3.7', '3.8', '3.9', '3.10' ]
+        python-version: [ '3.10' ]
       fail-fast: true
       max-parallel: 1
         
@@ -87,7 +87,7 @@ jobs:
         python -m venv ${{github.workspace}}/../venv/pt1
         ${{github.workspace}}/../venv/pt1/Scripts/activate.ps1
         python --version
-        pip install --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io shiboken2==5.15.2.1  pyside2==5.15.2.1 shiboken2_generator==5.15.2.1
+        pip install --index-url=http://download.qt.io/official_releases/QtForPython/  --trusted-host download.qt.io  shiboken2==5.15.2  pyside2==5.15.2 shiboken2_generator==5.15.2
         pip install cmake-build-extension  wheel setuptools -U
         pip list
         dir ..
@@ -116,7 +116,7 @@ jobs:
     
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_windows_2_1_5
+        name: wheelhouse_windows_2_1_5_cp310
         path: ${{github.workspace}}/wheelhouse/*        
       
 
