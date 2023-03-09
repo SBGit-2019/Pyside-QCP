@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels
+name:  MSBuild Windows Wheels (branch pyside2-5.15.2)
 
 on:
   #push:
@@ -116,7 +116,7 @@ jobs:
     
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_windows_2_1_5
+        name: wheelhouse_windows_2_1_5_b_5152
         path: ${{github.workspace}}/wheelhouse/*        
       
 

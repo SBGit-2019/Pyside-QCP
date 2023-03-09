@@ -1,4 +1,4 @@
-name:  MSBuild Windows Wheels Python 3.8 only
+name:  MSBuild Windows Wheels Python 3.8 only (branch pyside2-5.15.2)
 
 on:
   #push:
@@ -116,7 +116,7 @@ jobs:
     
     - uses: actions/upload-artifact@v3
       with:
-        name: wheelhouse_windows_2_1_5_cp38
+        name: wheelhouse_windows_2_1_5_cp38_b_5152
         path: ${{github.workspace}}/wheelhouse/*        
       
 
